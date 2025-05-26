@@ -13,3 +13,11 @@ Membres :
 - LEFEBVRE Nino
 - LASBENNES Lucas
 - CENES Gauthier
+
+----------------------
+Groupe : Le Grand Debat 
+Membre : 
+- PEYRUSAUBES Thomas
+- SINIGAGLIA Lorenzo
+- MCKENZIE Melisa
+- CASTAING Gaëtan
