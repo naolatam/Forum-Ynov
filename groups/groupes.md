@@ -7,7 +7,18 @@ Membres :
 - Enzo FERRARI
 
 ----------------------
-Groupe : Le Faux-Rhum
+
+Groupe : La tcheam
+Membres :
+
+- Alexandre BOZZI
+- Clément ALSINA
+- Raphael BONNET
+- Kylian ARTERO
+
+----------------------
+
+Groupe : Faux-Rhum
 Membres :
 - AMIARD Renaud
 - LEFEBVRE Nino
@@ -40,8 +51,9 @@ Membres :
 - KHALFA Malik
 - BARREAU Romain
 
------- Silk Road ------
+----------------------
 
+Groupe : Oui
 Membres : Silk Road
 - DESSENNE Ylan
 - DELVER Sebastien
