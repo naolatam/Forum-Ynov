@@ -14,3 +14,76 @@ Membres :
 - Pedro Henrique Costa Martins
 - Lena Ricard
 - Emma De Oliveira
+
+----------------------
+
+Groupe : Les trucs
+Membres :
+- FERRE Nathan
+- DELPRAT Loïc
+- RIVIERE Alexandre
+- MARQUANT Mattéo
+
+----------------------
+
+Groupe : La tcheam
+Membres :
+
+- Alexandre BOZZI
+- Clément ALSINA
+- Raphael BONNET
+- Kylian ARTERO
+
+----------------------
+
+Groupe : Faux-Rhum
+Membres :
+- AMIARD Renaud
+- LEFEBVRE Nino
+- LASBENNES Lucas
+- CENES Gauthier
+
+----------------------
+
+Groupe : l'URSSAF
+Membres :
+- PAGOLA Hugo
+- BORDES Rémy
+- FERTE Aymeric
+- ORGA Alexis
+
+----------------------
+
+Groupe : Le Grand Debat 
+Membre : 
+- PEYRUSAUBES Thomas
+- SINIGAGLIA Lorenzo
+- MCKENZIE Melisa
+- CASTAING Gaëtan
+
+----------------------
+
+Groupe : GoGirls
+Membres :
+- ROBL Elisabeth
+- BARBANSON Chloé
+- CAMUSET Laurine 
+
+----------------------
+  
+Groupe : 4Hommes
+Membres :
+- BERIAC Mathieu
+- KOCHEÏDA Lucas
+- KHALFA Malik
+- BARREAU Romain
+
+----------------------
+
+Groupe : Oui
+Membres : Silk Road
+- DESSENNE Ylan
+- DELVER Sebastien
+- MATA Loan
+
+----------------------
