@@ -7,9 +7,9 @@ Membres :
 - Enzo FERRARI
 
 ----------------------
-Groupe : Le Faux-Rhum
+Groupe : La tcheam
 Membres :
-- AMIARD Renaud
-- LEFEBVRE Nino
-- LASBENNES Lucas
-- CENES Gauthier
+- Alexandre BOZZI
+- Clément ALSINA
+- Raphael BONNET
+- Kylian ARTERO
