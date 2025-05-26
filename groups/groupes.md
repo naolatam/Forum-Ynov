@@ -16,6 +16,15 @@ Membres :
 
 ----------------------
 
+Groupe : Le Grand Debat 
+Membre : 
+- PEYRUSAUBES Thomas
+- SINIGAGLIA Lorenzo
+- MCKENZIE Melisa
+- CASTAING Gaëtan
+
+----------------------
+
 Groupe : GoGirls
 Membres :
 - ROBL Elisabeth
