@@ -27,6 +27,15 @@ Membres :
 
 ----------------------
 
+Groupe : l'URSSAF
+Membres :
+- PAGOLA Hugo
+- BORDES Rémy
+- FERTE Aymeric
+- ORGA Alexis
+
+----------------------
+
 Groupe : Le Grand Debat 
 Membre : 
 - PEYRUSAUBES Thomas
