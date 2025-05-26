@@ -14,7 +14,16 @@ Membres :
 - LASBENNES Lucas
 - CENES Gauthier
 
-  ----------------------
+----------------------
+
+Groupe : GoGirls
+Membres :
+- ROBL Elisabeth
+- BARBANSON Chloé
+- CAMUSET Laurine 
+
+----------------------
+  
 Groupe : 4Hommes
 Membres :
 - BERIAC Mathieu
@@ -30,4 +39,3 @@ Membres : Silk Road
 - MATA Loan
 
 ----------------------
-
