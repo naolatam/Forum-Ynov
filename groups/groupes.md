@@ -13,3 +13,10 @@ Membres :
 - LEFEBVRE Nino
 - LASBENNES Lucas
 - CENES Gauthier
+
+----------------------
+Groupe : GoGirls
+Membres :
+- ROBL Elisabeth
+- BARBANSON Chloé
+- CAMUSET Laurine 
