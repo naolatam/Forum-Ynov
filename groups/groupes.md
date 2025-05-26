@@ -8,12 +8,9 @@ Membres :
 
 ----------------------
 
------- Silk Road ------
-
-Membres : Silk Road
+Groupe : Silk Road
+Membres : 
 - DESSENNE Ylan
 - DELVER Sebastien
 - MATA Loan
-
-----------------------
 
