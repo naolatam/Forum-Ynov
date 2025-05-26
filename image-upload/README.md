@@ -26,7 +26,7 @@ The max size of the images to load should be 20 mb. If there is an attempt to lo
 ### Allowed packages
 
 - All [standard go](https://golang.org/pkg/) packages are allowed.
-- [go-sql-driver/mysql](https://github.com/mattn/go-go-sql-driver/mysql)
+- [go-sql-driver/mysql](https://github.com/mattn/go-sql-driver/mysql)
 - [bcrypt](https://pkg.go.dev/golang.org/x/crypto/bcrypt)
 - [gofrs/uuid](https://github.com/gofrs/uuid) or [google/uuid](https://github.com/google/uuid)
 

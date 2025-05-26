@@ -44,7 +44,7 @@ You should implement at least 4 types of users :
 ### Allowed packages
 
 - All [standard go](https://golang.org/pkg/) packages are allowed.
-- [go-sql-driver/mysql](https://github.com/mattn/go-go-sql-driver/mysql)
+- [go-sql-driver/mysql](https://github.com/mattn/go-sql-driver/mysql)
 - [bcrypt](https://pkg.go.dev/golang.org/x/crypto/bcrypt)
 - [gofrs/uuid](https://github.com/gofrs/uuid) or [google/uuid](https://github.com/google/uuid)
 
