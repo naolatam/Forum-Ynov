@@ -107,3 +107,16 @@ This project will help you learn about:
 - SQL language
   - Manipulation of databases
 - The basics of encryption
+---
+
+### Features
+
+The following extensions of the forum are available as separate modules. Each one has its own README file:
+
+- [Advanced Features](advanced-features/README.md): Notifications, user activity tracking, post editing/deletion.
+- [Authentication](authentication/README.md): OAuth login using GitHub and Google.
+- [Image Upload](image-upload/README.md): Support for image attachments in posts (JPEG, PNG, GIF).
+- [Moderation](moderation/README.md): User roles and content approval system.
+- [Security](security/README.md): HTTPS, rate limiting, session hardening and encryption.
+
+Each feature must be implemented **on top of the base forum**, using consistent design and architecture.
