@@ -8,3 +8,12 @@ Membres :
 
 ----------------------
 
+Groupe : Les cons
+Membres :
+- FERRE Nathan
+- DELPRAT Loïc
+- RIVIERE Alexandre
+- MARQUANT Mattéo
+
+----------------------
+
