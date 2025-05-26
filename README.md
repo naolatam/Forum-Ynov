@@ -69,7 +69,7 @@ Note that the last two are only available for registered users and must refer to
 
 For the forum project you must use Docker.
 > Your MySQL database must be deployed in a dedicated Docker container with proper volume persistence. The backend must connect to this container using Docker networking or environment variables.
- You can read about docker basics in the [ascii-art-web-dockerize](../ascii-art-web/dockerize/README.md) subject.
+ You can read about docker basics in the [ascii-art-web-dockerize](https://github.com/SofyaOspan/-ascii-art-web-dockerize/blob/main/README.md) subject.
 
 ### Instructions
 
