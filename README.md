@@ -88,7 +88,7 @@ For the forum project you must use Docker.
 ### Allowed packages
 
 - All [standard Go](https://golang.org/pkg/) packages are allowed.
-- [go-sql-driver/mysql](https://github.com/mattn/go-sql-driver/mysql)
+- [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql)
 - [bcrypt](https://pkg.go.dev/golang.org/x/crypto/bcrypt)
 - [gofrs/uuid](https://github.com/gofrs/uuid) or [google/uuid](https://github.com/google/uuid)
 
