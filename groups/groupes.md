@@ -8,6 +8,15 @@ Membres :
 
 ----------------------
 
+Groupe : Les trucs
+Membres :
+- FERRE Nathan
+- DELPRAT Loïc
+- RIVIERE Alexandre
+- MARQUANT Mattéo
+
+----------------------
+
 Groupe : La tcheam
 Membres :
 
