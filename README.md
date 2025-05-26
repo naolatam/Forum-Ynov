@@ -82,7 +82,7 @@ For the forum project you must use Docker.
 
 - You must handle website errors, HTTP status.
 - You must handle all sort of technical errors.
-- The code must respect the [**good practices**](../good-practices/README.md).
+- The code must respect the [**good practices**](https://ytrack.learn.ynov.com/git/root/public/src/branch/master/subjects/good-practices/README.md).
 - It is recommended to have **test files** for [unit testing](https://go.dev/doc/tutorial/add-a-test).
 
 ### Allowed packages
