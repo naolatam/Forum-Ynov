@@ -7,9 +7,10 @@ Membres :
 - Enzo FERRARI
 
 ----------------------
-Groupe : Le Faux-Rhum
+
+Groupe : Les Mouettes en Colère
 Membres :
-- AMIARD Renaud
-- LEFEBVRE Nino
-- LASBENNES Lucas
-- CENES Gauthier
+- Noah Charrin--Bourrat
+- Pedro Henrique Costa Martins
+- Lena Ricard
+- Emma De Oliveira
