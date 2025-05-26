@@ -8,6 +8,15 @@ Membres :
 
 ----------------------
 
+Groupe : Les Mouettes en Colère
+Membres :
+- Noah Charrin--Bourrat
+- Pedro Henrique Costa Martins
+- Lena Ricard
+- Emma De Oliveira
+
+----------------------
+
 Groupe : Les trucs
 Membres :
 - FERRE Nathan
