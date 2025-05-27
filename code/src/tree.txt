@@ -1,11 +1,10 @@
 /myapp
 │
 ├── cmd/                 // Commandes principales (ex: main.go)
-│   └── myapp/
-│       └── main.go
+│   └── main.go
 ├── internal/            // Code interne (non exposé à l’extérieur)
+│   ├── config/          // Configuration of the project
 │   ├── handlers/        // Handlers HTTP (contrôleurs des rendus + callback login)
-│   ├── middleware/      // Middleware 
 │   ├── routes/          // Définitions des routes pour chaque handlers (controlleurs) (ex: /login, /home, /posts/:id)
 │   └── templates/       // GoTemplate
 ├── pkg/                 // Code réutilisable par d’autres projets
