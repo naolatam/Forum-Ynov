@@ -69,7 +69,7 @@ Note that the last two are only available for registered users and must refer to
 
 For the forum project you must use Docker.
 > Your MySQL database must be deployed in a dedicated Docker container with proper volume persistence. The backend must connect to this container using Docker networking or environment variables.
- You can read about docker basics in the [ascii-art-web-dockerize](../ascii-art-web/dockerize/README.md) subject.
+ You can read about docker basics in the [ascii-art-web-dockerize](https://github.com/SofyaOspan/-ascii-art-web-dockerize/blob/main/README.md) subject.
 
 ### Instructions
 
@@ -82,13 +82,13 @@ For the forum project you must use Docker.
 
 - You must handle website errors, HTTP status.
 - You must handle all sort of technical errors.
-- The code must respect the [**good practices**](../good-practices/README.md).
+- The code must respect the [**good practices**](https://ytrack.learn.ynov.com/git/root/public/src/branch/master/subjects/good-practices/README.md).
 - It is recommended to have **test files** for [unit testing](https://go.dev/doc/tutorial/add-a-test).
 
 ### Allowed packages
 
 - All [standard Go](https://golang.org/pkg/) packages are allowed.
-- [go-sql-driver/mysql](https://github.com/mattn/go-go-sql-driver/mysql)
+- [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql)
 - [bcrypt](https://pkg.go.dev/golang.org/x/crypto/bcrypt)
 - [gofrs/uuid](https://github.com/gofrs/uuid) or [google/uuid](https://github.com/google/uuid)
 
