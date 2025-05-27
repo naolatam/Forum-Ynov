@@ -1,0 +1,18 @@
+/myapp
+│
+├── cmd/                 // Commandes principales (ex: main.go)
+│   └── myapp/
+│       └── main.go
+├── internal/            // Code interne (non exposé à l’extérieur)
+│   ├── handlers/        // Handlers HTTP (contrôleurs)
+│   ├── middleware/      // Middleware 
+│   ├── models/          // Modèles (structs)
+│   ├── repository/      // Accès à la BDD (interfaces et implémentations)
+│   ├── routes/          // Définitions des routes pour chaque controlleurs (contrôleurs) (ex: /api/auth)
+│   └── services/        // Logique métier (usecases)
+├── pkg/                 // Code réutilisable par d’autres projets
+│   └── utils/           // Outils/utilitaires
+├── configs/             // Fichiers de configuration
+├── migrations/          // Scripts de migration SQL
+├── go.mod / go.sum
+└── README.md

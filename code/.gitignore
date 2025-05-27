@@ -1,0 +1,17 @@
+**/.env
+.env
+node_modules
+
+# Logs
+logs
+npm-debug.log*
+
+dist
+jspm_packages
+.npm
+.eslintcache
+
+.prettiercache
+.DS_Store
+.idea
+.vs
