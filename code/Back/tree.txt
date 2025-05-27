@@ -4,13 +4,14 @@
 │   └── myapp/
 │       └── main.go
 ├── internal/            // Code interne (non exposé à l’extérieur)
-│   ├── handlers/        // Handlers HTTP (contrôleurs)
+│   ├── handlers/        // Handlers HTTP (contrôleurs des rendus + callback login)
 │   ├── middleware/      // Middleware 
+│   ├── routes/          // Définitions des routes pour chaque handlers (controlleurs) (ex: /login, /home, /posts/:id)
+│   └── templates/       // GoTemplate
+├── pkg/                 // Code réutilisable par d’autres projets
 │   ├── models/          // Modèles (structs)
 │   ├── repository/      // Accès à la BDD (interfaces et implémentations)
-│   ├── routes/          // Définitions des routes pour chaque controlleurs (contrôleurs) (ex: /api/auth)
-│   └── services/        // Logique métier (usecases)
-├── pkg/                 // Code réutilisable par d’autres projets
+│   ├── services/        // Logique métier (usecases)
 │   └── utils/           // Outils/utilitaires
 ├── configs/             // Fichiers de configuration
 ├── migrations/          // Scripts de migration SQL
