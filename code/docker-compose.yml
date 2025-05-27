@@ -1,0 +1,30 @@
+networks:
+  forumNetwork:
+    driver: bridge
+
+services:
+  mariadb:
+    image: mariadb:11.4.7
+    restart: always
+    env_file:
+      - mariadb.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - forumNetwork
+
+  forum_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mariadb
+    ports:
+      - "8080:8080"
+    networks:
+      - forumNetwork
+
+volumes:
+  mariadb_data:
