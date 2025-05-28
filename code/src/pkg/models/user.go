@@ -12,7 +12,7 @@ type User struct {
 	Password  string
 	Bio       string
 	Avatar    string
-	createdAt string
+	CreatedAt string
 	role_id   uuid.UUID
 	Role      Role
 }
