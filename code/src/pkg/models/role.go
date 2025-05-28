@@ -4,7 +4,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// Category représente une ligne dans la table category
+// Role represents a line in the role table
 type Role struct {
 	ID         uuid.UUID
 	Name       string
