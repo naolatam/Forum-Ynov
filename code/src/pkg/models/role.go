@@ -4,9 +4,9 @@ import (
 	"github.com/google/uuid"
 )
 
-// Role represents a line in the role table
+// Role represents a line in the roles table
 type Role struct {
 	ID         uuid.UUID
 	Name       string
-	Permission int8
+	Permission uint8
 }

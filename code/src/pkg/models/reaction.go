@@ -4,12 +4,12 @@ import (
 	"github.com/google/uuid"
 )
 
-// Reaction represent a line in the user reaction
+// Reaction represent a line in the reactions table
 type Reaction struct {
-	ID         int64
-	post_id    int64
+	ID         uint64
+	post_id    uint32
 	Post       Post
-	comment_id int64
+	comment_id uint32
 	Comment    Comment
 	user_id    uuid.UUID
 	User       User

@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// Session represent a line in the session table
+// Session represent a line in the sessions table
 type Session struct {
 	ID       uuid.UUID
 	ExpireAt time.Time
