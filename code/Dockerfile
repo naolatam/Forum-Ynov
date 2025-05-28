@@ -1,3 +1,4 @@
+# Dockerfile for building the Go application
 FROM golang:1.24-alpine
 
 # Set the working directory
