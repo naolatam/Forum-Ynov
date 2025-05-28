@@ -12,24 +12,12 @@ func startSessionCleanerHostedService(ctx context.Context) {
 	log.Println("[HostedService] Session cleaner service started")
 	ticker := time.NewTicker(3 * time.Hour) // Service will run every 3 hours
 	defer ticker.Stop()
-
 	for {
 		select {
 		case <-ticker.C:
-			log.Panicln("[HostedService] Running session cleaner service...")
+			log.Println("[HostedService] Running session cleaner service...")
+			cleanSession(ctx)
 
-			db, err := config.OpenDBConnection()
-			if err != nil {
-				panic(err)
-			}
-
-			row, err := db.QueryContext(ctx, "DELETE FROM sessions WHERE expireAt < NOW()")
-			if err != nil {
-				log.Printf("[HostedService] Error cleaning sessions: %v", err)
-				continue
-			}
-			row.Close()
-			db.Close()
 		case <-ctx.Done():
 			log.Println("[HostedService] Session cleaner service stopped")
 			ticker.Stop()
@@ -37,4 +25,21 @@ func startSessionCleanerHostedService(ctx context.Context) {
 		}
 	}
 
+}
+
+func cleanSession(ctx context.Context) {
+
+	db, err := config.OpenDBConnection()
+	if err != nil {
+		panic(err)
+	}
+
+	row, err := db.QueryContext(ctx, "DELETE FROM sessions WHERE expireAt < NOW()")
+	if err != nil {
+		log.Printf("[HostedService] Error cleaning sessions: %v", err)
+		return
+	}
+	row.Close()
+	db.Close()
+	log.Println("[HostedService] Session cleaner service completed successfully")
 }
