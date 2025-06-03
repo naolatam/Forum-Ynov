@@ -1,209 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Sign In/Sign Up</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../assets/style.css"/>
-    <link rel="stylesheet" href="../assets/warframe-theme.css">
-</head>
-<body>
-<div class="flex items-center justify-center min-h-screen">
-    <div class="container" id="container">
-        <div class="form-container sign-up">
-            <form id="registerForm">
-                <h1>Create Account</h1>
-                <div class="social-icons">
-                    <div id="g_id_signin"></div>
-                    <a
-                            class="icon"
-                            type="button"
-                            onclick="triggerGoogleSignIn()"
-                    >
-                        <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 48 48"
-                                width="24px"
-                                height="24px"
-                        >
-                            <path
-                                    fill="#4285F4"
-                                    d="M24 9.5c3.5 0 6.4 1.2 8.5 3.2l6.3-6.3C34.8 3.2 29.7 1 24 1 14.8 1 7.2 6.6 4 14.5l7.4 5.7C13.2 14.1 18.2 9.5 24 9.5z"
-                            />
-                            <path
-                                    fill="#34A853"
-                                    d="M46.5 24c0-1.5-.1-2.9-.4-4.3H24v8.1h12.7c-.6 3.2-2.5 5.9-5.2 7.7l7.4 5.7c4.3-4 6.6-9.9 6.6-17.2z"
-                            />
-                            <path
-                                    fill="#FBBC05"
-                                    d="M10.4 28.2c-1.2-3.2-1.2-6.8 0-10l-7.4-5.7C.3 16.1 0 20 0 24s.3 7.9 3 11.5l7.4-5.7z"
-                            />
-                            <path
-                                    fill="#EA4335"
-                                    d="M24 46c5.7 0 10.5-1.9 14-5.2l-7.4-5.7c-2 1.3-4.5 2-7.1 2-5.8 0-10.8-3.9-12.6-9.3l-7.4 5.7C7.2 41.4 14.8 46 24 46z"
-                            />
-                            <path fill="none" d="M0 0h48v48H0z"/>
-                        </svg>
-                    </a>
-                    <a class="icon" onclick="loginWithGitHub()">
-                        <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                width="24px"
-                                height="24px"
-                        >
-                            <path
-                                    fill="#181717"
-                                    d="M12 .297c-6.63 0-12 5.373-12 12 0 5.302 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.744.083-.729.083-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.775.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93 0-1.31.467-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.983-.399 3.005-.404 1.02.005 2.048.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.241 2.873.118 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.803 5.62-5.475 5.92.43.37.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .322.218.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
-                            />
-                        </svg>
-                    </a>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Sign In/Sign Up</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="../assets/style.css" />
+        <link rel="stylesheet" href="../assets/warframe-theme.css" />
+    </head>
+    <body>
+        <header
+            class="bg-gray-800 p-4 shadow-md transition-colors duration-300 z-10 fixed w-screen"
+        >
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-white">
+                        <a href="index.html">Forum Warframe</a>
+                    </h1>
                 </div>
-                <span>or use your email for registration</span>
-                <input
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        id="reg-username"
-                />
-                <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        id="reg-email"
-                />
-                <em id="reg-email-error"></em>
-                <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        id="reg-password"
-                />
-                <em id="reg-password-error"></em>
-                <input
-                        type="password"
-                        name="confirm"
-                        placeholder="Confirm Password"
-                        id="reg-confirm"
-                />
-                <em id="reg-confirm-error"></em>
-                <div class="button-container-1">
-                    <button type="submit" id="registerButton">
-                        Sign Up
-                    </button>
-                </div>
-                <div
-                        id="registerError"
-                        class="alert alert-danger"
-                        style="display: none"
-                ></div>
-            </form>
-        </div>
-
-        <div class="form-container sign-in">
-            <form id="loginForm">
-                <h1>Sign In</h1>
-                <div class="social-icons">
-                    <a
-                            class="icon"
-                            type="button"
-                            onclick="triggerGoogleSignIn()"
-                    >
-                        <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 48 48"
-                                width="24px"
-                                height="24px"
+            </div>
+        </header>
+        <main
+            class="absolute top-0 left-0 w-screen h-screen bg-[url(../assets/images/forums_background.jpg)] bg-center bg-cover"
+        >
+            <div
+                class="flex flex-1 flex-col h-full items-center justify-center w-1/2 mx-auto"
+            >
+                <div class="container w-full" id="container">
+                    <div class="form-container sign-up">
+                        <form
+                            id="registerForm"
+                            action="/auth/register"
+                            method="POST"
                         >
-                            <path
-                                    fill="#4285F4"
-                                    d="M24 9.5c3.5 0 6.4 1.2 8.5 3.2l6.3-6.3C34.8 3.2 29.7 1 24 1 14.8 1 7.2 6.6 4 14.5l7.4 5.7C13.2 14.1 18.2 9.5 24 9.5z"
+                            <h1>Create Account</h1>
+                            <div class="social-icons">
+                                <a
+                                    class="icon"
+                                    type="button"
+                                    href="/auth/google"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 48 48"
+                                        width="24px"
+                                        height="24px"
+                                    >
+                                        <path
+                                            fill="#4285F4"
+                                            d="M24 9.5c3.5 0 6.4 1.2 8.5 3.2l6.3-6.3C34.8 3.2 29.7 1 24 1 14.8 1 7.2 6.6 4 14.5l7.4 5.7C13.2 14.1 18.2 9.5 24 9.5z"
+                                        />
+                                        <path
+                                            fill="#34A853"
+                                            d="M46.5 24c0-1.5-.1-2.9-.4-4.3H24v8.1h12.7c-.6 3.2-2.5 5.9-5.2 7.7l7.4 5.7c4.3-4 6.6-9.9 6.6-17.2z"
+                                        />
+                                        <path
+                                            fill="#FBBC05"
+                                            d="M10.4 28.2c-1.2-3.2-1.2-6.8 0-10l-7.4-5.7C.3 16.1 0 20 0 24s.3 7.9 3 11.5l7.4-5.7z"
+                                        />
+                                        <path
+                                            fill="#EA4335"
+                                            d="M24 46c5.7 0 10.5-1.9 14-5.2l-7.4-5.7c-2 1.3-4.5 2-7.1 2-5.8 0-10.8-3.9-12.6-9.3l-7.4 5.7C7.2 41.4 14.8 46 24 46z"
+                                        />
+                                        <path fill="none" d="M0 0h48v48H0z" />
+                                    </svg>
+                                </a>
+                                <a class="icon" href="/auth/github">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        width="24px"
+                                        height="24px"
+                                    >
+                                        <path
+                                            fill="#181717"
+                                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.302 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.744.083-.729.083-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.775.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93 0-1.31.467-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.983-.399 3.005-.404 1.02.005 2.048.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.241 2.873.118 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.803 5.62-5.475 5.92.43.37.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .322.218.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+                            <span>or use your email for registration</span>
+                            <input
+                                type="text"
+                                name="username"
+                                placeholder="Username"
+                                id="reg-username"
+                                required
                             />
-                            <path
-                                    fill="#34A853"
-                                    d="M46.5 24c0-1.5-.1-2.9-.4-4.3H24v8.1h12.7c-.6 3.2-2.5 5.9-5.2 7.7l7.4 5.7c4.3-4 6.6-9.9 6.6-17.2z"
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                id="reg-email"
+                                required
                             />
-                            <path
-                                    fill="#FBBC05"
-                                    d="M10.4 28.2c-1.2-3.2-1.2-6.8 0-10l-7.4-5.7C.3 16.1 0 20 0 24s.3 7.9 3 11.5l7.4-5.7z"
+                            <em id="reg-email-error"></em>
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                id="reg-password"
+                                required
                             />
-                            <path
-                                    fill="#EA4335"
-                                    d="M24 46c5.7 0 10.5-1.9 14-5.2l-7.4-5.7c-2 1.3-4.5 2-7.1 2-5.8 0-10.8-3.9-12.6-9.3l-7.4 5.7C7.2 41.4 14.8 46 24 46z"
+                            <em id="reg-password-error"></em>
+                            <input
+                                type="password"
+                                name="confirm"
+                                placeholder="Confirm Password"
+                                id="reg-confirm"
+                                required
                             />
-                            <path fill="none" d="M0 0h48v48H0z"/>
-                        </svg>
-                    </a>
-                    <a class="icon" onclick="loginWithGitHub()">
-                        <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                width="24px"
-                                height="24px"
-                        >
-                            <path
-                                    fill="#181717"
-                                    d="M12 .297c-6.63 0-12 5.373-12 12 0 5.302 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.744.083-.729.083-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.775.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93 0-1.31.467-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.983-.399 3.005-.404 1.02.005 2.048.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.241 2.873.118 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.803 5.62-5.475 5.92.43.37.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .322.218.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
-                            />
-                        </svg>
-                    </a>
-                </div>
-                <span>or use your username password</span>
-                <input
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        id="login-username"
-                />
-                <em id="login-username-error"></em>
-                <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        id="login-password"
-                />
-                <em id="login-password-error"></em>
-
-                <div class="button-container-2">
-                    <button type="submit" id="loginButton">
-                        <a href="index.html">
-                            Sign In
-                        </a>
-                    </button>
-                </div>
-                <div
-                        id="loginError"
-                        class="alert alert-danger"
-                        style="display: none"
-                ></div>
-            </form>
-        </div>
-
-        <div class="toggle-container">
-            <div class="toggle">
-                <div class="toggle-panel toggle-left">
-                    <h1>Hello, Friend!</h1>
-                    <p>Register to start your journey</p>
-                    <div class="button-container-4">
-                        <button type="button" onclick="toggleForm(false)">
-                            Sign In
-                        </button>
+                            <em id="reg-confirm-error"></em>
+                            <div class="button-container-1">
+                                <button type="submit" id="registerButton">
+                                    Sign Up
+                                </button>
+                            </div>
+                            <div
+                                id="registerError"
+                                class="alert alert-danger"
+                                style="display: none"
+                            ></div>
+                        </form>
                     </div>
-                </div>
-                <div class="toggle-panel toggle-right">
-                    <h1>Welcome Back!</h1>
-                    <p>
-                        Enter your personal details to use all of site
-                        features
-                    </p>
-                    <div class="button-container-4">
-                        <button type="button" onclick="toggleForm(true)">Sign Up</button>
+
+                    <div class="form-container sign-in">
+                        <form id="loginForm" action="/auth/login" method="POST">
+                            <h1>Sign In</h1>
+                            <div class="social-icons">
+                                <a
+                                    class="icon"
+                                    type="button"
+                                    href="/auth/google"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 48 48"
+                                        width="24px"
+                                        height="24px"
+                                    >
+                                        <path
+                                            fill="#4285F4"
+                                            d="M24 9.5c3.5 0 6.4 1.2 8.5 3.2l6.3-6.3C34.8 3.2 29.7 1 24 1 14.8 1 7.2 6.6 4 14.5l7.4 5.7C13.2 14.1 18.2 9.5 24 9.5z"
+                                        />
+                                        <path
+                                            fill="#34A853"
+                                            d="M46.5 24c0-1.5-.1-2.9-.4-4.3H24v8.1h12.7c-.6 3.2-2.5 5.9-5.2 7.7l7.4 5.7c4.3-4 6.6-9.9 6.6-17.2z"
+                                        />
+                                        <path
+                                            fill="#FBBC05"
+                                            d="M10.4 28.2c-1.2-3.2-1.2-6.8 0-10l-7.4-5.7C.3 16.1 0 20 0 24s.3 7.9 3 11.5l7.4-5.7z"
+                                        />
+                                        <path
+                                            fill="#EA4335"
+                                            d="M24 46c5.7 0 10.5-1.9 14-5.2l-7.4-5.7c-2 1.3-4.5 2-7.1 2-5.8 0-10.8-3.9-12.6-9.3l-7.4 5.7C7.2 41.4 14.8 46 24 46z"
+                                        />
+                                        <path fill="none" d="M0 0h48v48H0z" />
+                                    </svg>
+                                </a>
+                                <a class="icon" href="/auth/github">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        width="24px"
+                                        height="24px"
+                                    >
+                                        <path
+                                            fill="#181717"
+                                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.302 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.744.083-.729.083-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.775.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93 0-1.31.467-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.983-.399 3.005-.404 1.02.005 2.048.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.241 2.873.118 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.803 5.62-5.475 5.92.43.37.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .322.218.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+                            <span>or use your username password</span>
+                            <input
+                                type="text"
+                                name="username"
+                                placeholder="Username"
+                                id="login-username"
+                                required
+                            />
+                            <em id="login-username-error"></em>
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                id="login-password"
+                                required
+                            />
+                            <em id="login-password-error"></em>
+
+                            <div class="button-container-2">
+                                <button type="submit" id="loginButton">
+                                    Sign In
+                                </button>
+                            </div>
+                            <div
+                                id="loginError"
+                                class="alert alert-danger"
+                                style="display: none"
+                            ></div>
+                        </form>
+                    </div>
+
+                    <div class="toggle-container">
+                        <div class="toggle">
+                            <div class="toggle-panel toggle-left">
+                                <h1>Hello, Friend!</h1>
+                                <p>Register to start your journey</p>
+                                <div class="button-container-4">
+                                    <button
+                                        type="button"
+                                        onclick="toggleForm(false)"
+                                    >
+                                        Sign In
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="toggle-panel toggle-right">
+                                <h1>Welcome Back!</h1>
+                                <p>
+                                    Enter your personal details to use all of
+                                    site features
+                                </p>
+                                <div class="button-container-4">
+                                    <button
+                                        type="button"
+                                        onclick="toggleForm(true)"
+                                    >
+                                        Sign Up
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-</body>
-<script src="../../src/scripts/main.js"></script>
+        </main>
+    </body>
+    <script src="../../src/scripts/main.js"></script>
 </html>
