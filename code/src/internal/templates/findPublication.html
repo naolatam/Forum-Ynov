@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Publication</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen flex flex-col">
+<header class="bg-gray-800 p-4 shadow-md transition-colors duration-300">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center">
+            <h1 class="text-2xl font-bold text-white">
+                <a href="index.html">Forum Warframe</a>
+            </h1>
+        </div>
+        <div class="flex items-center">
+            <nav class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="hover:text-blue-400 transition-colors">Home</a>
+                <a href="findPublication.html" class="text-blue-400 font-medium">All Posts</a>
+                <a href="profile.html" class="hover:text-blue-400 transition-colors">Profile</a>
+                <a href="register.html" class="hover:text-blue-400 transition-colors">Login</a>
+                <a href="#" class="hover:text-blue-400 transition-colors">Logout</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden ml-2 text-gray-300 hover:text-blue-400 focus:outline-none"
+                    aria-label="Menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            <button class="text-gray-300 hover:text-blue-400 transition-colors p-1 relative ml-2"
+                    aria-label="Notifications">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                </svg>
+                <span class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center"></span>
+            </button>
+        </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2 border-t border-gray-700 max-w-7xl mx-auto">
+        <nav class="mt-2 space-y-3 flex flex-col px-2">
+            <a href="index.html"
+               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Home</a>
+            <a href="findPublication.html" class="block px-3 py-2 rounded-md bg-gray-700 text-blue-400 font-medium">All Posts</a>
+            <a href="profile.html"
+               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Profile</a>
+            <a href="register.html"
+               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Login</a>
+            <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Logout</a>
+        </nav>
+    </div>
+</header>
+<main class="bg-[url(../assets/images/forums_background.jpg)] bg-center bg-cover flex-grow flex items-center justify-center py-10">
+    <section class="w-full mx-auto px-4">
+        <div class="max-w-5xl mx-auto mb-8">
+            <div class="flex items-center justify-between p-4 rounded-lg">
+                <form action="#" method="GET" class="flex items-center w-full max-w-5xl mx-auto">
+                    <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                        <input type="text" id="search" name="search" required placeholder="Search by title or content"
+                               class="block w-full pl-10 pr-4 py-3 border border-gray-600 rounded-l-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-white">
+                    </div>
+                    <div class="relative flex items-center">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M4 6h16M4 12h16m-7 6h7"/>
+                            </svg>
+                        </div>
+                        <select id="category" name="category"
+                                class="block pl-10 pr-4 py-3 border border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-white">
+                            <option value="">All Categories</option>
+                            <option value="builds">Builds & Warframes</option>
+                            <option value="missions">Missions & Guides</option>
+                            <option value="fanarts">Fan Arts & Créations</option>
+                        </select>
+                        <button type="submit"
+                                class="bg-blue-700 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-r-md transition-colors">
+                            Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-8 max-w-8xl mx-auto">
+            <h3 class="text-xl font-semibold text-gray-800 mt-8">Search Results</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+                <div class="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all duration-300 transform-gpu hover:-translate-y-1">
+                    <h4 class="text-lg font-medium text-gray-900">Example Publication Title</h4>
+                    <div class="overflow-hidden rounded-md mt-2">
+                        <img src="/static/imgs/forums_background.jpg" alt="Example Image"
+                             class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <p class="text-gray-600">This is a brief description of the publication content.</p>
+                    <a href="publication.html" class="text-blue-500 hover:underline mt-2 inline-block">Read more</a>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all duration-300 transform-gpu hover:-translate-y-1">
+                    <h4 class="text-lg font-medium text-gray-900">Example Publication Title</h4>
+
+                    <div class="overflow-hidden rounded-md mt-2">
+                        <img src="/static/imgs/forums_background.jpg" alt="Example Image"
+                             class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+
+                    <p class="text-gray-600">This is a brief description of the publication content.</p>
+                    <a href="publicationEdit.html" class="text-blue-500 hover:underline mt-2 inline-block">Read more</a>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all duration-300 transform-gpu hover:-translate-y-1">
+                    <h4 class="text-lg font-medium text-gray-900">Example Publication Title</h4>
+
+                    <div class="overflow-hidden rounded-md mt-2">
+                        <img src="/static/imgs/forums_background.jpg" alt="Example Image"
+                             class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+
+                    <p class="text-gray-600">This is a brief description of the publication content.</p>
+                    <a href="#" class="text-blue-500 hover:underline mt-2 inline-block">Read more</a>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all duration-300 transform-gpu hover:-translate-y-1">
+                    <h4 class="text-lg font-medium text-gray-900">Example Publication Title</h4>
+
+                    <div class="overflow-hidden rounded-md mt-2">
+                        <img src="/static/imgs/forums_background.jpg" alt="Example Image"
+                             class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+
+                    <p class="text-gray-600">This is a brief description of the publication content.</p>
+                    <a href="#" class="text-blue-500 hover:underline mt-2 inline-block">Read more</a>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all duration-300 transform-gpu hover:-translate-y-1">
+                    <h4 class="text-lg font-medium text-gray-900">Example Publication Title</h4>
+
+                    <div class="overflow-hidden rounded-md mt-2">
+                        <img src="/static/imgs/forums_background.jpg" alt="Example Image"
+                             class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+
+                    <p class="text-gray-600">This is a brief description of the publication content.</p>
+                    <a href="#" class="text-blue-500 hover:underline mt-2 inline-block">Read more</a>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all duration-300 transform-gpu hover:-translate-y-1">
+                    <h4 class="text-lg font-medium text-gray-900">Example Publication Title</h4>
+
+                    <div class="overflow-hidden rounded-md mt-2">
+                        <img src="/static/imgs/forums_background.jpg" alt="Example Image"
+                             class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+
+                    <p class="text-gray-600">This is a brief description of the publication content.</p>
+                    <a href="#" class="text-blue-500 hover:underline mt-2 inline-block">Read more</a>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all duration-300 transform-gpu hover:-translate-y-1">
+                    <h4 class="text-lg font-medium text-gray-900">Example Publication Title</h4>
+
+                    <div class="overflow-hidden rounded-md mt-2">
+                        <img src="/static/imgs/forums_background.jpg" alt="Example Image"
+                             class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+
+                    <p class="text-gray-600">This is a brief description of the publication content.</p>
+                    <a href="#" class="text-blue-500 hover:underline mt-2 inline-block">Read more</a>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all duration-300 transform-gpu hover:-translate-y-1">
+                    <h4 class="text-lg font-medium text-gray-900">Example Publication Title</h4>
+
+                    <div class="overflow-hidden rounded-md mt-2">
+                        <img src="/static/imgs/forums_background.jpg" alt="Example Image"
+                             class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+
+                    <p class="text-gray-600">This is a brief description of the publication content.</p>
+                    <a href="#" class="text-blue-500 hover:underline mt-2 inline-block">Read more</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<footer class="bg-gray-800 text-center text-gray-400 py-6">
+    <p>&copy; 2025 Forum Warframe. All rights reserved.</p>
+    <div class="space-x-4 mt-2">
+        <a href="#" class="hover:text-white transition-colors">About</a>
+        <a href="#" class="hover:text-white transition-colors">Contact</a>
+        <a href="#" class="hover:text-white transition-colors">Terms of Use</a>
+    </div>
+</footer>
+<script src="/static/js/globalFunction.js"></script>
+</body>
+</html>
