@@ -21,6 +21,4 @@ type User struct {
 	Role       Role
 	session_ID string
 	Session    Session
-	Google_id  int
-	Github_id  int
 }
