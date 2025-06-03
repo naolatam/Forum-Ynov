@@ -44,7 +44,11 @@ func (repository *UserRepository) FindByIdOrUsernameOrEmail(id uuid.UUID, pseudo
 
 	var user models.User
 	if rows.Next() {
+<<<<<<< Updated upstream
 		err = rows.Scan(&user.ID, &user.Pseudo, &user.Email, &user.Password, &user.Bio, &user.Avatar, &user.CreatedAt, &user.Role_ID, &user.Google_id, &user.Github_id)
+=======
+		err = rows.Scan(&user.ID, &user.Pseudo, &user.Email, &user.Password, &user.Bio, &user.Avatar, &user.CreatedAt, &user.Role_ID, &user.Google_ID, &user.Github_ID)
+>>>>>>> Stashed changes
 		if err != nil {
 			return nil, err
 		}
