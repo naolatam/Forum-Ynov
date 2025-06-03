@@ -1,35 +1,15 @@
 package repositories
 
 import (
-	"Forum-back/internal/config"
 	"Forum-back/pkg/models"
 	"database/sql"
 	"errors"
-	"log"
 
 	"github.com/google/uuid"
 )
 
 type UserRepository struct {
 	db *sql.DB
-}
-
-func (repository *UserRepository) Init() bool {
-	var err error
-	repository.db, err = config.OpenDBConnection()
-	statusInit := true
-	if err != nil {
-		log.Println("[UserRepository] Failed to connect to database")
-		statusInit = false
-	}
-	return statusInit
-}
-
-func (repository *UserRepository) Close() {
-	err := repository.db.Close()
-	if err != nil {
-		log.Println("[UserRepository] Failed to close the connection to database")
-	}
 }
 
 func (repository *UserRepository) FindByIdOrUsernameOrEmail(id uuid.UUID, pseudo string, email string) (*models.User, error) {
