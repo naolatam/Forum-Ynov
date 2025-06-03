@@ -11,6 +11,7 @@ func InitRoutes() {
 	// For example, you can define routes for user registration, login, etc.
 
 	initStaticRoute()
+	initAuthRoutes()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Handle the root path
