@@ -5,55 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publication</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans">
-<header class="bg-gray-800 p-4 shadow-md transition-colors duration-300">
+<header class="bg-gray-800 border-b border-gray-700 shadow-lg p-4 sticky top-0 z-50">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex items-center">
-            <h1 class="text-xl sm:text-2xl font-bold text-white">
-                <a href="index.html">Forum Warframe</a>
+            <h1 class="text-2xl font-bold text-white">
+                <a href="index.html" class="flex items-center gap-2 hover:text-blue-400 transition-colors">
+                    Forum Warframe
+                </a>
             </h1>
         </div>
-
         <div class="flex items-center">
-            <nav class="hidden md:flex space-x-4 lg:space-x-6 items-center">
-                <a href="index.html" class="hover:text-blue-400 transition-colors">Home</a>
-                <a href="findPublication.html" class="hover:text-blue-400 transition-colors">All Posts</a>
-                <a href="profile.html" class="hover:text-blue-400 transition-colors">Profile</a>
-                <a href="register.html" class="hover:text-blue-400 transition-colors">Login</a>
-                <a href="#" class="hover:text-blue-400 transition-colors">Logout</a>
+            <nav class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                    <i class="fas fa-home text-sm"></i> Home
+                </a>
+                <a href="findPublication.html" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                    <i class="fas fa-newspaper text-sm"></i> All Posts
+                </a>
+                <a href="profile.html" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                    <i class="fas fa-user text-sm"></i> Profile
+                </a>
+                <a href="register.html" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                    <i class="fas fa-sign-in-alt text-sm"></i> Login
+                </a>
+                <a href="#" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                    <i class="fas fa-sign-out-alt text-sm"></i> Logout
+                </a>
             </nav>
             <button id="mobile-menu-button" class="md:hidden ml-2 text-gray-300 hover:text-blue-400 focus:outline-none"
                     aria-label="Menu">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
+                <i class="fa-solid fa-bars"></i>
             </button>
-            <button class="text-gray-300 hover:text-blue-400 transition-colors p-1 relative ml-2"
+            <button class="text-gray-300 hover:text-blue-400 transition-colors p-1 relative ml-4"
                     aria-label="Notifications">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                </svg>
-                <span class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center"></span>
+                <i class="fa-regular fa-bell text-lg"></i>
+                <span class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">3</span>
             </button>
         </div>
     </div>
-
     <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2 border-t border-gray-700 max-w-7xl mx-auto">
         <nav class="mt-2 space-y-3 flex flex-col px-2">
             <a href="index.html"
                class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Home</a>
             <a href="findPublication.html"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">All Posts</a>
+               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">All
+                Posts</a>
             <a href="profile.html"
                class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Profile</a>
             <a href="register.html"
                class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Login</a>
-            <a href="#"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Logout</a>
+            <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Logout</a>
         </nav>
     </div>
 </header>
@@ -79,23 +83,13 @@
                     <div class="flex items-center gap-6 p-2">
                         <div class="flex items-center">
                             <button class="focus:outline-none group">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-6 w-6 text-gray-400 group-hover:text-green-500 transition-colors"
-                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
-                                </svg>
+                                <i class="fa-regular fa-thumbs-up fa-lg hover:text-green-500 transition-colors"></i>
                             </button>
                             <span class="ml-2 text-gray-300">42</span>
                         </div>
                         <div class="flex items-center">
                             <button class="focus:outline-none group">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-6 w-6 text-gray-400 group-hover:text-red-500 transition-colors"
-                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2"/>
-                                </svg>
+                                <i class="fa-regular fa-thumbs-down fa-lg hover:text-red-500 transition-colors"></i>
                             </button>
                             <span class="ml-2 text-gray-300">7</span>
                         </div>
@@ -145,25 +139,13 @@
                     <div class="flex items-center space-x-4">
                         <div class="flex items-center">
                             <button class="focus:outline-none group">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5 text-gray-400 group-hover:text-green-500 transition-colors"
-                                     fill="none"
-                                     viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
-                                </svg>
-                            </button>
+                                <i class="fa-regular fa-thumbs-up fa-lg hover:text-green-500 transition-colors"></i>
+                                </button>
                             <span class="ml-1 text-sm text-gray-300">15</span>
                         </div>
                         <div class="flex items-center">
                             <button class="focus:outline-none group">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5 text-gray-400 group-hover:text-red-500 transition-colors"
-                                     fill="none"
-                                     viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2"/>
-                                </svg>
+                                <i class="fa-regular fa-thumbs-down fa-lg hover:text-red-500 transition-colors"></i>
                             </button>
                             <span class="ml-1 text-sm text-gray-300">3</span>
                         </div>
@@ -178,27 +160,15 @@
                     <div class="flex items-center space-x-4">
                         <div class="flex items-center">
                             <button class="focus:outline-none group">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5 text-gray-400 group-hover:text-green-500 transition-colors"
-                                     fill="none"
-                                     viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
-                                </svg>
+                                <i class="fa-regular fa-thumbs-up fa-lg hover:text-green-500 transition-colors"></i>
                             </button>
-                            <span class="ml-1 text-sm text-gray-300">8</span>
+                            <span class="ml-1 text-sm text-gray-300">15</span>
                         </div>
                         <div class="flex items-center">
                             <button class="focus:outline-none group">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5 text-gray-400 group-hover:text-red-500 transition-colors"
-                                     fill="none"
-                                     viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2"/>
-                                </svg>
+                                <i class="fa-regular fa-thumbs-down fa-lg hover:text-red-500 transition-colors"></i>
                             </button>
-                            <span class="ml-1 text-sm text-gray-300">1</span>
+                            <span class="ml-1 text-sm text-gray-300">3</span>
                         </div>
                     </div>
                 </div>
@@ -206,12 +176,19 @@
         </div>
     </div>
 </main>
-<footer class="bg-gray-800 text-center text-gray-400 py-6">
-    <p>&copy; 2025 Forum Warframe. All rights reserved.</p>
-    <div class="space-x-4 mt-2">
-        <a href="#" class="hover:text-white transition-colors">About</a>
-        <a href="#" class="hover:text-white transition-colors">Contact</a>
-        <a href="#" class="hover:text-white transition-colors">Terms of Use</a>
+<footer class="mt-auto bg-gray-800 border-t border-gray-700 text-center text-gray-400 py-8">
+    <div class="max-w-6xl mx-auto px-4">
+        <p class="mb-4">&copy; 2025 Forum Warframe. All rights reserved.</p>
+        <div class="space-x-6 mt-4">
+            <a href="#" class="hover:text-white transition-colors"><i class="fas fa-info-circle mr-1"></i>About</a>
+            <a href="#" class="hover:text-white transition-colors"><i class="fas fa-envelope mr-1"></i>Contact</a>
+            <a href="#" class="hover:text-white transition-colors"><i class="fas fa-file-contract mr-1"></i>Terms of Use</a>
+        </div>
+        <div class="mt-6 flex justify-center space-x-4">
+            <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-discord fa-lg"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-twitter fa-lg"></i></a>
+            <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-reddit fa-lg"></i></a>
+        </div>
     </div>
 </footer>
 <script src="../../src/scripts/globalFunction.js"></script>
