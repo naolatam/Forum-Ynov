@@ -32,4 +32,5 @@ func main() {
 	} else {
 		log.Printf("Utilisateur trouvé : %+v\n", user)
 	}
+	server.StartServer()
 }
