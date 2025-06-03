@@ -15,8 +15,10 @@ type User struct {
 	Bio        string
 	Avatar     string
 	CreatedAt  time.Time
-	role_ID    uuid.UUID
+	Role_ID    uuid.UUID
 	Role       Role
 	session_ID string
 	Session    Session
+	Google_id  int
+	Github_id  int
 }

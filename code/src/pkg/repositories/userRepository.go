@@ -31,11 +31,12 @@ func (repository *UserRepository) Close() {
 	}
 }
 
-func (repository *UserRepository) FindById(id uuid.UUID) (*models.User, error) {
+func (repository *UserRepository) FindByIdOrUsernameOrEmail(id uuid.UUID, pseudo string, email string) (*models.User, error) {
 	if repository.db == nil {
-		return nil, errors.New("Connection to database isn't established")
+		return nil, errors.New("connection to database isn't established")
 	}
-	rows, err := repository.db.Query("SELECT * FROM users WHERE id = ?", id)
+	rows, err :=
+		repository.db.Query("SELECT * FROM users WHERE id = ? OR pseudo = ? OR email = ?", id, pseudo, email)
 	if err != nil {
 		return nil, err
 	}
@@ -43,11 +44,11 @@ func (repository *UserRepository) FindById(id uuid.UUID) (*models.User, error) {
 
 	var user models.User
 	if rows.Next() {
-		err = rows.Scan(&user.ID, &user.Pseudo, &user.Email, &user.Password, &user.Bio, &user.Avatar, &user.CreatedAt)
+		err = rows.Scan(&user.ID, &user.Pseudo, &user.Email, &user.Password, &user.Bio, &user.Avatar, &user.CreatedAt, &user.Role_ID, &user.Google_id, &user.Github_id)
 		if err != nil {
 			return nil, err
 		}
 		return &user, nil
 	}
-	return nil, errors.New("User not found")
+	return nil, errors.New("user not found")
 }
