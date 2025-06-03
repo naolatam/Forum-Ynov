@@ -11,4 +11,5 @@ type Session struct {
 	ID       uuid.UUID
 	ExpireAt time.Time
 	User_ID  uuid.UUID
+	Expired  bool
 }
