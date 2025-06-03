@@ -2,10 +2,12 @@ package main
 
 import (
 	"Forum-back/internal/config"
-	"os"
+	"Forum-back/internal/server"
+	hostedservices "Forum-back/pkg/hostedServices"
 )
 
 func main() {
 	config.LoadEnv()
-	println(os.Getenv("GOOGLE_CLIENT_SECRET"))
+	go hostedservices.StartAllHostedServices()
+	server.StartServer()
 }
