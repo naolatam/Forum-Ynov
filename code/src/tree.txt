@@ -12,7 +12,5 @@
 │   ├── repository/      // Accès à la BDD (interfaces et implémentations)
 │   ├── services/        // Logique métier (usecases)
 │   └── utils/           // Outils/utilitaires
-├── configs/             // Fichiers de configuration
-├── migrations/          // Scripts de migration SQL
 ├── go.mod / go.sum
 └── README.md
