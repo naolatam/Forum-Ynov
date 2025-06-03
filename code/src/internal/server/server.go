@@ -2,6 +2,7 @@ package server
 
 import (
 	"Forum-back/internal/middleware"
+	"Forum-back/internal/routes"
 	"Forum-back/pkg/utils"
 	"log"
 	"net/http"
@@ -19,10 +20,8 @@ func StartServer() {
 		Handler: middleware.RateLimitMiddleware(nil),
 	}
 
-	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("[HTTP] Received request: %s %s from %s\n", r.Method, r.URL.Path, r.RemoteAddr)
-		w.Write([]byte("Welcome to the Forum!"))
-	}))
+	// Initialize routes
+	routes.InitRoutes()
 
 	// Check if the certificate and key files exist
 	if !utils.CheckIfCertExist(os.Getenv("CERT_FILE"), os.Getenv("KEY_FILE")) {
