@@ -1,14 +1,18 @@
 package middleware
 
 import (
+	"log"
+	"net"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 )
 
 type client struct {
-	requests int
-	lastSeen time.Time
+	requests             int
+	requestsOnStaticPage int
+	lastSeen             time.Time
 }
 
 var (
@@ -16,27 +20,67 @@ var (
 	clientsLock sync.Mutex
 )
 
-func RateLimitMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ip := r.RemoteAddr
-		clientsLock.Lock()
-		c, exists := clients[ip]
-		if !exists || time.Since(c.lastSeen) > time.Minute {
-			clients[ip] = &client{requests: 1, lastSeen: time.Now()}
-			clientsLock.Unlock()
-			next.ServeHTTP(w, r)
-			return
-		}
+const (
+	maxStaticRequests  = 80
+	maxGeneralRequests = 30
+)
 
-		if c.requests >= 10 {
-			clientsLock.Unlock()
+func RateLimitMiddleware(next http.Handler) http.Handler {
+	if next == nil {
+		next = http.DefaultServeMux
+	}
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ip := extractIP(r.RemoteAddr)
+		isStatic := isStaticRequest(r)
+		now := time.Now()
+
+		if exceeded := handleClientRateLimit(ip, isStatic, now); exceeded {
+			log.Printf("[RateLimit] %s exceeded limit on %s\n", ip, r.URL.Path)
+			w.Header().Set("Retry-After", "60")
 			http.Error(w, "Too Many Requests", http.StatusTooManyRequests)
 			return
 		}
 
-		c.requests++
-		c.lastSeen = time.Now()
-		clientsLock.Unlock()
 		next.ServeHTTP(w, r)
 	})
+}
+
+func extractIP(remoteAddr string) string {
+	host, _, err := net.SplitHostPort(remoteAddr)
+	if err != nil {
+		return remoteAddr
+	}
+	return host
+}
+
+func isStaticRequest(r *http.Request) bool {
+	return strings.HasPrefix(r.URL.Path, "/static")
+}
+
+func handleClientRateLimit(ip string, isStatic bool, now time.Time) (rateLimitExceeded bool) {
+	clientsLock.Lock()
+	defer clientsLock.Unlock()
+
+	c, exists := clients[ip]
+	if !exists || now.Sub(c.lastSeen) > time.Minute {
+		clients[ip] = &client{lastSeen: now}
+		if isStatic {
+			clients[ip].requestsOnStaticPage = 1
+		} else {
+			clients[ip].requests = 1
+		}
+		return false
+	}
+
+	if c.requestsOnStaticPage >= maxStaticRequests || c.requests >= maxGeneralRequests {
+		return true
+	}
+
+	if isStatic {
+		c.requestsOnStaticPage++
+	} else {
+		c.requests++
+	}
+	c.lastSeen = now
+	return false
 }

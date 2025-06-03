@@ -2,6 +2,7 @@ package main
 
 import (
 	"Forum-back/internal/config"
+	"Forum-back/internal/server"
 	hostedservices "Forum-back/pkg/hostedServices"
 	"Forum-back/pkg/repositories"
 	"github.com/google/uuid"
