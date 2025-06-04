@@ -11,23 +11,23 @@
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex items-center">
             <h1 class="text-2xl font-bold text-white">
-                <a href="index.html" class="flex items-center gap-2 hover:text-blue-400 transition-colors">
+                <a href="/" class="flex items-center gap-2 hover:text-blue-400 transition-colors">
                     Forum Warframe
                 </a>
             </h1>
         </div>
         <div class="flex items-center">
             <nav class="hidden md:flex space-x-6 items-center">
-                <a href="index.html" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                <a href="/" class="hover:text-blue-400 transition-colors flex items-center gap-1">
                     <i class="fas fa-home text-sm"></i> Home
                 </a>
-                <a href="findPublication.html" class="text-blue-400 font-medium flex items-center gap-1">
+                <a href="/searchPosts" class="text-blue-400 font-medium flex items-center gap-1">
                     <i class="fas fa-newspaper text-sm"></i> All Posts
                 </a>
-                <a href="profile.html" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                <a href="/me" class="hover:text-blue-400 transition-colors flex items-center gap-1">
                     <i class="fas fa-user text-sm"></i> Profile
                 </a>
-                <a href="authentification.html" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                <a href="/auth/login" class="hover:text-blue-400 transition-colors flex items-center gap-1">
                     <i class="fas fa-sign-in-alt text-sm"></i> Login
                 </a>
                 <a href="#" class="hover:text-blue-400 transition-colors flex items-center gap-1">
@@ -47,20 +47,20 @@
     </div>
     <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2 border-t border-gray-700 max-w-7xl mx-auto">
         <nav class="mt-2 space-y-3 flex flex-col px-2">
-            <a href="index.html"
+            <a href="/"
                class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Home</a>
-            <a href="findPublication.html"
+            <a href="/searchPosts"
                class="block px-3 py-2 rounded-md bg-gray-700 text-blue-400 font-medium">All
                 Posts</a>
-            <a href="profile.html"
+            <a href="/me"
                class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Profile</a>
-            <a href="authentification.html"
+            <a href="/auth/login"
                class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Login</a>
             <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Logout</a>
         </nav>
     </div>
 </header>
-<main class="bg-[url(../assets/images/forums_background.jpg)] bg-center bg-cover flex-grow flex items-center justify-center py-10">
+<main class="bg-[url(/static/imgs/forums_background.jpg)] bg-center bg-cover flex-grow flex items-center justify-center py-10">
     <section class="w-full mx-auto px-4">
         <div class="max-w-5xl mx-auto mb-8">
             <div class="flex items-center justify-between p-4 rounded-lg">
@@ -102,7 +102,7 @@
                              class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
                     </div>
                     <p class="text-gray-600">This is a brief description of the publication content.</p>
-                    <a href="publication.html" class="text-blue-500 hover:underline mt-2 inline-block">Read more</a>
+                    <a href="/posts" class="text-blue-500 hover:underline mt-2 inline-block">Read more</a>
                 </div>
                 <div class="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all duration-300 transform-gpu hover:-translate-y-1">
                     <h4 class="text-lg font-medium text-gray-900">Example Publication Title</h4>
@@ -113,7 +113,7 @@
                     </div>
 
                     <p class="text-gray-600">This is a brief description of the publication content.</p>
-                    <a href="publicationEdit.html" class="text-blue-500 hover:underline mt-2 inline-block">Read more</a>
+                    <a href="/posts/edit" class="text-blue-500 hover:underline mt-2 inline-block">Read more</a>
                 </div>
                 <div class="bg-gray-100 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-200 transition-all duration-300 transform-gpu hover:-translate-y-1">
                     <h4 class="text-lg font-medium text-gray-900">Example Publication Title</h4>
