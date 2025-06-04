@@ -9,10 +9,11 @@ import (
 )
 
 type SessionService struct {
-	repo *repositories.SessionRepository
+	repo     *repositories.SessionRepository
+	userRepo *repositories.UserRepository
 }
 
-func (service *SessionService) FindByID(id uuid.UUID) *models.Session {
+func (service *SessionService) FindByID(id *uuid.UUID) *models.Session {
 	session, err := service.repo.FindByID(id)
 	if err != nil {
 		return nil
@@ -52,11 +53,11 @@ func (service *SessionService) CreateFromScratch(userId *uuid.UUID, expireAt *ti
 		return nil
 	}
 	// Check if user exists to avoid creating a session for a non-existent user
-	if u, err := service.repo.FindById(userId); err != nil || u == nil {
+	if u, err := service.userRepo.FindById(userId); err != nil || u == nil {
 		return nil
 	}
 	// If the user already has a session that is not expired, return it
-	if session, err := service.repo.FindByUserID(*userId); err == nil && session != nil && !session.Expired {
+	if session, err := service.repo.FindByUserID(userId); err == nil && session != nil && !session.Expired {
 		return session
 	}
 
@@ -84,7 +85,7 @@ func (service *SessionService) Delete(session *models.Session) error {
 	return nil
 }
 
-func (service *SessionService) DeleteExpiredSessions(before time.Time) error {
+func (service *SessionService) DeleteExpiredSessions(before *time.Time) error {
 	if before.IsZero() {
 		return nil
 	}
