@@ -9,8 +9,7 @@ import (
 )
 
 type SessionService struct {
-	repo     *repositories.SessionRepository
-	userRepo *repositories.UserRepository
+	repo *repositories.SessionRepository
 }
 
 func (service *SessionService) FindByID(id uuid.UUID) *models.Session {
