@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"Forum-back/internal/config"
+	"Forum-back/pkg/services"
 )
 
 func startSessionCleanerHostedService(ctx context.Context) {
@@ -30,17 +31,11 @@ func startSessionCleanerHostedService(ctx context.Context) {
 func cleanSession(ctx context.Context) {
 
 	db, err := config.OpenDBConnection()
+	sessionService := services.NewSessionService(db)
 	if err != nil {
 		panic(err)
 	}
 	sessionService.DeleteExpiredSessions(time.Now())
 
-	row, err := db.QueryContext(ctx, "DELETE FROM sessions WHERE expireAt < NOW()")
-	if err != nil {
-		log.Printf("[HostedService] Error cleaning sessions: %v", err)
-		return
-	}
-	row.Close()
-	db.Close()
 	log.Println("[HostedService] Session cleaner service completed successfully")
 }
