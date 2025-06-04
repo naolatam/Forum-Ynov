@@ -12,23 +12,23 @@
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex items-center">
             <h1 class="text-2xl font-bold text-white">
-                <a href="index.html" class="flex items-center gap-2 hover:text-blue-400 transition-colors">
+                <a href="/" class="flex items-center gap-2 hover:text-blue-400 transition-colors">
                     Forum Warframe
                 </a>
             </h1>
         </div>
         <div class="flex items-center">
             <nav class="hidden md:flex space-x-6 items-center">
-                <a href="index.html" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                <a href="/" class="hover:text-blue-400 transition-colors flex items-center gap-1">
                     <i class="fas fa-home text-sm"></i> Home
                 </a>
-                <a href="findPublication.html" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                <a href="/searchPosts" class="hover:text-blue-400 transition-colors flex items-center gap-1">
                     <i class="fas fa-newspaper text-sm"></i> All Posts
                 </a>
-                <a href="profile.html" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                <a href="/me" class="hover:text-blue-400 transition-colors flex items-center gap-1">
                     <i class="fas fa-user text-sm"></i> Profile
                 </a>
-                <a href="authentification.html" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                <a href="/auth/login" class="hover:text-blue-400 transition-colors flex items-center gap-1">
                     <i class="fas fa-sign-in-alt text-sm"></i> Login
                 </a>
                 <a href="#" class="hover:text-blue-400 transition-colors flex items-center gap-1">
@@ -48,13 +48,14 @@
     </div>
     <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2 border-t border-gray-700 max-w-7xl mx-auto">
         <nav class="mt-2 space-y-3 flex flex-col px-2">
-            <a href="index.html"
+            <a href="/"
                class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Home</a>
-            <a href="findPublication.html" class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">All
+            <a href="/searchPosts"
+               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">All
                 Posts</a>
-            <a href="profile.html"
+            <a href="/me"
                class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Profile</a>
-            <a href="authentification.html"
+            <a href="/auth/login"
                class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Login</a>
             <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Logout</a>
         </nav>
@@ -240,7 +241,7 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96">
-            <div class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer" onclick="window.location='adminUser.html'">
+            <div class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer">
                 <div class="flex justify-between">
                     <h4 class="font-medium mb-2">Guide des débutants pour Warframe</h4>
                     <span class="text-xs text-gray-400">Il y a 2 jours</span>
@@ -252,7 +253,7 @@
                 </div>
             </div>
 
-            <div class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer" onclick="window.location='adminUser.html'">
+            <div class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer">
                 <div class="flex justify-between">
                     <h4 class="font-medium mb-2">Astuces pour farmer les ressources rares</h4>
                     <span class="text-xs text-gray-400">Il y a 3 jours</span>
@@ -264,7 +265,7 @@
                 </div>
             </div>
 
-            <div class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer" onclick="window.location='adminUser.html'">
+            <div class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer">
                 <div class="flex justify-between">
                     <h4 class="font-medium mb-2">Critique de la dernière mise à jour</h4>
                     <span class="text-xs text-gray-400">Il y a 1 semaine</span>
@@ -276,7 +277,7 @@
                 </div>
             </div>
 
-            <div class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer" onclick="window.location='adminUser.html'">
+            <div class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer">
                 <div class="flex justify-between">
                     <h4 class="font-medium mb-2">Build optimal pour le Warframe Rhino</h4>
                     <span class="text-xs text-gray-400">Il y a 5 jours</span>
@@ -451,67 +452,16 @@
 
 <footer class="mt-auto bg-gray-800 border-t border-gray-700 text-center text-gray-400 py-8">
     <div class="max-w-6xl mx-auto px-4">
-        <p class="mb-4">&copy; 2025 Forum Warframe. Tous droits réservés.</p>
-        <div class="space-x-6 mt-4">
-            <a href="#" class="hover:text-white transition-colors"><i class="fas fa-info-circle mr-1"></i> À propos</a>
-            <a href="#" class="hover:text-white transition-colors"><i class="fas fa-envelope mr-1"></i> Contact</a>
-            <a href="#" class="hover:text-white transition-colors"><i class="fas fa-file-contract mr-1"></i> Conditions d'utilisation</a>
-        </div>
+        <p class="mb-4">&copy; 2025 Forum Warframe. All rights reserved.</p>
         <div class="mt-6 flex justify-center space-x-4">
-            <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-discord fa-lg"></i></a>
-            <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-twitter fa-lg"></i></a>
-            <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-reddit fa-lg"></i></a>
+            <a href="https://discord.gg/playwarframe" target="_blank" class="text-gray-400 hover:text-blue-400"><i class="fab fa-discord fa-lg"></i></a>
+            <a href="https://www.instagram.com/playwarframe/" target="_blank" class="text-gray-400 hover:text-blue-400"><i class="fab fa-instagram fa-lg"></i></a>
+            <a href="https://x.com/PlayWarframe?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank" class="text-gray-400 hover:text-blue-400"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://www.reddit.com/r/Warframe/" target="_blank" class="text-gray-400 hover:text-blue-400"><i class="fab fa-reddit fa-lg"></i></a>
         </div>
     </div>
 </footer>
-
-<script src="../frontEnd/static/js/globalFunction.js"></script>
-<script>
-    // Gestion des modals
-
-    document.getElementById('btn-moderation').addEventListener('click', function() {
-        document.getElementById('modal-moderation').classList.remove('hidden');
-    });
-
-    document.getElementById('btn-signalements').addEventListener('click', function() {
-        document.getElementById('modal-signalements').classList.remove('hidden');
-    });
-
-    // Fermeture des modals
-    document.querySelectorAll('.modal-close').forEach(function(button) {
-        button.addEventListener('click', function() {
-            document.getElementById(this.dataset.modal).classList.add('hidden');
-        });
-    });
-
-    document.querySelectorAll('.absolute[id$="-backdrop"]').forEach(function(backdrop) {
-        backdrop.addEventListener('click', function() {
-            this.parentElement.classList.add('hidden');
-        });
-    });
-
-    // Gestion des tabs
-    document.querySelectorAll('.tab-button').forEach(function(button) {
-        button.addEventListener('click', function() {
-            // Désactiver tous les onglets
-            document.querySelectorAll('.tab-button').forEach(function(btn) {
-                btn.classList.remove('active-tab', 'bg-gray-700');
-                btn.classList.add('bg-gray-600');
-            });
-
-            // Activer l'onglet cliqué
-            this.classList.add('active-tab', 'bg-gray-700');
-            this.classList.remove('bg-gray-600');
-
-            // Masquer tous les contenus
-            document.querySelectorAll('.tab-content').forEach(function(content) {
-                content.classList.add('hidden');
-            });
-
-            // Afficher le contenu correspondant
-            document.getElementById(this.dataset.tab).classList.remove('hidden');
-        });
-    });
-</script>
+<script src="/static/js/globalFunction.js"></script>
+<script src="/static/js/admin.js"></script>
 </body>
 </html>
