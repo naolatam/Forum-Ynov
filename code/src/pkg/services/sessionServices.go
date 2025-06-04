@@ -22,7 +22,7 @@ func (service *SessionService) FindByID(id *uuid.UUID) *models.Session {
 }
 
 func (service *SessionService) FindByUser(user *models.User) *models.Session {
-	session, err := service.repo.FindByUserID(user.ID)
+	session, err := service.repo.FindByUserID(&user.ID)
 	if err != nil {
 		return nil
 	}
@@ -78,7 +78,7 @@ func (service *SessionService) Delete(session *models.Session) error {
 	if session == nil {
 		return nil
 	}
-	err := service.repo.Delete(session.ID)
+	err := service.repo.Delete(&session.ID)
 	if err != nil {
 		return err
 	}
