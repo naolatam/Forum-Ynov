@@ -13,7 +13,7 @@ type SessionRepository struct {
 	db *sql.DB
 }
 
-func (repository *SessionRepository) FindByID(id uuid.UUID) (*models.Session, error) {
+func (repository *SessionRepository) FindByID(id *uuid.UUID) (*models.Session, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
@@ -39,7 +39,7 @@ func (repository *SessionRepository) FindByID(id uuid.UUID) (*models.Session, er
 	return nil, errors.New("session not found")
 }
 
-func (repository *SessionRepository) FindByUserID(userID uuid.UUID) (*models.Session, error) {
+func (repository *SessionRepository) FindByUserID(userID *uuid.UUID) (*models.Session, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
@@ -76,7 +76,7 @@ func (repository *SessionRepository) Create(session *models.Session) error {
 	return nil
 }
 
-func (repository *SessionRepository) Delete(id uuid.UUID) error {
+func (repository *SessionRepository) Delete(id *uuid.UUID) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
 	}
@@ -87,7 +87,7 @@ func (repository *SessionRepository) Delete(id uuid.UUID) error {
 	return nil
 }
 
-func (repository *SessionRepository) DeleteExpiredSessions(before time.Time) error {
+func (repository *SessionRepository) DeleteExpiredSessions(before *time.Time) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
 	}

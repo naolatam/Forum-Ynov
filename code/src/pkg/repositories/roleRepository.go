@@ -12,7 +12,7 @@ type RoleRepository struct {
 	db *sql.DB
 }
 
-func (repository *RoleRepository) FindById(id uuid.UUID) (*models.Role, error) {
+func (repository *RoleRepository) FindById(id *uuid.UUID) (*models.Role, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}

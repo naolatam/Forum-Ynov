@@ -12,7 +12,7 @@ type UserRepository struct {
 	db *sql.DB
 }
 
-func (repository *UserRepository) FindById(id uuid.UUID) (*models.User, error) {
+func (repository *UserRepository) FindById(id *uuid.UUID) (*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
@@ -34,7 +34,7 @@ func (repository *UserRepository) FindById(id uuid.UUID) (*models.User, error) {
 	return nil, errors.New("user not found")
 }
 
-func (repository *UserRepository) FindByUsernameOrEmail(pseudo string, email string) (*models.User, error) {
+func (repository *UserRepository) FindByUsernameOrEmail(pseudo *string, email *string) (*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
