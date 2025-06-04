@@ -13,7 +13,7 @@ type SessionService struct {
 	userRepo *repositories.UserRepository
 }
 
-func (service *SessionService) FindByID(id *uuid.UUID) *models.Session {
+func (service *SessionService) FindByID(id uuid.UUID) *models.Session {
 	session, err := service.repo.FindByID(id)
 	if err != nil {
 		return nil
@@ -22,7 +22,10 @@ func (service *SessionService) FindByID(id *uuid.UUID) *models.Session {
 }
 
 func (service *SessionService) FindByUser(user *models.User) *models.Session {
-	session, err := service.repo.FindByUserID(&user.ID)
+	if user == nil || user.ID == uuid.Nil {
+		return nil
+	}
+	session, err := service.repo.FindByUserID(user.ID)
 	if err != nil {
 		return nil
 	}
@@ -30,6 +33,8 @@ func (service *SessionService) FindByUser(user *models.User) *models.Session {
 }
 
 func (service *SessionService) CreateWithUser(user *models.User, expireIn time.Time) *models.Session {
+	// Basic validation of user and expireIn
+
 	session := models.Session{
 		ID:       uuid.New(),
 		User_ID:  user.ID,
@@ -44,12 +49,9 @@ func (service *SessionService) CreateWithUser(user *models.User, expireIn time.T
 	return &session
 }
 
-func (service *SessionService) CreateFromScratch(userId *uuid.UUID, expireAt *time.Time) *models.Session {
+func (service *SessionService) CreateFromScratch(userId uuid.UUID, expireAt time.Time) *models.Session {
 	// Basic validation of userId and expireAt
-	if userId == nil || expireAt == nil {
-		return nil
-	}
-	if time.Now().After(*expireAt) {
+	if time.Now().After(expireAt) {
 		return nil
 	}
 	// Check if user exists to avoid creating a session for a non-existent user
@@ -63,8 +65,8 @@ func (service *SessionService) CreateFromScratch(userId *uuid.UUID, expireAt *ti
 
 	session := models.Session{
 		ID:       uuid.New(),
-		User_ID:  *userId,
-		ExpireAt: *expireAt,
+		User_ID:  userId,
+		ExpireAt: expireAt,
 		Expired:  false,
 	}
 	err := service.repo.Create(&session)
@@ -78,14 +80,14 @@ func (service *SessionService) Delete(session *models.Session) error {
 	if session == nil {
 		return nil
 	}
-	err := service.repo.Delete(&session.ID)
+	err := service.repo.Delete(session.ID)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (service *SessionService) DeleteExpiredSessions(before *time.Time) error {
+func (service *SessionService) DeleteExpiredSessions(before time.Time) error {
 	if before.IsZero() {
 		return nil
 	}

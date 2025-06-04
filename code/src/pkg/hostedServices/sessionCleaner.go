@@ -35,8 +35,7 @@ func cleanSession(ctx context.Context) {
 	if err != nil {
 		panic(err)
 	}
-	now := time.Now()
-	sessionService.DeleteExpiredSessions(&now)
+	sessionService.DeleteExpiredSessions(time.Now())
 
 	log.Println("[HostedService] Session cleaner service completed successfully")
 }
