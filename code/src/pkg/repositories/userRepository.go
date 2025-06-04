@@ -34,12 +34,12 @@ func (repository *UserRepository) FindById(id uuid.UUID) (*models.User, error) {
 	return nil, errors.New("user not found")
 }
 
-func (repository *UserRepository) FindByIdOrUsernameOrEmail(id uuid.UUID, pseudo string, email string) (*models.User, error) {
+func (repository *UserRepository) FindByUsernameOrEmail(pseudo string, email string) (*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
 	rows, err :=
-		repository.db.Query("SELECT * FROM users WHERE id = ? OR pseudo = ? OR email = ?", id, pseudo, email)
+		repository.db.Query("SELECT * FROM users WHERE pseudo = ? OR email = ?", pseudo, email)
 	if err != nil {
 		return nil, err
 	}
