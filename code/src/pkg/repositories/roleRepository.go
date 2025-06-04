@@ -16,8 +16,7 @@ func (repository *RoleRepository) FindByIdOrNameOrPermission(id uuid.UUID, name 
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
-	rows, err :=
-		repository.db.Query("SELECT * FROM users WHERE id = ? OR name = ? OR permission = ?", id, name, permission)
+	rows, err := repository.db.Query("SELECT * FROM users WHERE id = ? OR name = ? OR permission = ?", id, name, permission)
 	if err != nil {
 		return nil, err
 	}
