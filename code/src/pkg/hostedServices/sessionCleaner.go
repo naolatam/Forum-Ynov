@@ -33,6 +33,7 @@ func cleanSession(ctx context.Context) {
 	if err != nil {
 		panic(err)
 	}
+	sessionService.DeleteExpiredSessions(time.Now())
 
 	row, err := db.QueryContext(ctx, "DELETE FROM sessions WHERE expireAt < NOW()")
 	if err != nil {
