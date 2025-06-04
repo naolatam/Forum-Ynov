@@ -19,6 +19,5 @@ type User struct {
 	Google_ID  *int
 	Github_ID  *int
 	Role       Role
-	session_ID string
 	Session    Session
 }

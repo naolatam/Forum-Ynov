@@ -11,8 +11,8 @@ type Post struct {
 	ID        uint32
 	Title     string
 	Content   string
-	validated bool
+	Validated bool
 	CreatedAt time.Time
-	user_ID   uuid.UUID
+	User_ID   uuid.UUID
 	User      User
 }
