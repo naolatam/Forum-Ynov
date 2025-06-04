@@ -1,0 +1,26 @@
+package services
+
+import (
+	"Forum-back/pkg/repositories"
+	"database/sql"
+)
+
+func checkDBConnection(db *sql.DB) bool {
+	if db == nil {
+		return false
+	}
+	err := db.Ping()
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func NewSessionService(db *sql.DB) *SessionService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &SessionService{
+		repo: repositories.NewSessionRepository(db),
+	}
+}
