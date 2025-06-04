@@ -25,3 +25,13 @@ func NewSessionService(db *sql.DB) *SessionService {
 		userRepo: repositories.NewUserRepository(db),
 	}
 }
+
+func NewUserService(db *sql.DB) *UserService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &UserService{
+		repo:        repositories.NewUserRepository(db),
+		sessionRepo: repositories.NewSessionRepository(db),
+	}
+}
