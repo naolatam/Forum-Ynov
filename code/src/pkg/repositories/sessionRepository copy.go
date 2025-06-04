@@ -18,7 +18,7 @@ func (repository *SessionRepository) FindByID(id uuid.UUID) (*models.Session, er
 		return nil, errors.New("connection to database isn't established")
 	}
 	rows, err :=
-		repository.db.Query("SELECT * FROM session WHERE id = ?", id)
+		repository.db.Query("SELECT * FROM sessions WHERE id = ?", id)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func (repository *SessionRepository) FindByUserID(userID uuid.UUID) (*models.Ses
 		return nil, errors.New("connection to database isn't established")
 	}
 	rows, err :=
-		repository.db.Query("SELECT * FROM session WHERE user_id = ?", userID)
+		repository.db.Query("SELECT * FROM sessions WHERE user_id = ?", userID)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (repository *SessionRepository) Create(session *models.Session) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
 	}
-	_, err := repository.db.Exec("INSERT INTO session (expire_at, user_id) VALUES ( ?, ?)", session.ExpireAt, session.User_ID)
+	_, err := repository.db.Exec("INSERT INTO sessions (id, expireAt, user_id) VALUES (?, ?, ?)", session.ID, session.ExpireAt, session.User_ID)
 	if err != nil {
 		return err
 	}
@@ -80,7 +80,7 @@ func (repository *SessionRepository) Delete(id uuid.UUID) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
 	}
-	_, err := repository.db.Exec("DELETE FROM session WHERE id = ?", id)
+	_, err := repository.db.Exec("DELETE FROM sessions WHERE id = ?", id)
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func (repository *SessionRepository) DeleteExpiredSessions(before time.Time) err
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
 	}
-	_, err := repository.db.Exec("DELETE FROM session WHERE expireAt < ?", before)
+	_, err := repository.db.Exec("DELETE FROM sessions WHERE expireAt < ?", before)
 	if err != nil {
 		return err
 	}
