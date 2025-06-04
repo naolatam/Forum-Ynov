@@ -21,7 +21,6 @@ func NewSessionService(db *sql.DB) *SessionService {
 		return nil
 	}
 	return &SessionService{
-		repo:     repositories.NewSessionRepository(db),
-		userRepo: repositories.NewUserRepository(db),
+		repo: repositories.NewSessionRepository(db),
 	}
 }
