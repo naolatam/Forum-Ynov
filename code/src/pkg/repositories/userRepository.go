@@ -100,7 +100,7 @@ func (repository *UserRepository) FindByUsername(username *string) (*models.User
 	return nil, errors.New("user not found")
 }
 
-func (repository *UserRepository) FindByGoogleID(googleID int) (*models.User, error) {
+func (repository *UserRepository) FindByGoogleID(googleID string) (*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
@@ -122,7 +122,7 @@ func (repository *UserRepository) FindByGoogleID(googleID int) (*models.User, er
 	return nil, errors.New("user not found")
 }
 
-func (repository *UserRepository) FindByGithubID(githubID int) (*models.User, error) {
+func (repository *UserRepository) FindByGithubID(githubID int64) (*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
@@ -144,6 +144,20 @@ func (repository *UserRepository) FindByGithubID(githubID int) (*models.User, er
 	return nil, errors.New("user not found")
 }
 
+func (repository *UserRepository) Update(user *models.User) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+
+	_, err := repository.db.Exec("UPDATE users SET pseudo = ?, email = ?, password = ?, bio = ?, avatar = ?, role_id = ?, google_id = ?, github_id = ? WHERE id = ?",
+		user.Pseudo, user.Email, user.Password, user.Bio, user.Avatar, user.Role_ID, user.Google_ID, user.Github_ID, user.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
 func (repository *UserRepository) Create(user *models.User) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -152,7 +166,7 @@ func (repository *UserRepository) Create(user *models.User) error {
 		return errors.New("user cannot be nil")
 	}
 
-	_, err := repository.db.Exec("INSERT INTO users (id, pseudo, email, password, bio, avatar, created_at, role_id, google_id, github_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+	_, err := repository.db.Exec("INSERT INTO users (id, pseudo, email, password, bio, avatar, createdAt, role_id, google_id, github_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		user.ID, user.Pseudo, user.Email, user.Password, user.Bio, user.Avatar, user.CreatedAt, user.Role_ID, user.Google_ID, user.Github_ID)
 	if err != nil {
 		return err
