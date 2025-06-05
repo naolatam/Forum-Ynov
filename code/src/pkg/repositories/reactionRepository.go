@@ -16,7 +16,7 @@ func (repository *ReactionRepository) FindById(id *uuid.UUID) (*models.Reaction,
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
-	rows, err := repository.db.Query("SELECT * FROM users WHERE id = ?", id)
+	rows, err := repository.db.Query("SELECT * FROM reactions WHERE id = ?", id)
 	if err != nil {
 		return nil, err
 	}
@@ -30,5 +30,71 @@ func (repository *ReactionRepository) FindById(id *uuid.UUID) (*models.Reaction,
 		}
 		return &reaction, nil
 	}
-	return nil, errors.New("user not found")
+	return nil, errors.New("reaction not found")
+}
+
+func (repository *ReactionRepository) FindByPostId(postId *uuid.UUID) (*[]*models.Reaction, error) {
+	if repository.db == nil {
+		return nil, errors.New("connection to database isn't established")
+	}
+	rows, err := repository.db.Query("SELECT * FROM reactions WHERE post_id = ?", postId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var reaction models.Reaction
+	var res = []*models.Reaction{}
+	for rows.Next() {
+		err = rows.Scan(&reaction.ID, &reaction.Post_id, &reaction.Post, &reaction.Comment_id, &reaction.Comment, &reaction.User_id, &reaction.User, &reaction.Label)
+		if err != nil {
+			return nil, err
+		}
+		res = append(res, &reaction)
+	}
+	return &res, nil
+}
+
+func (repository *ReactionRepository) FindByCommentId(commentId *uuid.UUID) (*[]*models.Reaction, error) {
+	if repository.db == nil {
+		return nil, errors.New("connection to database isn't established")
+	}
+	rows, err := repository.db.Query("SELECT * FROM reactions WHERE comment_id = ?", commentId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var reaction models.Reaction
+	var res = []*models.Reaction{}
+	for rows.Next() {
+		err = rows.Scan(&reaction.ID, &reaction.Post_id, &reaction.Post, &reaction.Comment_id, &reaction.Comment, &reaction.User_id, &reaction.User, &reaction.Label)
+		if err != nil {
+			return nil, err
+		}
+		res = append(res, &reaction)
+	}
+	return &res, nil
+}
+
+func (repository *ReactionRepository) FindByUserId(userId *uuid.UUID) (*[]*models.Reaction, error) {
+	if repository.db == nil {
+		return nil, errors.New("connection to database isn't established")
+	}
+	rows, err := repository.db.Query("SELECT * FROM reactions WHERE user_id = ?", userId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var reaction models.Reaction
+	var res = []*models.Reaction{}
+	for rows.Next() {
+		err = rows.Scan(&reaction.ID, &reaction.Post_id, &reaction.Post, &reaction.Comment_id, &reaction.Comment, &reaction.User_id, &reaction.User, &reaction.Label)
+		if err != nil {
+			return nil, err
+		}
+		res = append(res, &reaction)
+	}
+	return &res, nil
 }

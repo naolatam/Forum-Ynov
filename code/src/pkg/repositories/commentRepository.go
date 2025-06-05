@@ -16,7 +16,7 @@ func (repository *CommentRepository) FindById(id *uuid.UUID) (*models.Comment, e
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
-	rows, err := repository.db.Query("SELECT * FROM users WHERE id = ?", id)
+	rows, err := repository.db.Query("SELECT * FROM comments WHERE id = ?", id)
 	if err != nil {
 		return nil, err
 	}
@@ -30,5 +30,49 @@ func (repository *CommentRepository) FindById(id *uuid.UUID) (*models.Comment, e
 		}
 		return &comment, nil
 	}
-	return nil, errors.New("user not found")
+	return nil, errors.New("comment not found")
+}
+
+func (repository *CommentRepository) FindByPostID(postId *uuid.UUID) (*[]*models.Comment, error) {
+	if repository.db == nil {
+		return nil, errors.New("connection to database isn't established")
+	}
+	rows, err := repository.db.Query("SELECT * FROM comments WHERE post_id = ?", postId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var comment models.Comment
+	var res = []*models.Comment{}
+	for rows.Next() {
+		err = rows.Scan(&comment.ID, &comment.Content, &comment.CreatedAt, &comment.Post.ID, &comment.Post, &comment.User_ID, &comment.User)
+		if err != nil {
+			return nil, err
+		}
+		res = append(res, &comment)
+	}
+	return &res, nil
+}
+
+func (repository *CommentRepository) FindByUserId(userId *uuid.UUID) (*[]*models.Comment, error) {
+	if repository.db == nil {
+		return nil, errors.New("connection to database isn't established")
+	}
+	rows, err := repository.db.Query("SELECT * FROM comments WHERE user_id = ?", userId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var comment models.Comment
+	var res = []*models.Comment{}
+	for rows.Next() {
+		err = rows.Scan(&comment.ID, &comment.Content, &comment.CreatedAt, &comment.Post.ID, &comment.Post, &comment.User_ID, &comment.User)
+		if err != nil {
+			return nil, err
+		}
+		res = append(res, &comment)
+	}
+	return &res, nil
 }

@@ -7,10 +7,7 @@ func checkDBConnection(db *sql.DB) bool {
 		return false
 	}
 	err := db.Ping()
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 func NewUserRepository(db *sql.DB) *UserRepository {
@@ -19,15 +16,45 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 	}
 	return &UserRepository{db: db}
 }
+
 func NewRoleRepository(db *sql.DB) *RoleRepository {
 	if !checkDBConnection(db) {
 		return nil
 	}
 	return &RoleRepository{db: db}
 }
+
 func NewSessionRepository(db *sql.DB) *SessionRepository {
 	if !checkDBConnection(db) {
 		return nil
 	}
 	return &SessionRepository{db: db}
+}
+
+func NewPostRepository(db *sql.DB) *PostRepository {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &PostRepository{db: db}
+}
+
+func NewCommentRepository(db *sql.DB) *CommentRepository {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &CommentRepository{db: db}
+}
+
+func NewCategoryRepository(db *sql.DB) *CategoryRepository {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &CategoryRepository{db: db}
+}
+
+func NewReactionRepository(db *sql.DB) *ReactionRepository {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &ReactionRepository{db: db}
 }
