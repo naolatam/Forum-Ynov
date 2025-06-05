@@ -22,7 +22,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Login successful"))
 	} else {
 		// Render login form
-		http.ServeFile(w, r, "internal/templates/register.html")
+		http.ServeFile(w, r, "internal/templates/authentification.html")
 	}
 }
 
