@@ -12,9 +12,9 @@ import (
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "internal/templates/index.html")
+	http.ServeFile(w, r, "internal/templates/index.gohtml")
 
-	tmpl, err := template.ParseFiles("internal/templates/index.html")
+	tmpl, err := template.ParseFiles("internal/templates/index.gohtml")
 	if err != nil {
 		log.Println("Error parsing templates:", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)

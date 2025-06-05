@@ -3,11 +3,11 @@ package handlers
 import "net/http"
 
 func SearchPostsHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "internal/templates/findPublication.html")
+	http.ServeFile(w, r, "internal/templates/findPublication.gohtml")
 }
 
 func SeePostHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "internal/templates/publication.html")
+	http.ServeFile(w, r, "internal/templates/publication.gohtml")
 }
 
 func NotForNowHandler(w http.ResponseWriter, r *http.Request) {
@@ -15,5 +15,5 @@ func NotForNowHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func EditPostHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "internal/templates/publicationEdit.html")
+	http.ServeFile(w, r, "internal/templates/publicationEdit.gohtml")
 }
