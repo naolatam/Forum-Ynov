@@ -11,6 +11,7 @@ import (
 type UserService struct {
 	repo        *repositories.UserRepository
 	sessionRepo *repositories.SessionRepository
+	roleRepo    *repositories.RoleRepository
 }
 
 func (service *UserService) FindById(id uuid.UUID) *models.User {
@@ -84,6 +85,18 @@ func (service *UserService) GetSession(user *models.User) *models.Session {
 	return session
 }
 
+func (service *UserService) GetRole(user *models.User) *models.Role {
+	if user == nil || user.ID == uuid.Nil {
+		return nil
+	}
+	role, err := service.roleRepo.FindById(user.Role_ID)
+	if err != nil {
+		return nil
+	}
+	user.Role = *role
+	return role
+}
+
 func (service *UserService) IsEmailAlreadyUse(email string) bool {
 	if email == "" {
 		return false
@@ -110,7 +123,8 @@ func (service *UserService) Create(user *models.User) (*models.User, error) {
 		return nil, nil
 	}
 	user.ID = uuid.New()
-	if user.Role_ID == uuid.Nil {
+	// If no role is set, set the default role ID from environment variable
+	if user.Role_ID == uuid.Nil && user.Role.ID == uuid.Nil {
 		if os.Getenv("DEFAULT_ROLE_ID") == "" {
 			return nil, nil // Default role ID is not set in environment variables
 		}
@@ -121,6 +135,8 @@ func (service *UserService) Create(user *models.User) (*models.User, error) {
 			return nil, err // Invalid UUID format in environment variable
 		}
 		user.Role_ID = roleId
+	} else if user.Role_ID == uuid.Nil && user.Role.ID != uuid.Nil { // If Role_ID is not set but Role object is provided
+		user.Role_ID = user.Role.ID // Use the role ID from the Role object if available
 	}
 
 	err := service.repo.Create(user)
