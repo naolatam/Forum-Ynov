@@ -59,10 +59,12 @@ func (repository *PostRepository) FindByCategoryId(categoryId *uuid.UUID, limit 
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
-	if limit == nil {
-		*limit = 10
+	var effectiveLimit int = 10
+	if limit != nil {
+		effectiveLimit = *limit
 	}
-	rows, err := repository.db.Query("SELECT p.* FROM posts p INNER JOIN posts_category c ON p.id = c.post_id WHERE c.category_id = ? LIMIT ?", categoryId, limit)
+
+	rows, err := repository.db.Query("SELECT p.* FROM posts p INNER JOIN posts_category c ON p.id = c.post_id WHERE c.category_id = ? LIMIT ?", categoryId, effectiveLimit)
 	if err != nil {
 		return nil, err
 	}
