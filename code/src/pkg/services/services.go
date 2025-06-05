@@ -33,5 +33,6 @@ func NewUserService(db *sql.DB) *UserService {
 	return &UserService{
 		repo:        repositories.NewUserRepository(db),
 		sessionRepo: repositories.NewSessionRepository(db),
+		roleRepo:    repositories.NewRoleRepository(db),
 	}
 }
