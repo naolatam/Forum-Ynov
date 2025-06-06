@@ -1,16 +1,12 @@
 package handlers
 
 import (
-	"log"
+	"Forum-back/pkg/models"
+	"Forum-back/pkg/services"
 	"net/http"
 	"os"
-
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/github"
-	"golang.org/x/oauth2/google"
+	"time"
 )
-
-var oauthStateString = "random"
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	// Handle user login
@@ -22,32 +18,29 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Login successful"))
 	} else {
 		// Render login form
-		http.ServeFile(w, r, "internal/templates/register.gohtml")
+		http.ServeFile(w, r, "internal/templates/authentification.html")
 	}
 }
 
-func LoginViaGoogleHandler(w http.ResponseWriter, r *http.Request) {
-	var googleOauthConfig = &oauth2.Config{
-		RedirectURL:  os.Getenv("GOOGLE_REDIRECT_URI"),
-		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
-		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
-		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"},
-		Endpoint:     google.Endpoint,
+func setSessionCookie(
+	w http.ResponseWriter,
+	expireAt time.Time,
+	sessionService *services.SessionService,
+	user *models.User) {
+	session := sessionService.FindByUser(user)
+
+	if session == nil {
+		session = sessionService.CreateWithUser(user, expireAt)
 	}
 
-	url := googleOauthConfig.AuthCodeURL(oauthStateString)
-	log.Println(url)
-	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
-}
-
-func LoginViaGithubHandler(w http.ResponseWriter, r *http.Request) {
-	var githubOauthConfig = &oauth2.Config{
-		RedirectURL:  os.Getenv("GITHUB_REDIRECT_URI"),
-		ClientID:     os.Getenv("GITHUB_CLIENT_ID"),
-		ClientSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
-		Scopes:       []string{"read:user", "user:email"},
-		Endpoint:     github.Endpoint,
+	sessionCookie := &http.Cookie{
+		Name:     os.Getenv("SESSION_COOKIE_NAME"),
+		Value:    session.ID.String(),
+		Expires:  session.ExpireAt,
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
 	}
-	url := githubOauthConfig.AuthCodeURL(oauthStateString)
-	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
+
+	http.SetCookie(w, sessionCookie)
 }
