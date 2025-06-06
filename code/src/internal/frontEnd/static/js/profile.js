@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-
     const confirmUploadBtn = document.getElementById('confirm-avatar-upload');
     if (confirmUploadBtn) {
         confirmUploadBtn.addEventListener('click', () => {
@@ -88,4 +87,8 @@ document.addEventListener('DOMContentLoaded', function() {
             closeAvatarModal();
         });
     }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializePagination('content-tab', '.content-item', '.pagination-info-content', '.pagination-controls-content', 4);
 });
