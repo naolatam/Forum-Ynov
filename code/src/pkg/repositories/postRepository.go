@@ -82,7 +82,7 @@ func (repository *PostRepository) FindByCategoryId(categoryId *uuid.UUID, limit 
 	return &res, nil
 }
 
-func (repository *PostRepository) GetPostCount(post *models.Post) (int) {
+func (repository *PostRepository) GetPostCount() int {
 	if repository.db == nil {
 		return -1
 	}
