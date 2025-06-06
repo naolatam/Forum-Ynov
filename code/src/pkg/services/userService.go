@@ -5,7 +5,6 @@ import (
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/repositories"
 	"Forum-back/pkg/utils"
-	"errors"
 	"fmt"
 	"os"
 	"time"
