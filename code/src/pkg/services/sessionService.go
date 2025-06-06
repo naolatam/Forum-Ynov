@@ -3,6 +3,9 @@ package services
 import (
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/repositories"
+	"fmt"
+	"net/http"
+	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -96,4 +99,41 @@ func (service *SessionService) DeleteExpiredSessions(before time.Time) error {
 		return err
 	}
 	return nil
+}
+
+func (service *SessionService) SessionCount() (int, error) {
+	count := service.repo.CountActiveSession()
+	if count == -1 {
+		return count, fmt.Errorf("failed to count active sessions")
+	}
+	return count, nil
+}
+
+func (service *SessionService) GetSessionFromRequest(r *http.Request) (*models.Session, error) {
+	sessionCookie, err := r.Cookie(os.Getenv("SESSION_COOKIE_NAME"))
+	if err != nil {
+		return nil, err // Other error
+	}
+
+	sessionID, err := uuid.Parse(sessionCookie.Value)
+	if err != nil {
+		return nil, err // Invalid UUID format
+	}
+	session := service.FindByID(sessionID)
+	if session == nil {
+		return nil, nil // Session not found
+	}
+	return session, nil // Valid session found
+}
+
+func (service *SessionService) IsAuthenticated(r *http.Request) (bool, *models.Session) {
+	session, _ := service.GetSessionFromRequest(r)
+	if session == nil {
+		return false, nil // No session found
+	}
+	if session.Expired || time.Now().After(session.ExpireAt) {
+		return false, nil // Session is expired
+	}
+	return true, session // Session is valid and not expired
+
 }

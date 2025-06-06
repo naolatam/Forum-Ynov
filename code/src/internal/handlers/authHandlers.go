@@ -1,53 +1,80 @@
 package handlers
 
 import (
+	"Forum-back/internal/config"
+	dtos "Forum-back/pkg/dtos/templates"
+	"Forum-back/pkg/models"
+	"Forum-back/pkg/services"
 	"log"
 	"net/http"
 	"os"
-
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/github"
-	"golang.org/x/oauth2/google"
+	"text/template"
+	"time"
 )
 
-var oauthStateString = "random"
-
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
-	// Handle user login
-	// This function will process the login request and return a response
-	// Load template
+
+	// Open a database connection
+	// Handle any errors that may occur during the connection
+	db, err := config.OpenDBConnection()
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	defer db.Close()
+
+	// Initialize session service and check if the user is already authenticated
+	sessionService := services.NewSessionService(db)
+	if isConnected, _ := sessionService.IsAuthenticated(r); isConnected {
+		// If the user is already authenticated, redirect to the home page
+		http.Redirect(w, r, "/home", http.StatusSeeOther)
+		return
+	}
+
 	if r.Method == http.MethodPost {
 		// Process login form submission
 		// Validate user credentials and set session
 		w.Write([]byte("Login successful"))
 	} else {
 		// Render login form
-		http.ServeFile(w, r, "internal/templates/register.html")
+		tmpl, err := template.ParseFiles("internal/templates/authentification.gohtml")
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		data := dtos.AuthenticationPageDto{
+			IsRegister: r.URL.Query().Get("isRegister") == "true",
+		}
+		err = tmpl.Execute(w, data)
+		if err != nil {
+			log.Panicln(err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		}
+		return
+
 	}
 }
 
-func LoginViaGoogleHandler(w http.ResponseWriter, r *http.Request) {
-	var googleOauthConfig = &oauth2.Config{
-		RedirectURL:  os.Getenv("GOOGLE_REDIRECT_URI"),
-		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
-		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
-		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"},
-		Endpoint:     google.Endpoint,
+func setSessionCookie(
+	w http.ResponseWriter,
+	expireAt time.Time,
+	sessionService *services.SessionService,
+	user *models.User) {
+	session := sessionService.FindByUser(user)
+
+	if session == nil {
+		session = sessionService.CreateWithUser(user, expireAt)
+	}
+	sessionCookie := &http.Cookie{
+		Name:     os.Getenv("SESSION_COOKIE_NAME"),
+		Value:    session.ID.String(),
+		Expires:  session.ExpireAt,
+		HttpOnly: true,
+		Secure:   true,
+		Path:     "/",
+
+		SameSite: http.SameSiteLaxMode,
 	}
 
-	url := googleOauthConfig.AuthCodeURL(oauthStateString)
-	log.Println(url)
-	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
-}
-
-func LoginViaGithubHandler(w http.ResponseWriter, r *http.Request) {
-	var githubOauthConfig = &oauth2.Config{
-		RedirectURL:  os.Getenv("GITHUB_REDIRECT_URI"),
-		ClientID:     os.Getenv("GITHUB_CLIENT_ID"),
-		ClientSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
-		Scopes:       []string{"read:user", "user:email"},
-		Endpoint:     github.Endpoint,
-	}
-	url := githubOauthConfig.AuthCodeURL(oauthStateString)
-	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
+	http.SetCookie(w, sessionCookie)
 }

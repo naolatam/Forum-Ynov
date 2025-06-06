@@ -14,6 +14,7 @@ func InitRoutes() {
 	initProfileRoute()
 	initPostRoutes()
 	initHomeRoutes()
+	initAdminRoutes()
 
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		// Handle the health check endpoint

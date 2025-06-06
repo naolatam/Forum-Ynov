@@ -97,3 +97,15 @@ func (repository *SessionRepository) DeleteExpiredSessions(before time.Time) err
 	}
 	return nil
 }
+
+func (repository *SessionRepository) CountActiveSession() int {
+	if repository.db == nil {
+		return -1
+	}
+	var count int
+	err := repository.db.QueryRow("SELECT COUNT(*) FROM sessions WHERE expireAt > ?", time.Now()).Scan(&count)
+	if err != nil {
+		return -1
+	}
+	return count
+}
