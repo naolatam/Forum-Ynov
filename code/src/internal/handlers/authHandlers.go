@@ -62,7 +62,7 @@ func setSessionCookie(
 	user *models.User) {
 	session := sessionService.FindByUser(user)
 
-	if session == nil {
+	if session == nil || session.Expired {
 		session = sessionService.CreateWithUser(user, expireAt)
 	}
 	sessionCookie := &http.Cookie{
