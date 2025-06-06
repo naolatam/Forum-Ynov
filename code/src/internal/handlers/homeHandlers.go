@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"Forum-back/internal/config"
+	dtos "Forum-back/pkg/dtos/templates"
 	"Forum-back/pkg/services"
 	"log"
 	"net/http"
@@ -28,8 +29,8 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	sessionService := services.NewSessionService(db)
 	isConnected, _ := sessionService.IsAuthenticated(r)
 
-	data := map[string]bool{
-		"isConnected": isConnected,
+	data := dtos.HomePageDto{
+		IsConnected: isConnected,
 	}
 
 	err = tmpl.Execute(w, data)

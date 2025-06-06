@@ -2,10 +2,13 @@ package handlers
 
 import (
 	"Forum-back/internal/config"
+	dtos "Forum-back/pkg/dtos/templates"
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/services"
+	"log"
 	"net/http"
 	"os"
+	"text/template"
 	"time"
 )
 
@@ -34,7 +37,21 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Login successful"))
 	} else {
 		// Render login form
-		http.ServeFile(w, r, "internal/templates/authentification.html")
+		tmpl, err := template.ParseFiles("internal/templates/authentification.gohtml")
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		data := dtos.AuthenticationPageDto{
+			IsRegister: r.URL.Query().Get("isRegister") == "true",
+		}
+		err = tmpl.Execute(w, data)
+		if err != nil {
+			log.Panicln(err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		}
+		return
+
 	}
 }
 
