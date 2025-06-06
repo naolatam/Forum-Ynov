@@ -23,12 +23,12 @@
                 <a href="index.html" class="text-blue-400 font-medium">Home</a>
                 <a href="findPublication.html" class="hover:text-blue-400 transition-colors">All Posts</a>
 
-                {{if .isConnected}} 
+                {{if .IsConnected}} 
                     <a href="profile.html" class="hover:text-blue-400 transition-colors">Profile</a>
                     <a href="#" class="hover:text-blue-400 transition-colors">Logout</a>
                 {{end}}
 
-                {{if not .isConnected }}
+                {{if not .IsConnected }}
                     <a href="register.html" class="hover:text-blue-400 transition-colors">Login</a>
                 {{end}}
             </nav>
@@ -58,14 +58,14 @@
             <a href="findPublication.html"
                class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">All Posts</a>
                
-                {{if .isConnected}} 
+                {{if .IsConnected}} 
                     <a href="profile.html"
                     class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Profile</a>
                     <a href="register.html"
                     class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Login</a>                    <a href="#" class="hover:text-blue-400 transition-colors">Logout</a>
                 {{end}}
 
-                {{if not .isConnected }}
+                {{if not .IsConnected }}
                     <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Logout</a>
                 {{end}}
         </nav>
@@ -76,7 +76,7 @@
         <h2 class="text-3xl font-bold mb-2">Welcome on Warframe Forum</h2>
         <p class="text-lg mb-4">Discutez, partagez vos builds et aidez la communauté Tenno.</p>
 
-        {{if .isConnected}}
+        {{if .IsConnected}}
             <a href="#" class="bg-white text-blue-700 px-6 py-2 rounded font-semibold hover:bg-gray-100">Créer un post</a>
         {{end}}
     </section>
