@@ -92,4 +92,5 @@ func (repository *PostRepository) CountPostNumber(post *models.Post) error {
 	if err != nil {
 		return err
 	}
+	return nil
 }
