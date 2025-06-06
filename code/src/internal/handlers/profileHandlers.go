@@ -24,13 +24,13 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer db.Close()
-	
+
 	data := map[string]interface{}{
-		"id"	: UserID,
+		/* "id":     UserID,
 		"pseudo": Pseudo,
-		"email": Email, 
+		"email":  Email, */
 	}
-	
+
 	err = tmpl.Execute(w, data)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
@@ -56,12 +56,12 @@ func MyProfileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-		data := map[string]interface{}{
-		"id"	: UserID,
+	data := map[string]interface{}{
+		/* "id"	: UserID,
 		"pseudo": Pseudo,
-		"email": Email, 
+		"email": Email,  */
 	}
-	
+
 	err = tmpl.Execute(w, data)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
