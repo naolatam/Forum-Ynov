@@ -81,3 +81,15 @@ func (repository *PostRepository) FindByCategoryId(categoryId *uuid.UUID, limit 
 	}
 	return &res, nil
 }
+
+func (repository *PostRepository) CountPostNumber(post *models.Post) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+
+	var postCount int
+	err := repository.db.QueryRow("SELECT COUNT(*) FROM posts").Scan(&postCount)
+	if err != nil {
+		return err
+	}
+}
