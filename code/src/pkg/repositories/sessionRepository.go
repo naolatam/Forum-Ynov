@@ -98,7 +98,7 @@ func (repository *SessionRepository) DeleteExpiredSessions(before time.Time) err
 	return nil
 }
 
-func (repository *SessionRepository) CountActiveSession(session *models.Session) int {
+func (repository *SessionRepository) CountActiveSession() int {
 	if repository.db == nil {
 		return -1
 	}

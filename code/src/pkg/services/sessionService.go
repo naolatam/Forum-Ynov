@@ -3,6 +3,7 @@ package services
 import (
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/repositories"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -96,4 +97,12 @@ func (service *SessionService) DeleteExpiredSessions(before time.Time) error {
 		return err
 	}
 	return nil
+}
+
+func (service *SessionService) SessionCount() (int, error) {
+	count := service.repo.CountActiveSession()
+	if count == -1 {
+		return count, fmt.Errorf("failed to count active sessions")
+	}
+	return count, nil
 }
