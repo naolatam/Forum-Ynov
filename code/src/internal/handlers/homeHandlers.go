@@ -36,6 +36,8 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	err = tmpl.Execute(w, data)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Println("Error executing template:", err)
+		return
 	}
 	return
 }
