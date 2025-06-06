@@ -81,3 +81,15 @@ func (repository *PostRepository) FindByCategoryId(categoryId *uuid.UUID, limit 
 	}
 	return &res, nil
 }
+
+func (repository *PostRepository) GetPostCount(post *models.Post) (int) {
+	if repository.db == nil {
+		return -1
+	}
+	var count int
+	err := repository.db.QueryRow("SELECT COUNT(*) FROM posts").Scan(&count)
+	if err != nil {
+		return -1
+	}
+	return count
+}
