@@ -99,8 +99,8 @@ func (service *SessionService) DeleteExpiredSessions(before time.Time) error {
 	return nil
 }
 
-func (service *SessionService) SessionCount() (int, error) {
-	count := service.repo.CountActiveSession()
+func (service *SessionService) GetActiveSessionCount() (int, error) {
+	count := service.repo.GetActiveSessionCount()
 	if count == -1 {
 		return count, fmt.Errorf("failed to count active sessions")
 	}

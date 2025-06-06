@@ -5,6 +5,8 @@ import (
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/repositories"
 	"Forum-back/pkg/utils"
+	"errors"
+	"fmt"
 	"os"
 	"time"
 
@@ -270,5 +272,12 @@ func (service *UserService) CheckUserWithSameGithubEmails(userInfo *dtos.GitHubU
 		}
 	}
 	return nil, nil
+}
 
+func (service *UserService) GetUserCount() (int, error) {
+	count := service.repo.GetUserCount()
+	if count == -1 {
+		return -1, fmt.Errorf("failed to get user count")
+	}	
+	return count, nil
 }
