@@ -1,12 +1,12 @@
 package handlers
 
 import (
-	"Forum-back/pkg/models"
+	"Forum-back/pkg/dtos/templates"
 	"html/template"
 	"net/http"
 )
 
-func ErrorHandler(w http.ResponseWriter, errorData models.Error) {
+func ErrorHandler(w http.ResponseWriter, errorData templates.Error) {
 	tmpl, err := template.ParseFiles("internal/templates/error.gohtml")
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -23,7 +23,7 @@ func DefaultErrorHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := models.Error{
+	data := templates.Error{
 		Code:    http.StatusNotFound,
 		Message: "Not Found",
 		Details: "The requested resource could not be found.",

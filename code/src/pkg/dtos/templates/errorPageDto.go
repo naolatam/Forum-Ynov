@@ -1,4 +1,4 @@
-package models
+package templates
 
 type Error struct {
 	Message string `json:"message"`
