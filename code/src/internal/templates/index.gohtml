@@ -19,21 +19,26 @@
         </div>
         <div class="flex items-center">
             <nav class="hidden md:flex space-x-6 items-center">
-                <a href="/" class="text-blue-400 font-medium flex items-center gap-1">
+                <a href="/" class="hover:text-blue-400 transition-colors flex items-center gap-1">
                     <i class="fas fa-home text-sm"></i> Home
                 </a>
-                <a href="/searchPosts" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                <a href="/searchPosts" class="text-blue-400 font-medium flex items-center gap-1">
                     <i class="fas fa-newspaper text-sm"></i> All Posts
                 </a>
+
+                {{if .isConnected}}
+
                 <a href="/me" class="hover:text-blue-400 transition-colors flex items-center gap-1">
                     <i class="fas fa-user text-sm"></i> Profile
-                </a>
-                <a href="/auth/login" class="hover:text-blue-400 transition-colors flex items-center gap-1">
-                    <i class="fas fa-sign-in-alt text-sm"></i> Login
                 </a>
                 <a href="#" class="hover:text-blue-400 transition-colors flex items-center gap-1">
                     <i class="fas fa-sign-out-alt text-sm"></i> Logout
                 </a>
+
+                {{else}}
+                <a href="/auth/login" class="hover:text-blue-400 transition-colors flex items-center gap-1">
+                    <i class="fas fa-sign-in-alt text-sm"></i> Login
+                </a>                {{end}}
             </nav>
             <button id="mobile-menu-button" class="md:hidden ml-2 text-gray-300 hover:text-blue-400 focus:outline-none"
                     aria-label="Menu">
@@ -49,15 +54,30 @@
     <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2 border-t border-gray-700 max-w-7xl mx-auto">
         <nav class="mt-2 space-y-3 flex flex-col px-2">
             <a href="/"
-               class="block px-3 py-2 rounded-md bg-gray-700 text-blue-400 font-medium">Home</a>
+               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">
+                <i class="fas fa-home text-sm"></i> Home
+            </a>
             <a href="/searchPosts"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">All
-                Posts</a>
-            <a href="/me"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Profile</a>
-            <a href="/auth/login"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Login</a>
-            <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Logout</a>
+               class="block px-3 py-2 rounded-md bg-gray-700 text-blue-400 font-medium">
+                <i class="fas fa-newspaper text-sm"></i> All Posts
+            </a>
+            
+            {{if .isConnected}}
+
+                <a href="/me"
+                   class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">
+                    <i class="fas fa-user text-sm"></i> Profile
+                </a>
+                <a href="#" 
+                   class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">
+                    <i class="fas fa-sign-out-alt text-sm"></i> Logout
+                </a>
+            {{else}}
+                <a href="/auth/login"
+                   class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">
+                    <i class="fas fa-sign-in-alt text-sm"></i> Login
+                </a>
+            {{end}}
         </nav>
     </div>
 </header>
@@ -65,7 +85,12 @@
     <section class="bg-blue-600 text-white text-center py-10">
         <h2 class="text-3xl font-bold mb-2">Welcome on Warframe Forum</h2>
         <p class="text-lg mb-8">Discuss, share builds and help the Tenno community.</p>
-        <a href="/posts/edit" class="bg-white text-blue-700 px-6 py-2 rounded font-semibold hover:bg-gray-200"><i class="fa-regular fa-square-plus pr-2"></i>Create a post</a>
+
+        {{if .isConnected}}
+            <a href="/posts/edit" class="bg-white text-blue-700 px-6 py-2 rounded font-semibold hover:bg-gray-200">
+                <i class="fa-regular fa-square-plus pr-2"></i>Create a post
+            </a>
+        {{end}}
     </section>
     <section class="max-w-6xl mx-auto py-10 px-4">
         <h3 class="inline-block text-2xl font-bold mb-6 bg-gray-800 p-4 rounded-lg shadow">Main Categories</h3>

@@ -17,9 +17,9 @@ func initAuthRoutes() {
 	http.HandleFunc("/auth/google", handlers.LoginViaGoogleHandler)
 	http.HandleFunc("/auth/github", handlers.LoginViaGithubHandler)
 
-	/*
-		http.HandleFunc("/auth/google/callback", nil)
-		http.HandleFunc("/auth/github/callback", nil) */
+	// Callback routes for social authentication
+	http.HandleFunc("/auth/google/callback", handlers.LoginViaGoogleCallbackHandler)
+	http.HandleFunc("/auth/github/callback", handlers.LoginViaGithubCallbackHandler)
 
 	log.Println("[ROUTING] Auth routes initialized")
 

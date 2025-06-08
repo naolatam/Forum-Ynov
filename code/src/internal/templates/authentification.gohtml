@@ -25,7 +25,14 @@
             <div
                 class="flex flex-1 flex-col h-full items-center justify-center w-1/2 mx-auto"
             >
-                <div class="container w-full" id="container">
+                <div 
+                {{ if .IsRegister}}
+                class="container w-full active"
+                {{ else }}
+                class="container w-full"
+                {{ end }} 
+                id="container"
+                >
                     <div class="form-container sign-up">
                         <form
                             id="registerForm"
