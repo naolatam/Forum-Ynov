@@ -3,6 +3,7 @@ package services
 import (
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/repositories"
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -98,6 +99,14 @@ func (service *SessionService) DeleteExpiredSessions(before time.Time) error {
 		return err
 	}
 	return nil
+}
+
+func (service *SessionService) GetActiveSessionCount() (int, error) {
+	count := service.repo.GetActiveSessionCount()
+	if count == -1 {
+		return count, fmt.Errorf("failed to count active sessions")
+	}
+	return count, nil
 }
 
 func (service *SessionService) GetSessionFromRequest(r *http.Request) (*models.Session, error) {

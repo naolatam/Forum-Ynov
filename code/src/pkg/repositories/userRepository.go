@@ -174,3 +174,16 @@ func (repository *UserRepository) Create(user *models.User) error {
 	return nil
 
 }
+
+func (repository *UserRepository) GetUserCount() int {
+	if repository.db == nil {
+		return -1
+	}
+
+	var userCount int
+	err := repository.db.QueryRow("SELECT COUNT(*) FROM users").Scan(&userCount)
+	if err != nil {
+		return -1
+	}
+	return userCount
+}

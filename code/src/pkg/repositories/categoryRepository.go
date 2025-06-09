@@ -75,3 +75,4 @@ func (repository *CategoryRepository) FindByPostId(postId *uuid.UUID) (*[]*model
 	}
 	return &res, nil
 }
+

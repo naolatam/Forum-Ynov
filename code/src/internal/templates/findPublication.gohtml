@@ -18,21 +18,17 @@
         </div>
         <div class="flex items-center">
             <nav class="hidden md:flex space-x-6 items-center">
-                <a href="/" class="hover:text-blue-400 transition-colors flex items-center gap-1">
-                    <i class="fas fa-home text-sm"></i> Home
-                </a>
-                <a href="/searchPosts" class="text-blue-400 font-medium flex items-center gap-1">
-                    <i class="fas fa-newspaper text-sm"></i> All Posts
-                </a>
-                <a href="/me" class="hover:text-blue-400 transition-colors flex items-center gap-1">
-                    <i class="fas fa-user text-sm"></i> Profile
-                </a>
-                <a href="/auth/login" class="hover:text-blue-400 transition-colors flex items-center gap-1">
-                    <i class="fas fa-sign-in-alt text-sm"></i> Login
-                </a>
-                <a href="#" class="hover:text-blue-400 transition-colors flex items-center gap-1">
-                    <i class="fas fa-sign-out-alt text-sm"></i> Logout
-                </a>
+                <a href="index.html" class="hover:text-blue-400 transition-colors">Home</a>
+                <a href="findPublication.html" class="text-blue-400 font-medium">All Posts</a>
+
+                {{if .isConnected}}
+                <a href="profile.html" class="hover:text-blue-400 transition-colors">Profile</a>
+                <a href="#" class="hover:text-blue-400 transition-colors">Logout</a>
+                {{end}}
+
+                {{if not .isConnected}}
+                <a href="register.html" class="hover:text-blue-400 transition-colors">Login</a>
+                {{end}}
             </nav>
             <button id="mobile-menu-button" class="md:hidden ml-2 text-gray-300 hover:text-blue-400 focus:outline-none"
                     aria-label="Menu">
@@ -49,14 +45,18 @@
         <nav class="mt-2 space-y-3 flex flex-col px-2">
             <a href="/"
                class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Home</a>
-            <a href="/searchPosts"
-               class="block px-3 py-2 rounded-md bg-gray-700 text-blue-400 font-medium">All
-                Posts</a>
-            <a href="/me"
+            <a href="findPublication.html" class="block px-3 py-2 rounded-md bg-gray-700 text-blue-400 font-medium">All Posts</a>
+            
+            {{if .isConnected}}
+            <a href="profile.html"
                class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Profile</a>
-            <a href="/auth/login"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Login</a>
             <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Logout</a>
+            {{end}}
+
+            {{if not .isConnected}}
+              <a href="register.html"
+               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Login</a>
+            {{end}}
         </nav>
     </div>
 </header>
