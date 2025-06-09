@@ -53,7 +53,7 @@ func (service *PostService) FindById(id uuid.UUID) (*models.Post, error) {
 	return post, nil
 }
 
-func (service *PostService) FindByTitle(title string) (*[]*models.Post, error) {
+/* func (service *PostService) FindByTitle(title string) (*[]*models.Post, error) {
 	if title == "" {
 		return nil, nil
 	}
@@ -73,7 +73,7 @@ func (service *PostService) FindByCategoryId(categoryId uuid.UUID, limit *int) (
 		return nil, err
 	}
 	return posts, nil
-}
+} */
 
 func (service *PostService) GetPostCount() (int, error) {
 	count := service.repo.GetPostCount()
