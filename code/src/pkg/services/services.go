@@ -16,6 +16,24 @@ func checkDBConnection(db *sql.DB) bool {
 	return true
 }
 
+func NewCategoryService(db *sql.DB) *CategoryService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &CategoryService{
+		repo: repositories.NewCategoryRepository(db),
+	}
+}
+
+func NewPostService(db *sql.DB) *PostService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &PostService{
+		repo: repositories.NewPostRepository(db),
+	}
+}
+
 func NewSessionService(db *sql.DB) *SessionService {
 	if !checkDBConnection(db) {
 		return nil
