@@ -1,7 +1,7 @@
 package dtos
 
 type HomePageDto struct {
-	IsConnected      bool
+	Header           HeaderDto
 	UserCount        int
 	PostCount        int
 	ActiveUsersCount int
