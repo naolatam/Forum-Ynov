@@ -144,20 +144,6 @@ func (repository *PostRepository) FindMultipleByCategoryId(categoryId *uuid.UUID
 	return &res, nil
 }
 
-<<<<<<< HEAD
-func (repository *PostRepository) CountPostNumber(post *models.Post) error {
-	if repository.db == nil {
-		return errors.New("connection to database isn't established")
-	}
-
-	var postCount int
-	err := repository.db.QueryRow("SELECT COUNT(*) FROM posts").Scan(&postCount)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-=======
 func (repository *PostRepository) FindMultipleByTextAndCategory(text *string, categoryId *uuid.UUID, limit *int) (*[]*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -231,7 +217,7 @@ func (repository *PostRepository) FindLastPosts(limit *int) (*[]*models.Post, er
 	return &res, nil
 }
 
-func (repository *PostRepository) GetPostCount(post *models.Post) (int) {
+func (repository *PostRepository) GetPostCount(post *models.Post) int {
 	if repository.db == nil {
 		return -1
 	}
@@ -242,4 +228,3 @@ func (repository *PostRepository) GetPostCount(post *models.Post) (int) {
 	}
 	return count
 }
->>>>>>> 2ccdae2a402d5fb8d5af2cd24801bce997e7036c
