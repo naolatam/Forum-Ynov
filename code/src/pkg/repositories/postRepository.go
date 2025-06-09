@@ -217,7 +217,7 @@ func (repository *PostRepository) FindLastPosts(limit *int) (*[]*models.Post, er
 	return &res, nil
 }
 
-func (repository *PostRepository) GetPostCount(post *models.Post) int {
+func (repository *PostRepository) GetPostCount() int {
 	if repository.db == nil {
 		return -1
 	}

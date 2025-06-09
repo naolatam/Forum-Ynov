@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"encoding/base64"
 	"fmt"
 	"io"
 	"net/http"
@@ -26,4 +27,9 @@ func FetchImage(imageURL string) ([]byte, error) {
 	}
 
 	return imageBlob, nil
+}
+
+func ConvertBytesToBase64(blob []byte, mime string) string {
+	encoded := base64.StdEncoding.EncodeToString(blob)
+	return fmt.Sprintf("data:%s;base64,%s", mime, encoded)
 }
