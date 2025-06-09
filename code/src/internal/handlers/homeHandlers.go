@@ -2,21 +2,14 @@ package handlers
 
 import (
 	"Forum-back/internal/config"
+	"Forum-back/internal/templates"
 	dtos "Forum-back/pkg/dtos/templates"
 	"Forum-back/pkg/services"
 	"log"
 	"net/http"
-	"text/template"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-
-	tmpl, err := template.ParseFiles("internal/templates/index.gohtml")
-	if err != nil {
-		log.Println("Error parsing templates:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
 
 	db, err := config.OpenDBConnection()
 	if err != nil {
@@ -30,11 +23,20 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	isConnected, _ := sessionService.IsAuthenticated(r)
 
 	data := dtos.HomePageDto{
-		IsConnected: isConnected,
+		Header: dtos.HeaderDto{
+			IsConnected: isConnected,
+		},
 	}
 
+	tmpl, err := templates.GetTemplateWithLayout(&data.Header, "home", "internal/templates/index.gohtml")
+	if err != nil {
+		log.Println("Error parsing templates:", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 	err = tmpl.Execute(w, data)
 	if err != nil {
+		log.Println("Error executing template:", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 }
