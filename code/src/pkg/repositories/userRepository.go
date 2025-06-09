@@ -175,15 +175,15 @@ func (repository *UserRepository) Create(user *models.User) error {
 
 }
 
-func (repository *UserRepository) CountUserNumber(post *models.User) error {
+func (repository *UserRepository) GetUserCount() int {
 	if repository.db == nil {
-		return errors.New("connection to database isn't established")
+		return -1
 	}
 
 	var userCount int
 	err := repository.db.QueryRow("SELECT COUNT(*) FROM users").Scan(&userCount)
 	if err != nil {
-		return err
+		return -1
 	}
-	return nil
+	return userCount
 }

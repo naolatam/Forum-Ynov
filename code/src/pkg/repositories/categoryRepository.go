@@ -66,7 +66,7 @@ func (repository *CategoryRepository) FindByPostId(postId *uuid.UUID) (*[]*model
 
 	var category models.Category
 	var res = []*models.Category{}
-	if rows.Next() {
+	for rows.Next() {
 		err = rows.Scan(&category.ID, &category.Name)
 		if err != nil {
 			return nil, err
@@ -76,3 +76,24 @@ func (repository *CategoryRepository) FindByPostId(postId *uuid.UUID) (*[]*model
 	return &res, nil
 }
 
+func (repository *CategoryRepository) FindAll() (*[]*models.Category, error) {
+	if repository.db == nil {
+		return nil, errors.New("connection to database isn't established")
+	}
+	rows, err := repository.db.Query("SELECT * FROM categories")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var res = []*models.Category{}
+	for rows.Next() {
+		var category models.Category
+		err = rows.Scan(&category.ID, &category.Name)
+		if err != nil {
+			return nil, err
+		}
+		res = append(res, &category)
+	}
+	return &res, nil
+}
