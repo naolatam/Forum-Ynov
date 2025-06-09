@@ -18,7 +18,7 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fa fa-search" aria-hidden="true"></i>
                         </div>
-                        <input type="text" id="search" name="search" required placeholder="Search by title or content"
+                        <input type="text" id="search" name="search" placeholder="Search by title or content" value="{{ .SearchTerm }}"
                                class="block w-full pl-10 pr-4 py-3 border border-gray-600 rounded-l-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-white">
                     </div>
                     <div class="relative flex items-center">
@@ -28,10 +28,12 @@
                         <select id="category" name="category"
                                 class="block pl-10 pr-4 py-3 border border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-white">
                             <option value="">All Categories</option>
-                            <option value="builds">Builds & Warframe</option>
-                            <option value="missions">Missions & Guides</option>
-                            <option value="fanarts">Fan Arts & Créations</option>
-                            <option value="events">Events & News</option>
+                            {{ range .Categories }}
+                                <option value="{{ .ID }}" {{ if eq .ID $.SearchCategory }}selected{{ end }}>
+                                    {{ .Name }}
+                                </option>
+                            {{ end }}
+
                         </select>
                         <button type="submit"
                                 class="bg-blue-700 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-r-md transition-colors">
@@ -42,184 +44,32 @@
             </div>
         </div>
         <div class="bg-gray-800 bg-opacity-90 rounded-lg shadow-lg p-8 max-w-8xl mx-auto" id="content-tab">
-            <h3 class="text-xl font-semibold text-gray-200 mt-8">Search Results</h3>
+            <h3 class="text-xl font-semibold text-gray-200 mt-8">
+                {{ if .Posts }}
+                    {{ if .SearchTerm}}
+                    Found {{ len .Posts }} results for "{{ .SearchTerm }}"</p>
+                    {{ else }}
+                    Latest Publications
+                    {{ end }}
+                {{ else }}
+                    <p class="text-gray-400 mb-4">No results found</p>
+                {{ end }}
+            </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
+                
+                {{ range .Posts}}
+                    <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
+                    <a href="/posts?post_id={{ .ID }}">
+                        <h4 class="text-lg font-medium">{{ .Title }}</h4>
                         <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
+                            <img src="{{ .PictureBase64 }}" alt="Post image"
                                  class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
                         </div>
-                        <p>This is a brief description of the publication content.</p>
+                        <p>{{ .Content }}</p>
                         <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
                     </a>
                 </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts/edit">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts/edit">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
-                <div class="content-item bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1">
-                    <a href="/posts">
-                        <h4 class="text-lg font-medium">Example Publication Title</h4>
-                        <div class="overflow-hidden rounded-md mt-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Example Image"
-                                 class="w-full h-48 object-cover transition-transform duration-500 hover:scale-110">
-                        </div>
-                        <p>This is a brief description of the publication content.</p>
-                        <p class="text-blue-500 hover:underline mt-2 inline-block">Read more</p>
-                    </a>
-                </div>
+                {{end}}
             </div>
             <div class="text-center my-4 text-gray-300 pagination-info-content"></div>
             <div class="flex justify-center space-x-2 mb-4 pagination-controls-content"></div>

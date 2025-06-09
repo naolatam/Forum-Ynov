@@ -24,7 +24,7 @@ function initializePagination(containerId, itemSelector, paginationInfo, paginat
 
     const items = container.querySelectorAll(itemSelector);
     if (items.length === 0) {
-        document.querySelector(paginationInfo).textContent = 'Aucun élément';
+        document.querySelector(paginationInfo).textContent = 'No items to display';
         return;
     }
 
