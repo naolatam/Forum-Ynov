@@ -10,7 +10,9 @@ func GetTemplateWithLayout(headerDto *dtos.HeaderDto, pageName string, templateP
 	if err != nil {
 		return nil, err
 	}
-	tmpl, err = tmpl.ParseFiles("internal/templates/components/headerComponent.gohtml")
+	tmpl, err = tmpl.ParseFiles(
+		"internal/templates/components/headerComponent.gohtml",
+		"internal/templates/components/footerComponent.gohtml")
 	if err != nil {
 		return nil, err
 	}
