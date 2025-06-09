@@ -122,7 +122,7 @@ func parseSearchParams(r *http.Request) (string, *uuid.UUID, error) {
 	searchTerm := query.Get("search")
 	categoryStr := query.Get("category")
 	if categoryStr == "" {
-		return searchTerm, nil, nil
+		return searchTerm, &uuid.Nil, nil
 	}
 	categoryUUID, err := uuid.Parse(categoryStr)
 	if err != nil {
