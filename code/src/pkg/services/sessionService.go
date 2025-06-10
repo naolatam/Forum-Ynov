@@ -87,6 +87,8 @@ func (service *SessionService) Delete(session *models.Session) error {
 	if err != nil {
 		return err
 	}
+	session.Expired = true
+	session.ExpireAt = time.Now() // Mark session as expired
 	return nil
 }
 
