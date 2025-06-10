@@ -48,7 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const cancelAvatarUploadBtn = document.getElementById('cancel-avatar-upload');
     const avatarInput = document.getElementById('avatar-upload');
     const avatarPreview = document.getElementById('avatar-preview');
-
+    const closeErrorBtn = document.getElementById('close-error');
+    const errorPopUp = document.getElementById('error-popUp');
     // Open Avatar Upload Modal
     if (editAvatarBtn) {
         editAvatarBtn.addEventListener('click', (e) => {
@@ -64,6 +65,10 @@ document.addEventListener('DOMContentLoaded', function () {
     avatarUploadErrorCloseBtnModal.addEventListener('click', () => {
         avatarUploadErrorModal.classList.add('hidden');
         avatarInput.value = ''; // Clear the input
+    }
+    );
+    closeErrorBtn.addEventListener('click', () => {
+        errorPopUp.classList.add('hidden');
     }
     );
 
