@@ -87,6 +87,8 @@ func (service *SessionService) Delete(session *models.Session) error {
 	if err != nil {
 		return err
 	}
+	session.Expired = true
+	session.ExpireAt = time.Now() // Mark session as expired
 	return nil
 }
 
@@ -101,8 +103,8 @@ func (service *SessionService) DeleteExpiredSessions(before time.Time) error {
 	return nil
 }
 
-func (service *SessionService) SessionCount() (int, error) {
-	count := service.repo.CountActiveSession()
+func (service *SessionService) GetActiveSessionCount() (int, error) {
+	count := service.repo.GetActiveSessionCount()
 	if count == -1 {
 		return count, fmt.Errorf("failed to count active sessions")
 	}

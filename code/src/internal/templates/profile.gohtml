@@ -4,69 +4,36 @@
     <meta charset="UTF-8">
     <title>Your Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://kit.fontawesome.com/1d16096405.js" crossorigin="anonymous"></script>
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans min-h-screen flex flex-col">
-<header class="bg-gray-800 border-b border-gray-700 shadow-lg p-4 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <div class="flex items-center">
-            <h1 class="text-2xl font-bold text-white">
-                <a href="/" class="flex items-center gap-2 hover:text-blue-400 transition-colors">
-                    Forum Warframe
-                </a>
-            </h1>
-        </div>
-        <div class="flex items-center">
-            <nav class="hidden md:flex space-x-6 items-center">
-                <a href="index.html" class="hover:text-blue-400 transition-colors">Home</a>
-                <a href="findPublication.html" class="hover:text-blue-400 transition-colors">All Posts</a>
-
-                {{if .isConnected}}
-                <a href="profile.html" class="text-blue-400 font-mediums">Profile</a>
-                <a href="#" class="hover:text-blue-400 transition-colors">Logout</a>
-                {{end}}
-
-                {{if not .isConnected}}
-                <a href="register.html" class="hover:text-blue-400 transition-colors">Login</a>
-                {{end}}
-            </nav>
-            <button id="mobile-menu-button" class="md:hidden ml-2 text-gray-300 hover:text-blue-400 focus:outline-none"
-                    aria-label="Menu">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <button class="text-gray-300 hover:text-blue-400 transition-colors p-1 relative ml-4"
-                    aria-label="Notifications">
-                <i class="fa-regular fa-bell text-lg"></i>
-                <span class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">3</span>
-            </button>
-        </div>
-    </div>
-    <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2 border-t border-gray-700 max-w-7xl mx-auto">
-        <nav class="mt-2 space-y-3 flex flex-col px-2">
-            <a href="index.html"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Home</a>
-            <a href="findPublication.html"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">All Posts</a>
-            
-            {{if .isConnected}}
-            <a href="profile.html"
-               class="block px-3 py-2 rounded-md bg-gray-700 text-blue-400 font-medium">Profile</a>
-            <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Logout</a>
-            {{end}}
-
-            {{if not .isConnected}}
-             <a href="register.html"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Login</a>
-            {{end}}
-        </nav>
-    </div>
-</header>
+{{ template "headerComponent" .Header }}
 <main class="bg-[url(/static/imgs/forums_background.jpg)] bg-center bg-cover flex-grow flex items-center justify-center py-10">
+    {{ if .Error.ErrorMessage}}
+    <div id="error-popUp" class="fixed inset-0 z-[60] overflow-y-auto">
+                    <div class="flex items-center justify-center min-h-screen px-4">
+                        <div class="fixed inset-0 bg-black opacity-80 transition-opacity"></div>
+                        <div class="bg-gray-800 rounded-lg max-w-md w-full mx-auto z-10 relative border border-red-800 shadow-xl">
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-red-400 mb-4">{{ .Error.ErrorTitle }} </h3>
+                                <p class="text-gray-300 mb-6">{{ .Error.ErrorMessage}}</p>
+
+                                    <div class="flex gap-3 justify-end">
+                                        <button type="button" id="close-error"
+                                                class="bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors">
+                                            close
+                                        </button>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    {{end}}
     <section class="w-full max-w-6xl mx-auto px-4">
         <div class="flex flex-col md:flex-row gap-6">
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 md:w-1/3">
                 <div class="relative mx-auto w-36">
-                    <img src="/static/imgs/forums_background.jpg" alt="Your avatar"
+                    <img src="{{ .Avatar }}" alt="Your avatar"
                          class="w-36 h-36 rounded-full mx-auto mb-6 border-4 border-blue-500 shadow-lg object-cover">
                 </div>
                 <div class="flex items-center justify-center space-x-2 mb-4">
@@ -77,48 +44,33 @@
                     </button>
                 </div>
                 <div class="space-y-3 text-lg ">
-                    <p class="text-gray-300">Username: <span class="text-blue-400 font-medium">Tenno42</span></p>
-                    <p class="text-gray-300">Email: <span class="text-blue-400 font-medium">user@example.com</span></p>
-                    <p class="text-gray-300">Joined: <span class="text-blue-400 font-medium">January 1, 2025</span></p>
-                    <p class="text-gray-300">Posts: <span class="text-blue-400 font-medium">42</span></p>
-                    <p class="text-gray-300">Messages: <span class="text-blue-400 font-medium">100</span></p>
+                    <p class="text-gray-300">Username: <span class="text-blue-400 font-medium">{{ .Username }}</span></p>
+                    <p class="text-gray-300">Email: <span class="text-blue-400 font-medium">{{ .Email }}</span></p>
+                    <p class="text-gray-300">Joined: <span class="text-blue-400 font-medium">{{ .JoinedAt }}</span></p>
+                    <p class="text-gray-300">Posts: <span class="text-blue-400 font-medium">{{ .PostsCount }}</span></p>
+                    <p class="text-gray-300">Comments: <span class="text-blue-400 font-medium">{{ .CommentsCount }}</span></p>
                     <div class="mt-4 border-t border-gray-700 pt-4">
                         <p class="text-gray-300">Biography: <span
-                                class="text-blue-400 font-normal italic text-sm block mt-1">Your biography is written here.</span>
+                                class="text-blue-400 font-normal italic text-sm block mt-1">{{ .Bio }}</span>
                         </p>
                     </div>
                 </div>
             </div>
             <div class="md:w-2/3 space-y-6">
-                <div class="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700" id="content-tab">
                     <h3 class="text-2xl font-semibold mb-4 text-blue-400">Recent Activity</h3>
                     <ul class="space-y-4">
-                        <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md">
-                            <span class="text-gray-200 text-lg">Posted in </span>
-                            <span class="text-blue-400 font-medium text-lg">"Best Warframe Builds"</span>
-                            <p class="text-gray-400 mt-1">2 hours ago</p>
+
+                        {{ range .RecentActivity }}
+                        <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md content-item">
+                            <span class="text-gray-200 text-lg">{{ .Action }} </span>
+                            <span class="text-blue-400 font-medium text-lg">{{ .Description }}</span>
+                            <p class="text-gray-400 mt-1">{{ .TimeAgo }}</p>
                         </li>
-                        <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md">
-                            <span class="text-gray-200 text-lg">Comment on </span>
-                            <span class="text-blue-400 font-medium text-lg">"New Update Discussion"</span>
-                            <p class="text-gray-400 mt-1">1 day ago</p>
-                        </li>
-                        <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md">
-                            <span class="text-gray-200 text-lg">Like on </span>
-                            <span class="text-blue-400 font-medium text-lg">"Warframe Fan Art"</span>
-                            <p class="text-gray-400 mt-1">3 days ago</p>
-                        </li>
-                        <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md">
-                            <span class="text-gray-200 text-lg">Joined </span>
-                            <span class="text-blue-400 font-medium text-lg">"Warframe Community"</span>
-                            <p class="text-gray-400 mt-1">1 week ago</p>
-                        </li>
-                        <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md">
-                            <span class="text-gray-200 text-lg">Started a new thread </span>
-                            <span class="text-blue-400 font-medium text-lg">"How to Farm Platinum"</span>
-                            <p class="text-gray-400 mt-1">2 weeks ago</p>
-                        </li>
+                        {{ end }}
                     </ul>
+                    <div class="text-center my-4 text-gray-300 pagination-info-content"></div>
+                    <div class="flex justify-center space-x-2 mb-4 pagination-controls-content"></div>
                 </div>
             </div>
         </div>
@@ -128,16 +80,16 @@
             <div class="fixed inset-0 bg-black opacity-70 transition-opacity" id="modal-backdrop"></div>
             <div class="bg-gray-800 rounded-lg max-w-lg w-full mx-auto z-10 relative border border-gray-700 shadow-xl">
                 <div class="flex justify-between items-center border-b border-gray-700 p-6">
-                    <h3 class="text-xl font-semibold text-blue-400">Modify your Profile</h3>
+                    <h3 class="text-xl font-semibold text-blue-400">Edit your Profile</h3>
                     <button type="button" class="text-gray-400 hover:text-white" id="close-modal">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
                 <div class="p-6">
-                    <form>
+                    <form action="/me/edit" method="POST" enctype="multipart/form-data" id="profile-form">
                         <div class="mb-6 flex flex-col items-center">
                             <div class="relative mb-3">
-                                <img src="/static/imgs/forums_background.jpg" alt="Your avatar"
+                                <img src="{{ .Avatar }}" alt="Your avatar"
                                      class="w-24 h-24 rounded-full border-2 border-blue-500 object-cover">
                                 <button type="button"
                                         class="absolute bottom-0 right-0 bg-blue-600 p-2 rounded-full hover:bg-blue-500 transition-colors text-sm">
@@ -149,56 +101,74 @@
                         <div id="avatar-upload-modal" class="fixed inset-0 z-[60] hidden overflow-y-auto">
                             <div class="flex items-center justify-center min-h-screen px-4">
                                 <div class="fixed inset-0 bg-black opacity-80 transition-opacity"></div>
-                                <div class="bg-gray-800 rounded-lg max-w-md w-full mx-auto z-10 relative border border-gray-700 shadow-xl">
-                                    <div class="flex justify-between items-center border-b border-gray-700 p-6">
-                                        <h3 class="text-xl font-semibold text-blue-400">Change your avatar</h3>
-                                        <button type="button" class="text-gray-400 hover:text-white" id="close-avatar-modal">
-                                            <i class="fa-solid fa-xmark"></i>
-                                        </button>
-                                    </div>
-                                    <div class="p-6">
-                                        <div class="flex flex-col items-center space-y-4">
-                                            <div class="w-40 h-40 rounded-full border-2 border-blue-500 overflow-hidden">
-                                                <img id="avatar-preview" src="/static/imgs/forums_background.jpg" alt="Avatar preview" class="w-full h-full object-cover">
-                                            </div>
-                                            <div class="w-full">
-                                                <label for="avatar-upload" class="block text-sm font-medium text-gray-300 mb-1">Select an image</label>
-                                                <input type="file" id="avatar-upload" name="avatar-upload" accept="image/*"
-                                                       class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                                <p class="mt-1 text-sm text-gray-400">Recommended format : JPEG or PNG, max 2MB</p>
+                                    <div class="bg-gray-800 rounded-lg max-w-md w-full mx-auto z-10 relative border border-gray-700 shadow-xl">
+                                        <div class="flex justify-between items-center border-b border-gray-700 p-6">
+                                            <h3 class="text-xl font-semibold text-blue-400">Change your avatar</h3>
+                                            <button type="button" class="text-gray-400 hover:text-white" id="close-avatar-modal">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+                                        <div class="p-6">
+                                            <div class="flex flex-col items-center space-y-4">
+                                                <div class="w-40 h-40 rounded-full border-2 border-blue-500 overflow-hidden">
+                                                    <img id="avatar-preview" src="{{ .Avatar }}" alt="Avatar preview" class="w-full h-full object-cover">
+                                                </div>
+                                                <div class="w-full">
+                                                    <label for="avatar-upload" class="block text-sm font-medium text-gray-300 mb-1">Select an image</label>
+                                                    <input type="file" id="avatar-upload" name="avatar-upload" accept="image/*"
+                                                           class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                    <p class="mt-1 text-sm text-gray-400">Recommended format : JPEG or PNG, max 5MB</p>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="border-t border-gray-700 p-6 flex justify-end space-x-3">
+                                            <button type="button" id="cancel-avatar-upload"
+                                                    class="bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors">
+                                                Cancel
+                                            </button>
+                                            <button type="submit" id="confirm-avatar-upload"
+                                                    class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500 transition-colors">
+                                                Save
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="border-t border-gray-700 p-6 flex justify-end space-x-3">
-                                        <button type="button" id="cancel-avatar-upload"
-                                                class="bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors">
-                                            Cancel
-                                        </button>
-                                        <button type="button" id="confirm-avatar-upload"
-                                                class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500 transition-colors">
-                                            Save
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
+                        <div id="avatar-upload-error-modal" class="fixed inset-0 z-[60] hidden overflow-y-auto">
+                    <div class="flex items-center justify-center min-h-screen px-4">
+                        <div class="fixed inset-0 bg-black opacity-80 transition-opacity"></div>
+                        <div class="bg-gray-800 rounded-lg max-w-md w-full mx-auto z-10 relative border border-red-800 shadow-xl">
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-red-400 mb-4">Error</h3>
+                                <p class="text-gray-300 mb-6">Files is too heavy! Max files size is 5Mb</p>
+
+                                    <div class="flex gap-3 justify-end">
+                                        <button type="button" id="avatar-close-error"
+                                                class="bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors">
+                                            close
+                                        </button>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                         <div class="space-y-4">
                             <div>
                                 <label for="username" class="block text-sm font-medium text-gray-300 mb-1">Your
                                     Username</label>
-                                <input type="text" id="username" name="username" value="Tenno42"
+                                <input type="text" id="username" name="username" value="{{ .Username }}"
                                        class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                             <div>
                                 <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
-                                <input type="email" id="email" name="email" value="user@example.com"
+                                <input disabled type="email" id="email" value="{{ .Email }}"
                                        class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                             <div>
                                 <label for="bio" class="block text-sm font-medium text-gray-300 mb-1">About Me</label>
                                 <textarea id="bio" name="bio" rows="3"
                                           class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                          placeholder="Tell us about yourself..."></textarea>
+                                          placeholder="Tell us about yourself..."  maxlength=500>{{ .Bio }}</textarea>
                             </div>
                             <div>
                                 <label for="new-password" class="block text-sm font-medium text-gray-300 mb-1">New
@@ -213,27 +183,26 @@
                                        class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                         </div>
+                        <div class="border-t border-gray-700 pt-6 mt-6 flex items-center justify-between">
+                            <button type="button" id="delete-account"
+                                    class="flex items-center text-gray-400 hover:text-red-400 transition-colors text-sm">
+                                <i class="fa-solid fa-trash pr-2"></i>
+                                Delete Account
+                            </button>
+                            <div class="flex gap-3 justify-end">
+                                <button type="button" id="cancel-modal"
+                                        class="bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors">
+                                    Cancel
+                                </button>
+                                <button type="submit"
+                                        class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500 transition-colors">
+                                    Save Changes
+                                </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
-                <div class="border-t border-gray-700 p-6 items-center flex justify-between">
-                    <div class="float-left">
-                        <button type="button" id="delete-account"
-                                class="flex items-center text-gray-400 hover:text-red-400 transition-colors text-sm">
-                            <i class="fa-solid fa-trash pr-2"></i>
-                            Delete Account
-                        </button>
-                    </div>
-                    <div class="flex gap-3 justify-end">
-                        <button type="button" id="cancel-modal"
-                                class="bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors">
-                            Cancel
-                        </button>
-                        <button type="button"
-                                class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500 transition-colors">
-                            Save Changes
-                        </button>
-                    </div>
-                </div>
+                
                 <div id="confirm-delete-modal" class="fixed inset-0 z-[60] hidden overflow-y-auto">
                     <div class="flex items-center justify-center min-h-screen px-4">
                         <div class="fixed inset-0 bg-black opacity-80 transition-opacity"></div>
@@ -242,16 +211,19 @@
                                 <h3 class="text-xl font-semibold text-red-400 mb-4">Confirm deletion</h3>
                                 <p class="text-gray-300 mb-6">This action is irreversible. Are you sure you want to
                                     delete your account?</p>
-                                <div class="flex gap-3 justify-end">
-                                    <button type="button" id="cancel-delete"
-                                            class="bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors">
-                                        Cancel
-                                    </button>
-                                    <button type="button" id="confirm-delete"
-                                            class="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors">
-                                        Permanently delete
-                                    </button>
-                                </div>
+
+                                <form action="/me/delete" method="POST"> 
+                                    <div class="flex gap-3 justify-end">
+                                        <button type="button" id="cancel-delete"
+                                                class="bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" id="confirm-delete"
+                                                class="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors">
+                                            Permanently delete
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -260,18 +232,8 @@
         </div>
     </div>
 </main>
-<footer class="mt-auto bg-gray-800 border-t border-gray-700 text-center text-gray-400 py-8">
-    <div class="max-w-6xl mx-auto px-4">
-        <p class="mb-4">&copy; 2025 Forum Warframe. All rights reserved.</p>
-        <div class="mt-6 flex justify-center space-x-4">
-            <a href="https://discord.gg/playwarframe" target="_blank" class="text-gray-400 hover:text-blue-400"><i class="fab fa-discord fa-lg"></i></a>
-            <a href="https://www.instagram.com/playwarframe/" target="_blank" class="text-gray-400 hover:text-blue-400"><i class="fab fa-instagram fa-lg"></i></a>
-            <a href="https://x.com/PlayWarframe?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank" class="text-gray-400 hover:text-blue-400"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="https://www.reddit.com/r/Warframe/" target="_blank" class="text-gray-400 hover:text-blue-400"><i class="fab fa-reddit fa-lg"></i></a>
-        </div>
-    </div>
-</footer>
-<script src="/static/js/profile.js"></script>
+{{ template "footerComponent" . }}
 <script src="/static/js/globalFunction.js"></script>
+<script src="/static/js/profile.js"></script>
 </body>
 </html>

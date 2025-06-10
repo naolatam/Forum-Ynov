@@ -2,37 +2,47 @@ package handlers
 
 import (
 	"Forum-back/internal/config"
+	"Forum-back/internal/templates"
 	dtos "Forum-back/pkg/dtos/templates"
 	"Forum-back/pkg/services"
-	"log"
 	"net/http"
-	"text/template"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 
-	tmpl, err := template.ParseFiles("internal/templates/index.gohtml")
-	if err != nil {
-		log.Println("Error parsing templates:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-
 	db, err := config.OpenDBConnection()
 	if err != nil {
-		log.Println("Error connecting to the database:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+
+		ShowDatabaseError500(w, &dtos.HeaderDto{
+			IsConnected: false})
 		return
 	}
 	defer db.Close()
 
+	userService := services.NewUserService(db)
 	sessionService := services.NewSessionService(db)
+	postService := services.NewPostService(db)
 	isConnected, _ := sessionService.IsAuthenticated(r)
 
+	countUsers, _ := userService.GetUserCount() 
+	countPosts, _ := postService.GetPostCount()
+	countOnlineUsers, _ := sessionService.GetActiveSessionCount()
+	
+
 	data := dtos.HomePageDto{
-		IsConnected: isConnected,
+		Header: dtos.HeaderDto{
+			IsConnected: isConnected,
+		},
+		UserCount: countUsers,
+		PostCount: countPosts,
+		ActiveUsersCount: countOnlineUsers,
 	}
 
+	tmpl, err := templates.GetTemplateWithLayout(&data.Header, "home", "internal/templates/index.gohtml")
+	if err != nil {
+		ShowTemplateError500(w, &data.Header)
+		return
+	}
 	err = tmpl.Execute(w, data)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)

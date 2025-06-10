@@ -78,3 +78,20 @@ func setSessionCookie(
 
 	http.SetCookie(w, sessionCookie)
 }
+
+func deleteSessionCookie(
+	w http.ResponseWriter,
+) {
+
+	sessionCookie := &http.Cookie{
+		Name:     os.Getenv("SESSION_COOKIE_NAME"),
+		Value:    "",
+		Expires:  time.Now(),
+		HttpOnly: true,
+		Secure:   true,
+		Path:     "/",
+		SameSite: http.SameSiteLaxMode,
+	}
+
+	http.SetCookie(w, sessionCookie)
+}

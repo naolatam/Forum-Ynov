@@ -175,13 +175,28 @@ func (repository *UserRepository) Create(user *models.User) error {
 
 }
 
-func (repository *UserRepository) CountUserNumber(post *models.User) error {
+func (repository *UserRepository) GetUserCount() int {
 	if repository.db == nil {
-		return errors.New("connection to database isn't established")
+		return -1
 	}
 
 	var userCount int
 	err := repository.db.QueryRow("SELECT COUNT(*) FROM users").Scan(&userCount)
+	if err != nil {
+		return -1
+	}
+	return userCount
+}
+
+func (repository *UserRepository) Delete(userId *uuid.UUID) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	if userId == nil || *userId == uuid.Nil {
+		return errors.New("user ID cannot be nil")
+	}
+
+	_, err := repository.db.Exec("DELETE FROM users WHERE id = ?", userId)
 	if err != nil {
 		return err
 	}

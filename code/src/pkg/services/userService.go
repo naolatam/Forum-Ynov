@@ -5,6 +5,7 @@ import (
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/repositories"
 	"Forum-back/pkg/utils"
+	"fmt"
 	"os"
 	"time"
 
@@ -270,5 +271,23 @@ func (service *UserService) CheckUserWithSameGithubEmails(userInfo *dtos.GitHubU
 		}
 	}
 	return nil, nil
+}
 
+func (service *UserService) GetUserCount() (int, error) {
+	count := service.repo.GetUserCount()
+	if count == -1 {
+		return -1, fmt.Errorf("failed to get user count")
+	}
+	return count, nil
+}
+
+func (service *UserService) Delete(user *models.User) (bool, error) {
+	if user == nil || user.ID == uuid.Nil {
+		return false, fmt.Errorf("user cannot be nil or have an empty ID")
+	}
+	err := service.repo.Delete(&user.ID)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
