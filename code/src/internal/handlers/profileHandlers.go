@@ -4,10 +4,15 @@ import (
 	"Forum-back/internal/config"
 	"Forum-back/internal/templates"
 	dtos "Forum-back/pkg/dtos/templates"
+	"Forum-back/pkg/models"
 	"Forum-back/pkg/services"
 	"Forum-back/pkg/utils"
+	"errors"
 	"html/template"
+	"io"
 	"net/http"
+
+	"github.com/google/uuid"
 )
 
 func ProfileHandler(w http.ResponseWriter, r *http.Request) {
@@ -113,4 +118,73 @@ func DeleteMyProfileHandler(w http.ResponseWriter, r *http.Request) {
 
 	deleteSessionCookie(w)
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+func EditMyProfileHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		ShowError405(w, &dtos.HeaderDto{})
+		return
+	}
+
+	db, err := config.OpenDBConnection()
+	if err != nil {
+		ShowDatabaseError500(w, &dtos.HeaderDto{})
+		return
+	}
+	defer db.Close()
+
+	sessionService := services.NewSessionService(db)
+	userService := services.NewUserService(db)
+	isConnected, session := sessionService.IsAuthenticated(r)
+	if !isConnected {
+		http.Redirect(w, r, "/auth/login", http.StatusSeeOther)
+		return
+	}
+
+	user := userService.FindById(session.User_ID)
+	if user == nil {
+		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Unable to retrieve user information from the database.")
+		return
+	}
+	if err := updateUserProfile(user, userService, r); err != nil {
+		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Failed to update profile: "+err.Error())
+		return
+	}
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func updateUserProfile(user *models.User, userService *services.UserService, r *http.Request) error {
+
+	if pseudo := r.FormValue("pseudo"); pseudo != "" {
+		user := userService.FindByUsername(pseudo)
+		if user != nil && user.ID != uuid.Nil {
+			return errors.New("Username already exists")
+		}
+		user.Pseudo = pseudo
+	}
+
+	user.Bio = r.FormValue("bio")
+
+	if r.FormValue("new-password") != "" {
+		hashedPassword, err := utils.CheckForNewPassword(r.FormValue("new-password"), r.FormValue("confirm-password"))
+		if err != nil {
+			return err
+		}
+		user.Password = hashedPassword
+	}
+
+	if avatarFile, _, err := r.FormFile("avatar-upload"); err == nil {
+		defer avatarFile.Close()
+		if avatarBytes, err := io.ReadAll(avatarFile); err == nil {
+			user.Avatar = avatarBytes
+		} else {
+			return err
+		}
+	}
+
+	if success := userService.Update(user); !success {
+		return errors.New("failed to update user profile")
+	}
+
+	return nil
 }
