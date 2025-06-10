@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"Forum-back/internal/config"
+	"Forum-back/internal/templates"
 	dtos "Forum-back/pkg/dtos/templates"
 	"html/template"
 	"net/http"
@@ -45,7 +46,7 @@ func MyProfileHandler(w http.ResponseWriter, r *http.Request) {
 		"email":  Email, */
 	}
 
-	tmpl, err := template.ParseFiles("internal/templates/profile.gohtml", "internal/templates/components/headerComponent.gohtml")
+	tmpl, err := templates.GetTemplateWithLayout(&dtos.HeaderDto{}, "/me", "internal/templates/profile.gohtml")
 	if err != nil {
 		ShowTemplateError500(w, &dtos.HeaderDto{})
 		return
