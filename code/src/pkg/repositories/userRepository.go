@@ -185,5 +185,30 @@ func (repository *UserRepository) GetUserCount() int {
 	if err != nil {
 		return -1
 	}
+<<<<<<< Updated upstream
 	return userCount
 }
+=======
+<<<<<<< Updated upstream
+	return nil
+}
+=======
+	return userCount
+}
+
+func (repository *UserRepository) Delete(userId *uuid.UUID) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	if userId == nil || *userId == uuid.Nil {
+		return errors.New("user ID cannot be nil")
+	}
+
+	_, err := repository.db.Exec("DELETE FROM users WHERE id = ?", userId)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
