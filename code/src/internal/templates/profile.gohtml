@@ -40,42 +40,12 @@
                 <div class="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700" id="content-tab">
                     <h3 class="text-2xl font-semibold mb-4 text-blue-400">Recent Activity</h3>
                     <ul class="space-y-4">
-<<<<<<< Updated upstream
-                        <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md content-item">
-=======
-<<<<<<< Updated upstream
-                        <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md">
->>>>>>> Stashed changes
-                            <span class="text-gray-200 text-lg">Posted in </span>
-                            <span class="text-blue-400 font-medium text-lg">"Best Warframe Builds"</span>
-                            <p class="text-gray-400 mt-1">2 hours ago</p>
-                        </li>
-                        <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md content-item">
-                            <span class="text-gray-200 text-lg">Comment on </span>
-                            <span class="text-blue-400 font-medium text-lg">"New Update Discussion"</span>
-                            <p class="text-gray-400 mt-1">1 day ago</p>
-                        </li>
-                        <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md content-item">
-                            <span class="text-gray-200 text-lg">Like on </span>
-                            <span class="text-blue-400 font-medium text-lg">"Warframe Fan Art"</span>
-                            <p class="text-gray-400 mt-1">3 days ago</p>
-                        </li>
-                        <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md content-item">
-                            <span class="text-gray-200 text-lg">Joined </span>
-                            <span class="text-blue-400 font-medium text-lg">"Warframe Community"</span>
-                            <p class="text-gray-400 mt-1">1 week ago</p>
-                        </li>
-                        <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md content-item">
-                            <span class="text-gray-200 text-lg">Started a new thread </span>
-                            <span class="text-blue-400 font-medium text-lg">"How to Farm Platinum"</span>
-                            <p class="text-gray-400 mt-1">2 weeks ago</p>
-=======
+
                         {{ range .RecentActivity }}
                         <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md content-item">
                             <span class="text-gray-200 text-lg">{{ .Action }} </span>
                             <span class="text-blue-400 font-medium text-lg">{{ .Description }}</span>
                             <p class="text-gray-400 mt-1">{{ .TimeAgo }}</p>
->>>>>>> Stashed changes
                         </li>
                         {{ end }}
                     </ul>
@@ -167,7 +137,6 @@
                                 <label for="username" class="block text-sm font-medium text-gray-300 mb-1">Your
                                     Username</label>
                                 <input type="text" id="username" name="username" value="{{ .Username }}"
-                                       class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                             <div>
                                 <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
@@ -181,39 +150,34 @@
                                           placeholder="Tell us about yourself..."  maxlength=500>{{ .Bio }}</textarea>
                             </div>
                             <div>
-                                <label for="new-password" class="block text-sm font-medium text-gray-300 mb-1">New
-                                    password (leave blank if you don't want to change it)</label>
+                                <label for="new-password" class="block text-sm font-medium text-gray-300 mb-1">New password (leave blank if you don't want to change it)</label>
                                 <input type="password" id="new-password" name="new-password"
                                        class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                             <div>
-                                <label for="confirm-password" class="block text-sm font-medium text-gray-300 mb-1">Confirm
-                                    your password</label>
+                                <label for="confirm-password" class="block text-sm font-medium text-gray-300 mb-1">Confirm your password</label>
                                 <input type="password" id="confirm-password" name="confirm-password"
                                        class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                         </div>
-                        
+                        <div class="border-t border-gray-700 pt-6 mt-6 flex items-center justify-between">
+                            <button type="button" id="delete-account"
+                                    class="flex items-center text-gray-400 hover:text-red-400 transition-colors text-sm">
+                                <i class="fa-solid fa-trash pr-2"></i>
+                                Delete Account
+                            </button>
+                            <div class="flex gap-3 justify-end">
+                                <button type="button" id="cancel-modal"
+                                        class="bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors">
+                                    Cancel
+                                </button>
+                                <button type="submit"
+                                        class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500 transition-colors">
+                                    Save Changes
+                                </button>
+                            </div>
+                        </div>
                     </form>
-                </div>
-                <div class="border-t border-gray-700 p-6 items-center flex justify-between">
-                    <div class="float-left">
-                        <button type="button" id="delete-account"
-                                class="flex items-center text-gray-400 hover:text-red-400 transition-colors text-sm">
-                            <i class="fa-solid fa-trash pr-2"></i>
-                            Delete Account
-                        </button>
-                    </div>
-                    <div class="flex gap-3 justify-end">
-                        <button type="button" id="cancel-modal"
-                                class="bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors">
-                            Cancel
-                        </button>
-                        <button type="button"
-                                class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500 transition-colors">
-                            Save Changes
-                        </button>
-                    </div>
                 </div>
                 <div id="confirm-delete-modal" class="fixed inset-0 z-[60] hidden overflow-y-auto">
                     <div class="flex items-center justify-center min-h-screen px-4">
