@@ -16,6 +16,6 @@ type ProfilPageDto struct {
 }
 
 type ProfilePageErrorDto struct {
-	ErrorType    string `json:"error_type"`
+	ErrorTitle   string `json:"error_type"`
 	ErrorMessage string `json:"error_message"`
 }
