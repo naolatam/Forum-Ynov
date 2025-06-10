@@ -7,7 +7,6 @@ import (
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/services"
 	"Forum-back/pkg/utils"
-	"errors"
 	"html/template"
 	"io"
 	"net/http"
@@ -60,28 +59,7 @@ func MyProfileHandler(w http.ResponseWriter, r *http.Request) {
 		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Unable to retrieve user information from the database.")
 		return
 	}
-
-	data := dtos.ProfilPageDto{
-		Header: dtos.HeaderDto{
-			IsConnected: isConnected,
-		},
-		Username:       user.Pseudo,
-		Email:          user.Email,
-		JoinedAt:       user.CreatedAt.Format("January 02, 2006"),
-		Avatar:         template.URL(utils.ConvertBytesToBase64(user.Avatar, "image/png")),
-		Bio:            user.Bio,
-		PostsCount:     0,
-		CommentsCount:  0,
-		RecentActivity: nil, // This should be populated with actual recent activity data
-	}
-
-	tmpl, err := templates.GetTemplateWithLayout(&data.Header, "myProfile", "internal/templates/profile.gohtml")
-	if err != nil {
-		ShowTemplateError500(w, &data.Header)
-		return
-	}
-
-	tmpl.Execute(w, data)
+	showMyProfilePage(w, isConnected, user, nil, nil)
 }
 
 func DeleteMyProfileHandler(w http.ResponseWriter, r *http.Request) {
@@ -146,19 +124,21 @@ func EditMyProfileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := updateUserProfile(user, userService, r); err != nil {
-		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Failed to update profile: "+err.Error())
+		showMyProfilePage(w, isConnected, user, nil, err)
 		return
 	}
 
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	http.Redirect(w, r, "/me", http.StatusSeeOther)
 }
 
-func updateUserProfile(user *models.User, userService *services.UserService, r *http.Request) error {
-
-	if pseudo := r.FormValue("pseudo"); pseudo != "" {
-		user := userService.FindByUsername(pseudo)
-		if user != nil && user.ID != uuid.Nil {
-			return errors.New("Username already exists")
+func updateUserProfile(user *models.User, userService *services.UserService, r *http.Request) *dtos.ProfilePageErrorDto {
+	if pseudo := r.FormValue("username"); pseudo != "" {
+		searchedUser := userService.FindByUsername(pseudo)
+		if searchedUser != nil && searchedUser.ID != uuid.Nil && searchedUser.ID != user.ID {
+			return &dtos.ProfilePageErrorDto{
+				ErrorMessage: "Username already exists, please choose another one.",
+				ErrorTitle:   "Username already taken",
+			}
 		}
 		user.Pseudo = pseudo
 	}
@@ -168,7 +148,10 @@ func updateUserProfile(user *models.User, userService *services.UserService, r *
 	if r.FormValue("new-password") != "" {
 		hashedPassword, err := utils.CheckForNewPassword(r.FormValue("new-password"), r.FormValue("confirm-password"))
 		if err != nil {
-			return err
+			return &dtos.ProfilePageErrorDto{
+				ErrorMessage: err.Error(),
+				ErrorTitle:   "Password Error",
+			}
 		}
 		user.Password = hashedPassword
 	}
@@ -178,13 +161,50 @@ func updateUserProfile(user *models.User, userService *services.UserService, r *
 		if avatarBytes, err := io.ReadAll(avatarFile); err == nil {
 			user.Avatar = avatarBytes
 		} else {
-			return err
+			return &dtos.ProfilePageErrorDto{
+				ErrorMessage: "Failed to read avatar file: " + err.Error(),
+				ErrorTitle:   "Avatar Upload Error",
+			}
 		}
 	}
 
 	if success := userService.Update(user); !success {
-		return errors.New("failed to update user profile")
+
+		return &dtos.ProfilePageErrorDto{
+			ErrorMessage: "Failed to update user profile in the database.",
+			ErrorTitle:   "Database Update Error",
+		}
 	}
 
+	return nil
+
+}
+
+func showMyProfilePage(w http.ResponseWriter, isConnected bool, user *models.User, RecentActivity []*dtos.RecentActivityDto, err *dtos.ProfilePageErrorDto) error {
+	if err == nil {
+		err = &dtos.ProfilePageErrorDto{}
+	}
+	data := dtos.ProfilPageDto{
+		Header: dtos.HeaderDto{
+			IsConnected: isConnected,
+		},
+		Username:       user.Pseudo,
+		Email:          user.Email,
+		JoinedAt:       user.CreatedAt.Format("January 02, 2006"),
+		Avatar:         template.URL(utils.ConvertBytesToBase64(user.Avatar, "image/png")),
+		Bio:            user.Bio,
+		PostsCount:     0,
+		CommentsCount:  0,
+		RecentActivity: RecentActivity, // This should be populated with actual recent activity data
+		Error:          *err,
+	}
+	tmpl, templateError := templates.GetTemplateWithLayout(&data.Header, "myProfile", "internal/templates/profile.gohtml")
+	if templateError != nil {
+		ShowTemplateError500(w, &data.Header)
+		return templateError
+	}
+	if templateError = tmpl.Execute(w, data); templateError != nil {
+		ShowTemplateError500(w, &data.Header)
+	}
 	return nil
 }
