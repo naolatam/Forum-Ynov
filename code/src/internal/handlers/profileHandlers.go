@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"Forum-back/internal/config"
+	dtos "Forum-back/pkg/dtos/templates"
 	"html/template"
-	"log"
 	"net/http"
 )
 
@@ -11,8 +11,7 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request) {
 
 	db, err := config.OpenDBConnection()
 	if err != nil {
-		log.Println("Error connecting to the database:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowDatabaseError500(w, &dtos.HeaderDto{})
 		return
 	}
 	defer db.Close()
@@ -25,8 +24,7 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles("internal/templates/profile.gohtml", "internal/templates/components/headerComponent.gohtml")
 	if err != nil {
-		log.Println("Error parsing templates:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowTemplateError500(w, &dtos.HeaderDto{})
 		return
 	}
 
@@ -36,8 +34,7 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request) {
 func MyProfileHandler(w http.ResponseWriter, r *http.Request) {
 	db, err := config.OpenDBConnection()
 	if err != nil {
-		log.Println("Error connecting to the database:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowDatabaseError500(w, &dtos.HeaderDto{})
 		return
 	}
 	defer db.Close()
@@ -50,8 +47,7 @@ func MyProfileHandler(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles("internal/templates/profile.gohtml", "internal/templates/components/headerComponent.gohtml")
 	if err != nil {
-		log.Println("Error parsing templates:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowTemplateError500(w, &dtos.HeaderDto{})
 		return
 	}
 
