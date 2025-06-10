@@ -62,12 +62,16 @@
             </p>
         </div>
     </section>
+
+{{if .Header.IsConnected}}
     <section class="bg-blue-700 text-white text-center py-10">
         <h3 class="text-2xl font-bold mb-4">Join the Tenno community!</h3>
         <a href="/auth/login" class="bg-white text-blue-700 px-6 py-2 rounded font-semibold hover:bg-gray-100">
             <i class="fas fa-sign-in-alt text-sm"></i> Sign Up Now
         </a>
     </section>
+{{end}}
+
 </main>
 {{ template "footerComponent" . }}
 <script src="/static/js/globalFunction.js"></script>
