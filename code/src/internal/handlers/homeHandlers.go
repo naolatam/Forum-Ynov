@@ -5,7 +5,6 @@ import (
 	"Forum-back/internal/templates"
 	dtos "Forum-back/pkg/dtos/templates"
 	"Forum-back/pkg/services"
-	"log"
 	"net/http"
 )
 
@@ -13,8 +12,9 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 
 	db, err := config.OpenDBConnection()
 	if err != nil {
-		log.Println("Error connecting to the database:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+
+		ShowDatabaseError500(w, &dtos.HeaderDto{
+			IsConnected: false})
 		return
 	}
 	defer db.Close()
@@ -40,13 +40,11 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := templates.GetTemplateWithLayout(&data.Header, "home", "internal/templates/index.gohtml")
 	if err != nil {
-		log.Println("Error parsing templates:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowTemplateError500(w, &data.Header)
 		return
 	}
 	err = tmpl.Execute(w, data)
 	if err != nil {
-		log.Println("Error executing template:", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 }

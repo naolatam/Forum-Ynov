@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"Forum-back/internal/config"
+	dtos "Forum-back/pkg/dtos/templates"
 	"Forum-back/pkg/services"
 	"Forum-back/pkg/utils/oauth"
 	"fmt"
@@ -19,7 +20,7 @@ func LoginViaGoogleHandler(w http.ResponseWriter, r *http.Request) {
 func LoginViaGoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	// Check if the request method is valid, only GET is allowed
 	if r.Method != http.MethodGet {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		ShowError405(w, &dtos.HeaderDto{IsConnected: false})
 		return
 	}
 
@@ -33,14 +34,14 @@ func LoginViaGoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	// If there is an error getting the user info, return an error
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Failed to get user info: %v", err), http.StatusInternalServerError)
+		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: false}, fmt.Sprintf("Failed to get user info: %v", err))
 		return
 	}
 
 	// If the user info is set, search the user in database
 	db, err := config.OpenDBConnection()
 	if err != nil {
-		http.Error(w, "Database connection error", http.StatusInternalServerError)
+		ShowDatabaseError500(w, &dtos.HeaderDto{IsConnected: false})
 		return
 	}
 	defer db.Close()
@@ -60,13 +61,13 @@ func LoginViaGoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 			// User with the same email found, update Google ID
 			user.Google_ID = &userInfo.ID
 			if !userService.Update(user) {
-				http.Error(w, "Failed to update user with Google ID", http.StatusInternalServerError)
+				ShowCustomError500(w, &dtos.HeaderDto{IsConnected: false}, "Failed to update user with Google ID")
 				return
 			}
 		} else {
 			user, err = userService.CreateFromGoogle(userInfo)
 			if err != nil {
-				http.Error(w, fmt.Sprintf("Failed to create user: %v", err), http.StatusInternalServerError)
+				ShowCustomError500(w, &dtos.HeaderDto{IsConnected: false}, fmt.Sprintf("Failed to create user: %v", err))
 				return
 			}
 		}

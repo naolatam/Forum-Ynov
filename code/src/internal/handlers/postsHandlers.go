@@ -6,7 +6,6 @@ import (
 	dtos "Forum-back/pkg/dtos/templates"
 
 	"Forum-back/pkg/services"
-	"log"
 	"net/http"
 	"text/template"
 
@@ -16,8 +15,7 @@ import (
 func SearchPostsHandler(w http.ResponseWriter, r *http.Request) {
 	db, err := config.OpenDBConnection()
 	if err != nil {
-		log.Println("Error connecting to the database:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowDatabaseError500(w, &dtos.HeaderDto{})
 		return
 	}
 	defer db.Close()
@@ -29,19 +27,19 @@ func SearchPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 	categories := categoryService.FindAll()
 	if categories == nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "No categories found. Contact the administrator to add categories.")
 		return
 	}
 
 	searchTerm, searchCategory, err := parseSearchParams(r)
 	if err != nil {
-		http.Error(w, "Bad Request", http.StatusBadRequest)
+		ShowError400(w, &dtos.HeaderDto{IsConnected: isConnected})
 		return
 	}
 
 	posts, err := postService.FindPostByQueryAndCategory(searchTerm, searchCategory)
 	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error while searching posts: "+err.Error())
 		return
 	}
 
@@ -57,8 +55,7 @@ func SearchPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := templates.GetTemplateWithLayout(&data.Header, "searchPosts", "internal/templates/findPublication.gohtml")
 	if err != nil {
-		log.Println("Error parsing templates:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowTemplateError500(w, &data.Header)
 		return
 	}
 
@@ -73,16 +70,14 @@ func SeePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	db, err := config.OpenDBConnection()
 	if err != nil {
-		log.Println("Error connecting to the database:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowDatabaseError500(w, &dtos.HeaderDto{})
 		return
 	}
 	defer db.Close()
 
 	tmpl, err := template.ParseFiles("internal/templates/publication.gohtml", "internal/templates/components/headerComponent.gohtml")
 	if err != nil {
-		log.Println("Error parsing templates:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowTemplateError500(w, &dtos.HeaderDto{})
 		return
 	}
 
@@ -101,16 +96,14 @@ func EditPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	db, err := config.OpenDBConnection()
 	if err != nil {
-		log.Println("Error connecting to the database:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowDatabaseError500(w, &dtos.HeaderDto{})
 		return
 	}
 	defer db.Close()
 
 	tmpl, err := template.ParseFiles("internal/templates/publicationEdit.gohtml", "internal/templates/components/headerComponent.gohtml")
 	if err != nil {
-		log.Println("Error parsing templates:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ShowTemplateError500(w, &dtos.HeaderDto{})
 		return
 	}
 
