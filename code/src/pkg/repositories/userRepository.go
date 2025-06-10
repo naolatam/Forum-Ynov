@@ -185,14 +185,6 @@ func (repository *UserRepository) GetUserCount() int {
 	if err != nil {
 		return -1
 	}
-<<<<<<< Updated upstream
-	return userCount
-}
-=======
-<<<<<<< Updated upstream
-	return nil
-}
-=======
 	return userCount
 }
 
@@ -210,5 +202,3 @@ func (repository *UserRepository) Delete(userId *uuid.UUID) error {
 	}
 	return nil
 }
->>>>>>> Stashed changes
->>>>>>> Stashed changes
