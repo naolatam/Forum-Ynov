@@ -12,24 +12,24 @@ type RoleRepository struct {
 	db *sql.DB
 }
 
-func (repository *RoleRepository) FindByIdOrNameOrPermission(id uuid.UUID, name string, permission int) (*models.Role, error) {
+func (repository *RoleRepository) FindById(id uuid.UUID) (*models.Role, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
-	rows, err :=
-		repository.db.Query("SELECT * FROM users WHERE id = ? OR name = ? OR permission = ?", id, name, permission)
+	rows, err := repository.db.Query("SELECT name, permission FROM roles WHERE id = ?", id)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
 	var role models.Role
+	role.ID = id
 	if rows.Next() {
-		err = rows.Scan(&role.ID, &role.Name, &role.Permission)
+		err = rows.Scan(&role.Name, &role.Permission)
 		if err != nil {
 			return nil, err
 		}
 		return &role, nil
 	}
-	return nil, errors.New("user not found")
+	return nil, errors.New("roles not found")
 }
