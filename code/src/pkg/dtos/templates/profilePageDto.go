@@ -13,6 +13,7 @@ type ProfilPageDto struct {
 	CommentsCount  int                  `json:"comments_count"`
 	RecentActivity []*RecentActivityDto `json:"recent_activity"`
 	Error          ProfilePageErrorDto  `json:"error_string,omitempty"`
+	IsMine         bool
 }
 
 type ProfilePageErrorDto struct {
