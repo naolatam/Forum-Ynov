@@ -4,17 +4,10 @@ import (
 	"Forum-back/pkg/dtos"
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/repositories"
-<<<<<<< Updated upstream
 	"Forum-back/pkg/utils"
 	"fmt"
-=======
-<<<<<<< Updated upstream
-=======
-	"Forum-back/pkg/utils"
-	"fmt"
+
 	"log"
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 	"os"
 	"time"
 
@@ -300,8 +293,6 @@ func (service *UserService) Delete(user *models.User) (bool, error) {
 	}
 	return true, nil
 }
-<<<<<<< Updated upstream
-=======
 
 func (service *UserService) IsAdmin(user *models.User) bool {
 	if user == nil || user.ID == uuid.Nil {
@@ -338,4 +329,3 @@ func (service *UserService) IsAdminOrModerator(user *models.User) bool {
 	}
 	return service.IsAdmin(user) || service.IsModerator(user)
 }
->>>>>>> Stashed changes
