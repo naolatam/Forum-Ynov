@@ -54,7 +54,7 @@ func (repository *CategoryRepository) FindByName(name *string) (*models.Category
 	return nil, errors.New("category not found")
 }
 
-func (repository *CategoryRepository) FindByPostId(postId *uuid.UUID) (*[]*models.Category, error) {
+func (repository *CategoryRepository) FindByPostId(postId uint32) (*[]*models.Category, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
