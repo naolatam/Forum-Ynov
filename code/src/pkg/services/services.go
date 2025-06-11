@@ -25,6 +25,15 @@ func NewCategoryService(db *sql.DB) *CategoryService {
 	}
 }
 
+func NewCommentService(db *sql.DB) *CommentService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &CommentService{
+		repo: repositories.NewCommentRepository(db),
+	}
+}
+
 func NewPostService(db *sql.DB) *PostService {
 	if !checkDBConnection(db) {
 		return nil

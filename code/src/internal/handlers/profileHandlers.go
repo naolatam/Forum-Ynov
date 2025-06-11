@@ -7,7 +7,6 @@ import (
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/services"
 	"Forum-back/pkg/utils"
-	"errors"
 	"html/template"
 	"io"
 	"net/http"
@@ -143,15 +142,17 @@ func EditMyProfileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	http.Redirect(w, r, "/me", http.StatusSeeOther)
 }
 
-func updateUserProfile(user *models.User, userService *services.UserService, r *http.Request) error {
-
-	if pseudo := r.FormValue("pseudo"); pseudo != "" {
-		user := userService.FindByUsername(pseudo)
-		if user != nil && user.ID != uuid.Nil {
-			return errors.New("Username already exists")
+func updateUserProfile(user *models.User, userService *services.UserService, r *http.Request) *dtos.ProfilePageErrorDto {
+	if pseudo := r.FormValue("username"); pseudo != "" {
+		searchedUser := userService.FindByUsername(pseudo)
+		if searchedUser != nil && searchedUser.ID != uuid.Nil && searchedUser.ID != user.ID {
+			return &dtos.ProfilePageErrorDto{
+				ErrorMessage: "Username already exists, please choose another one.",
+				ErrorTitle:   "Username already taken",
+			}
 		}
 		user.Pseudo = pseudo
 	}
@@ -161,7 +162,10 @@ func updateUserProfile(user *models.User, userService *services.UserService, r *
 	if r.FormValue("new-password") != "" {
 		hashedPassword, err := utils.CheckForNewPassword(r.FormValue("new-password"), r.FormValue("confirm-password"))
 		if err != nil {
-			return err
+			return &dtos.ProfilePageErrorDto{
+				ErrorMessage: err.Error(),
+				ErrorTitle:   "Password Error",
+			}
 		}
 		user.Password = hashedPassword
 	}
@@ -171,7 +175,10 @@ func updateUserProfile(user *models.User, userService *services.UserService, r *
 		if avatarBytes, err := io.ReadAll(avatarFile); err == nil {
 			user.Avatar = avatarBytes
 		} else {
-			return err
+			return &dtos.ProfilePageErrorDto{
+				ErrorMessage: "Failed to read avatar file: " + err.Error(),
+				ErrorTitle:   "Avatar Upload Error",
+			}
 		}
 	}
 
