@@ -76,3 +76,15 @@ func (repository *CommentRepository) FindByUserId(userId *uuid.UUID) (*[]*models
 	}
 	return &res, nil
 }
+
+func (repository *CommentRepository) GetUserCommentCount(userId *uuid.UUID) (int, error) {
+	if repository.db == nil {
+		return -1, errors.New("unable to connect to database")
+	}
+	var count int
+	err := repository.db.QueryRow("SELECT COUNT(*) FROM comments WHERE user_id = ?", userId).Scan(&count)
+	if err != nil {
+		return -1, err
+	}
+	return count, nil
+}
