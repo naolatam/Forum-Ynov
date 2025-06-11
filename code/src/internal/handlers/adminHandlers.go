@@ -7,7 +7,7 @@ import (
 )
 
 func AdminHandler(w http.ResponseWriter, r *http.Request) {
-	templatePath := "internal/templates/admin.html"
+	templatePath := "internal/templates/admin.gohtml"
 
 	if _, err := os.Stat(templatePath); os.IsNotExist(err) {
 		errorData := dtos.ErrorPageDto{
