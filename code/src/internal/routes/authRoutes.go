@@ -10,9 +10,9 @@ import (
 func initAuthRoutes() {
 	// Routes for classic authentication
 	http.HandleFunc("/auth/login", handlers.LoginHandler)
-	/* http.HandleFunc("/auth/register", nil)
-	http.HandleFunc("/auth/logout", nil)
-	*/
+	http.HandleFunc("/auth/register", handlers.RegisterHandler)
+	http.HandleFunc("/auth/logout", handlers.LogoutHandler)
+
 	// Routes for social authentication
 	http.HandleFunc("/auth/google", handlers.LoginViaGoogleHandler)
 	http.HandleFunc("/auth/github", handlers.LoginViaGithubHandler)
