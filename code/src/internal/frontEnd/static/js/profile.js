@@ -67,10 +67,12 @@ document.addEventListener('DOMContentLoaded', function () {
         avatarInput.value = ''; // Clear the input
     }
     );
-    closeErrorBtn.addEventListener('click', () => {
-        errorPopUp.classList.add('hidden');
+    if (closeErrorBtn && errorPopUp) {
+        closeErrorBtn.addEventListener('click', () => {
+            errorPopUp.classList.add('hidden');
+        }
+        );
     }
-    );
 
     if (closeAvatarModalBtn) closeAvatarModalBtn.addEventListener('click', closeAvatarModal);
     if (cancelAvatarUploadBtn) cancelAvatarUploadBtn.addEventListener('click', closeAvatarModal);
