@@ -228,3 +228,15 @@ func (repository *PostRepository) GetPostCount() int {
 	}
 	return count
 }
+
+func (repository *PostRepository) GetUserPostCount(userId *uuid.UUID) (int, error) {
+	if repository.db == nil {
+		return -1, errors.New("unable to connect to database")
+	}
+	var count int
+	err := repository.db.QueryRow("SELECT COUNT(*) FROM posts WHERE user_id = ?", userId).Scan(&count)
+	if err != nil {
+		return -1, err
+	}
+	return count, nil
+}
