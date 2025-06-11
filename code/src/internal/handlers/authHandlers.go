@@ -114,14 +114,15 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Initialize session service and check if the user is authenticated
 	sessionService := services.NewSessionService(db)
-	isConnected, _ := sessionService.IsAuthenticated(r)
+	isConnected, session := sessionService.IsAuthenticated(r)
 	if !isConnected {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
-	// Delete the session cookie
+	// Delete the session from db and cookie
 	deleteSessionCookie(w)
+	sessionService.Delete(session)
 	// Redirect to the login page
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

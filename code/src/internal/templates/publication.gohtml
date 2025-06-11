@@ -32,9 +32,9 @@
                     <div class="text-gray-300 flex items-center gap-3 flex flex-col">
                         <p class="text-sm">{{.Post.CreatedAt}}</p>
                         <div class="flex items-center gap-2">
-                            <img src="/static/imgs/forums_background.jpg" alt="Avatar"
+                            <img src="{{ .Post.User.Avatar}}" alt="Avatar"
                                  class="w-10 h-10 rounded-full">
-                            <span class="font-semibold">{{.User.Pseudo}}</span>
+                            <span class="font-semibold">{{.Post.User.Pseudo}}</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-6 p-2">
@@ -85,7 +85,7 @@
             <div class="bg-gray-800 p-4 rounded-lg shadow-md">
                 <p class="text-gray-300">{{.Content}}</p>
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-3 gap-2">
-                    <p class="text-gray-400 text-sm">Posted by <span class="text-blue-400">{{.User}}</span>{{.Date}}</p>
+                    <p class="text-gray-400 text-sm">Posted by <span class="text-blue-400"><a href="/profile?user_id={{.User.ID}}">{{.User.Pseudo}}</a></span>{{.Date}}</p>
                     <div class="flex items-center space-x-4">
                         <div class="flex items-center">
                             <button class="focus:outline-none group">
