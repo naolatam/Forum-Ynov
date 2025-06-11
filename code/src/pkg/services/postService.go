@@ -13,6 +13,7 @@ import (
 
 type PostService struct {
 	repo *repositories.PostRepository
+	ur   *repositories.UserRepository
 }
 
 func (s *PostService) FindPostByQueryAndCategory(searchTerm string, categoryID *uuid.UUID) (*[]*models.Post, error) {
@@ -42,15 +43,24 @@ func (s *PostService) FindPostByQueryAndCategory(searchTerm string, categoryID *
 	}
 	return res, err
 }
-func (service *PostService) FindById(id uuid.UUID) (*models.Post, error) {
-	if id == uuid.Nil {
-		return nil, nil
-	}
-	post, err := service.repo.FindById(&id)
+func (service *PostService) FindById(id uint32) (*models.Post, error) {
+	post, err := service.repo.FindById(id)
 	if err != nil {
 		return nil, err
 	}
 	return post, nil
+}
+
+func (s *PostService) FetchUserId(post *models.Post) (*models.User, error) {
+	if post == nil || post.User_ID == uuid.Nil {
+		return nil, fmt.Errorf("post or user ID is nil")
+	}
+	user, err := s.ur.FindById(post.User_ID)
+	if err != nil {
+		return nil, err
+	}
+	post.User = *user
+	return user, nil
 }
 
 /* func (service *PostService) FindByTitle(title string) (*[]*models.Post, error) {
@@ -78,16 +88,7 @@ func (service *PostService) FindByCategoryId(categoryId uuid.UUID, limit *int) (
 func (service *PostService) GetPostCount() (int, error) {
 	count := service.repo.GetPostCount()
 	if count == -1 {
-		return count, fmt.Errorf("failed to count posts")
+		return count, fmt.Errorf("failed to count active sessions")
 	}
 	return count, nil
-}
-
-func (service *PostService) GetUserPostCount(user *models.User) int {
-	if user == nil || user.ID == uuid.Nil {
-		return -1
-	}
-	count, _ := service.repo.GetUserPostCount(&user.ID)
-
-	return count
 }
