@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initializePagination('modal-category', 'li', '.pagination-info', '.pagination-controls', 6);
     });
 
-    document.querySelector('[data-tab="reported-posts-tab"]').addEventListener('click', function() {
-        initializePagination('reported-posts-tab', '.post-report-item', '.pagination-info-posts', '.pagination-controls-posts', 2);
+    document.querySelector('[data-tab="user-roles-tab"]').addEventListener('click', function() {
+        initializePagination('user-roles-tab', '.user-role-item', '.pagination-info-roles', '.pagination-controls-roles', 2);
     });
 });
