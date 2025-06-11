@@ -2,8 +2,10 @@ package repositories
 
 import (
 	"Forum-back/pkg/models"
+	"Forum-back/pkg/utils"
 	"database/sql"
 	"errors"
+	"html/template"
 
 	"github.com/google/uuid"
 )
@@ -29,6 +31,7 @@ func (repository *UserRepository) FindById(id uuid.UUID) (*models.User, error) {
 		if err != nil {
 			return nil, err
 		}
+		user.AvatarBase64 = template.URL(utils.ConvertBytesToBase64(user.Avatar, "image/png"))
 		return &user, nil
 	}
 	return nil, errors.New("user not found")

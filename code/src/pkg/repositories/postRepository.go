@@ -2,8 +2,10 @@ package repositories
 
 import (
 	"Forum-back/pkg/models"
+	"Forum-back/pkg/utils"
 	"database/sql"
 	"errors"
+	"html/template"
 
 	"github.com/google/uuid"
 )
@@ -12,7 +14,7 @@ type PostRepository struct {
 	db *sql.DB
 }
 
-func (repository *PostRepository) FindById(id *uuid.UUID) (*models.Post, error) {
+func (repository *PostRepository) FindById(id uint32) (*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
@@ -24,10 +26,11 @@ func (repository *PostRepository) FindById(id *uuid.UUID) (*models.Post, error) 
 
 	var post models.Post
 	if rows.Next() {
-		err = rows.Scan(&post.ID, &post.Title, &post.Content, &post.Validated, &post.CreatedAt, &post.User_ID)
+		err = rows.Scan(&post.ID, &post.Title, &post.Content, &post.Picture, &post.Validated, &post.CreatedAt, &post.User_ID)
 		if err != nil {
 			return nil, err
 		}
+		post.PictureBase64 = template.URL(utils.ConvertBytesToBase64(post.Picture, "image/png"))
 		return &post, nil
 	}
 	return nil, errors.New("post not found")
