@@ -56,6 +56,17 @@ func ShowError404(w http.ResponseWriter, header *dtos.HeaderDto) {
 	ShowError(w, data)
 }
 
+func ShowCustomError404(w http.ResponseWriter, header *dtos.HeaderDto, message string) {
+
+	data := dtos.ErrorPageDto{
+		Code:    http.StatusNotFound,
+		Message: "Not Found",
+		Details: message,
+		Header:  *header,
+	}
+	ShowError(w, data)
+}
+
 func ShowError405(w http.ResponseWriter, header *dtos.HeaderDto) {
 
 	data := dtos.ErrorPageDto{
