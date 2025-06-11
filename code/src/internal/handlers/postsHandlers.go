@@ -4,6 +4,8 @@ import (
 	"Forum-back/internal/config"
 	"Forum-back/internal/templates"
 	dtos "Forum-back/pkg/dtos/templates"
+	"Forum-back/pkg/models"
+	"database/sql"
 
 	"Forum-back/pkg/services"
 	"net/http"
@@ -12,18 +14,10 @@ import (
 	"github.com/google/uuid"
 )
 
-func SearchPostsHandler(w http.ResponseWriter, r *http.Request) {
-	db, err := config.OpenDBConnection()
-	if err != nil {
-		ShowDatabaseError500(w, &dtos.HeaderDto{})
-		return
-	}
-	defer db.Close()
+func SearchPostsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
+
 	categoryService := services.NewCategoryService(db)
 	postService := services.NewPostService(db)
-	sessionService := services.NewSessionService(db)
-
-	isConnected, _ := sessionService.IsAuthenticated(r)
 
 	categories := categoryService.FindAll()
 	if categories == nil {
@@ -59,30 +53,9 @@ func SearchPostsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = tmpl.Execute(w, data)
-	if err != nil {
+	if err = tmpl.Execute(w, data); err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
-
-}
-
-func SeePostHandler(w http.ResponseWriter, r *http.Request) {
-
-	db, err := config.OpenDBConnection()
-	if err != nil {
-		ShowDatabaseError500(w, &dtos.HeaderDto{})
-		return
-	}
-	defer db.Close()
-
-	tmpl, err := template.ParseFiles("internal/templates/publication.gohtml", "internal/templates/components/headerComponent.gohtml")
-	if err != nil {
-		ShowTemplateError500(w, &dtos.HeaderDto{})
-		return
-	}
-
-	tmpl.Execute(w, nil)
-
 }
 
 func NotForNowHandler(w http.ResponseWriter, r *http.Request) {

@@ -1,40 +1,30 @@
 package handlers
 
 import (
-	"Forum-back/internal/config"
 	"Forum-back/internal/templates"
 	dtos "Forum-back/pkg/dtos/templates"
+	"Forum-back/pkg/models"
 	"Forum-back/pkg/services"
+	"database/sql"
 	"net/http"
 )
 
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
-
-	db, err := config.OpenDBConnection()
-	if err != nil {
-
-		ShowDatabaseError500(w, &dtos.HeaderDto{
-			IsConnected: false})
-		return
-	}
-	defer db.Close()
+func HomeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 
 	userService := services.NewUserService(db)
 	sessionService := services.NewSessionService(db)
 	postService := services.NewPostService(db)
-	isConnected, _ := sessionService.IsAuthenticated(r)
 
-	countUsers, _ := userService.GetUserCount() 
+	countUsers, _ := userService.GetUserCount()
 	countPosts, _ := postService.GetPostCount()
 	countOnlineUsers, _ := sessionService.GetActiveSessionCount()
-	
 
 	data := dtos.HomePageDto{
 		Header: dtos.HeaderDto{
 			IsConnected: isConnected,
 		},
-		UserCount: countUsers,
-		PostCount: countPosts,
+		UserCount:        countUsers,
+		PostCount:        countPosts,
 		ActiveUsersCount: countOnlineUsers,
 	}
 

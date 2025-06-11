@@ -56,6 +56,17 @@ func ShowCustomError400(w http.ResponseWriter, header *dtos.HeaderDto, message s
 	ShowError(w, data)
 }
 
+func ShowError403(w http.ResponseWriter, header *dtos.HeaderDto) {
+
+	data := dtos.ErrorPageDto{
+		Code:    http.StatusForbidden,
+		Message: "Not Authorized",
+		Details: "You cannot access the requested resource.",
+		Header:  *header,
+	}
+	ShowError(w, data)
+}
+
 func ShowError404(w http.ResponseWriter, header *dtos.HeaderDto) {
 
 	data := dtos.ErrorPageDto{

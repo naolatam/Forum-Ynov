@@ -7,6 +7,7 @@ import (
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/services"
 	"Forum-back/pkg/utils"
+	"database/sql"
 	"html/template"
 	"io"
 	"net/http"
@@ -48,22 +49,9 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request) {
 	showProfilePage(w, data)
 }
 
-func MyProfileHandler(w http.ResponseWriter, r *http.Request) {
-	db, err := config.OpenDBConnection()
-	if err != nil {
-		ShowDatabaseError500(w, &dtos.HeaderDto{})
-		return
-	}
-	defer db.Close()
+func MyProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 
-	sessionService := services.NewSessionService(db)
 	userService := services.NewUserService(db)
-
-	isConnected, session := sessionService.IsAuthenticated(r)
-	if !isConnected {
-		http.Redirect(w, r, "/auth/login", http.StatusSeeOther)
-		return
-	}
 
 	user := userService.FindById(session.User_ID)
 	if user == nil {
@@ -74,26 +62,9 @@ func MyProfileHandler(w http.ResponseWriter, r *http.Request) {
 	showProfilePage(w, data)
 }
 
-func DeleteMyProfileHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		ShowError405(w, &dtos.HeaderDto{})
-		return
-	}
+func DeleteMyProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 
-	db, err := config.OpenDBConnection()
-	if err != nil {
-		ShowDatabaseError500(w, &dtos.HeaderDto{})
-		return
-	}
-	defer db.Close()
-
-	sessionService := services.NewSessionService(db)
 	userService := services.NewUserService(db)
-	isConnected, session := sessionService.IsAuthenticated(r)
-	if !isConnected {
-		http.Redirect(w, r, "/auth/login", http.StatusSeeOther)
-		return
-	}
 
 	user := userService.FindById(session.User_ID)
 	if user == nil {
@@ -110,26 +81,8 @@ func DeleteMyProfileHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-func EditMyProfileHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		ShowError405(w, &dtos.HeaderDto{})
-		return
-	}
-
-	db, err := config.OpenDBConnection()
-	if err != nil {
-		ShowDatabaseError500(w, &dtos.HeaderDto{})
-		return
-	}
-	defer db.Close()
-
-	sessionService := services.NewSessionService(db)
+func EditMyProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 	userService := services.NewUserService(db)
-	isConnected, session := sessionService.IsAuthenticated(r)
-	if !isConnected {
-		http.Redirect(w, r, "/auth/login", http.StatusSeeOther)
-		return
-	}
 
 	user := userService.FindById(session.User_ID)
 	if user == nil {
