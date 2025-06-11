@@ -16,8 +16,10 @@ function toggleForm(isSignUp) {
 document.addEventListener("DOMContentLoaded", function () {
     const closeErrorBtn = document.getElementById('close-error');
     const errorPopUp = document.getElementById('error-popUp');
-    closeErrorBtn.addEventListener('click', () => {
-        errorPopUp.classList.add('hidden');
+    if (closeErrorBtn && errorPopUp) {
+        closeErrorBtn.addEventListener('click', () => {
+            errorPopUp.classList.add('hidden');
+        }
+        );
     }
-    );
 })
