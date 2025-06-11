@@ -78,7 +78,16 @@ func (service *PostService) FindByCategoryId(categoryId uuid.UUID, limit *int) (
 func (service *PostService) GetPostCount() (int, error) {
 	count := service.repo.GetPostCount()
 	if count == -1 {
-		return count, fmt.Errorf("failed to count active sessions")
+		return count, fmt.Errorf("failed to count posts")
 	}
 	return count, nil
+}
+
+func (service *PostService) GetUserPostCount(user *models.User) int {
+	if user == nil || user.ID == uuid.Nil {
+		return -1
+	}
+	count, _ := service.repo.GetUserPostCount(&user.ID)
+
+	return count
 }
