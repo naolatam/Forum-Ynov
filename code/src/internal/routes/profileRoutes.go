@@ -9,11 +9,11 @@ import (
 )
 
 func initProfileRoute() {
-	http.HandleFunc("/profile", handlers.ProfileHandler)
+	http.HandleFunc("/profile", mw.GetMethodOnly(mw.WithDB(mw.WithAuth(mw.WithHeader(handlers.ProfileHandler)))))
 
-	http.HandleFunc("/me", mw.GetMethodOnly(mw.WithDBAndRequireAuthRedirect("/auth/login", handlers.MyProfileHandler)))
-	http.HandleFunc("/me/delete", mw.PostMethodOnly(mw.WithDBAndRequireAuthRedirect("/auth/login", handlers.DeleteMyProfileHandler)))
-	http.HandleFunc("/me/edit", mw.PostMethodOnly(mw.WithDBAndRequireAuthRedirect("/auth/login", handlers.EditMyProfileHandler)))
+	http.HandleFunc("/me", mw.GetMethodOnly(mw.WithDB(mw.WithRequiredAuthRedirect("/auth/login", mw.WithHeader(handlers.MyProfileHandler)))))
+	http.HandleFunc("/me/delete", mw.GetMethodOnly(mw.WithDB(mw.WithRequiredAuthRedirect("/auth/login", mw.WithHeader(handlers.DeleteMyProfileHandler)))))
+	http.HandleFunc("/me/edit", mw.GetMethodOnly(mw.WithDB(mw.WithRequiredAuthRedirect("/auth/login", mw.WithHeader(handlers.EditMyProfileHandler)))))
 
 	log.Println("[ROUTING] Profile routes initialized")
 }
