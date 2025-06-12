@@ -32,9 +32,49 @@ document.addEventListener('DOMContentLoaded', function () {
     updateTags();
 });
 
-document.getElementById('open-delete-modal').onclick = function () {
-    document.getElementById('delete-modal').classList.remove('hidden');
-};
-document.getElementById('cancel-delete').onclick = function () {
-    document.getElementById('delete-modal').classList.add('hidden');
-};
+document.addEventListener('DOMContentLoaded', function () {
+    const openDeleteModalBtn = document.getElementById('open-delete-modal');
+    const deleteModal = document.getElementById('delete-modal');
+    const cancelDeleteBtn = document.getElementById('cancel-delete');
+
+    if (openDeleteModalBtn && deleteModal) {
+        openDeleteModalBtn.onclick = function () {
+            deleteModal.classList.remove('hidden');
+        };
+    }
+    if (cancelDeleteBtn && deleteModal) {
+        cancelDeleteBtn.onclick = function () {
+            deleteModal.classList.add('hidden');
+        };
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const imageInput = document.getElementById('image');
+    const imagePreview = document.getElementById('post-image-preview');
+    const errorModal = document.getElementById('post-image-error-modal');
+    const errorCloseBtn = document.getElementById('post-image-error-close');
+
+    if (imageInput && imagePreview && errorModal && errorCloseBtn) {
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 20 * 1024 * 1024) {
+                    errorModal.classList.remove('hidden');
+                    imageInput.value = '';
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        imagePreview.src = e.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+        errorCloseBtn.addEventListener('click', () => {
+            errorModal.classList.add('hidden');
+            imageInput.value = '';
+        });
+    }
+});

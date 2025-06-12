@@ -24,11 +24,10 @@
                         <h2 class="text-2xl sm:text-3xl font-bold mb-4">New Post title</h2>
                     {{end}}
                     <div class="rounded-lg overflow-hidden mb-4 relative">
-                        <img src="{{if not .IsNew }}{{.Post.PictureBase64}}{{else}}/static/imgs/forums_background.jpg{{end}}" alt="Post Image"
+                        <img id="post-image-preview" src="{{if not .IsNew }}{{.Post.PictureBase64}}{{else}}/static/imgs/forums_background.jpg{{end}}" alt="Post Image"
                              class="w-full h-auto object-cover">
                         <div>
-                            <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image
-                                (optional)</label>
+                            <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image (optional)</label>
                             <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
                                 <div class="space-y-1 text-center">
                                     <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
@@ -39,12 +38,30 @@
                                     <div class="flex text-sm text-gray-600 dark:text-gray-400">
                                         <label for="image"
                                                class="relative cursor-pointer rounded-md font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 focus-within:outline-none">
-                                            <span>Download your file</span>
+                                            <span>Chose file</span>
                                             <input id="image" name="image" type="file" class="sr-only" accept="image/*">
                                         </label>
-                                        <p class="pl-1">or drag&drop</p>
+                                        <p class="pl-1">or drag and drop</p>
                                     </div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, GIF up to 10MB</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, GIF up to 20MB</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modale d’erreur image trop lourde -->
+                    <div id="post-image-error-modal" class="fixed inset-0 z-[60] hidden overflow-y-auto">
+                        <div class="flex items-center justify-center min-h-screen px-4">
+                            <div class="fixed inset-0 bg-black opacity-80 transition-opacity"></div>
+                            <div class="bg-gray-800 rounded-lg max-w-md w-full mx-auto z-10 relative border border-red-800 shadow-xl">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-semibold text-red-400 mb-4">Error</h3>
+                                    <p class="text-gray-300 mb-6">The file is too big! Maximum size: 20 MB</p>
+                                    <div class="flex gap-3 justify-end">
+                                        <button type="button" id="post-image-error-close"
+                                                class="bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors">
+                                            Close
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
