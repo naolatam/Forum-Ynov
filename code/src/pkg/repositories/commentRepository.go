@@ -24,10 +24,12 @@ func (repository *CommentRepository) FindById(id uint32) (*models.Comment, error
 
 	var comment models.Comment
 	if rows.Next() {
-		err = rows.Scan(&comment.ID, &comment.Content, &comment.CreatedAt, &comment.Post.ID, &comment.User_ID)
+		err = rows.Scan(&comment.ID, &comment.Content, &comment.CreatedAt, &comment.Post_id, &comment.User_ID)
 		if err != nil {
 			return nil, err
 		}
+		comment.Post.ID = comment.Post_id
+		comment.User.ID = comment.User_ID
 		return &comment, nil
 	}
 	return nil, errors.New("comment not found")
@@ -106,6 +108,18 @@ func (repository *CommentRepository) Delete(comment *models.Comment) error {
 		return errors.New("connection to database isn't established")
 	}
 	_, err := repository.db.Exec("DELETE FROM comments WHERE id = ?", comment.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *CommentRepository) Update(comment *models.Comment) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	_, err := repository.db.Exec("UPDATE comments SET content = ?, post_id = ?, user_id = ? WHERE id = ?",
+		comment.Content, comment.Post_id, comment.User_ID, comment.ID)
 	if err != nil {
 		return err
 	}

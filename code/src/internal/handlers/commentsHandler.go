@@ -80,6 +80,46 @@ func DeleteCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, se
 	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
 }
 
+func EditCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
+	commentService := services.NewCommentService(db)
+	userService := services.NewUserService(db)
+
+	post, success := getPostFromBody(w, r, services.NewPostService(db), isConnected)
+	if !success {
+		return
+	}
+	comment, success := getCommentFromBody(w, r, commentService, isConnected)
+	if !success {
+		return
+	}
+	comment.Post_id = post.ID // Ensure the comment is linked to the correct post
+
+	authorized := comment.User_ID == session.User_ID
+	if !authorized {
+		user := userService.FindById(session.User_ID)
+		authorized = userService.IsAdminOrModerator(user)
+	}
+
+	if !authorized {
+		ShowError403(w, &dtos.HeaderDto{IsConnected: isConnected})
+		return
+	}
+
+	content := r.FormValue("content")
+	if len(content) < 1 || len(content) > 200 {
+		ShowCustomError400(w, &dtos.HeaderDto{IsConnected: isConnected}, "Comment content must be between 1 and 200 characters")
+		return
+	}
+	comment.Content = content
+
+	if !commentService.Update(comment) {
+		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error updating comment")
+		return
+	}
+
+	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
+}
+
 func LikeCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 	reactionCommentHandler(w, r, "like", db, session, isConnected)
 }
