@@ -71,20 +71,37 @@
             >
                 <i class="fa-solid fa-bars"></i>
             </button>
+            <div class="relative ml-4">
                 <button
-                    class="text-gray-300 hover:text-blue-400 transition-colors p-1 relative ml-4"
+                    class="text-gray-300 hover:text-blue-400 transition-colors p-1 relative"
                     aria-label="Notifications"
+                    id="notifications-button"
                 >
-                <i class="fa-regular fa-bell text-lg"></i>
-                {{ if and .Notifications (gt (len .Notifications) 0)}}
+                    <i class="fa-regular fa-bell text-lg"></i>
+                    {{ if and .Notifications (gt (len .Notifications) 0)}}
 
-                    <span
-                        class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center"
+                        <span
+                                class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center"
                         >{{ len .Notifications}}</span
-                    >
-                {{end}}
-
+                        >
+                    {{end}}
                 </button>
+                <!-- Pop-up notifications alignée sous la cloche -->
+                <div id="notifications-popup" class="hidden absolute right-0 top-12 bg-gray-800 border border-gray-700 rounded-lg shadow-lg w-80 z-50">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-white mb-2">Notifications</h3>
+                        {{ if .Notifications }}
+                        {{ else }}
+                        {{ end }}
+                        <p class="text-gray-400">You don't have notification.</p>
+                        <ul>
+                            {{ range .Notifications }}
+                                <li class="text-gray-200 py-2 border-b border-gray-700 last:border-b-0">{{ .Message }}</li>
+                            {{ end }}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div
