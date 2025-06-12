@@ -178,6 +178,39 @@ func (repository *UserRepository) Create(user *models.User) error {
 
 }
 
+func (repository *UserRepository) GetAllUsers() ([]models.User, error) {
+	if repository.db == nil {
+		return nil, errors.New("connection to database isn't established")
+	}
+	rows, err := repository.db.Query(`
+		SELECT u.id, u.pseudo, u.createdAt, r.name
+		FROM users u
+		INNER JOIN roles r ON u.role_id = r.id
+	`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []models.User
+	for rows.Next() {
+		var user models.User
+		var role models.Role
+		err := rows.Scan(
+			&user.ID, &user.Pseudo, &user.CreatedAt, &role.Name,
+		)
+		if err != nil {
+			return nil, err
+		}
+		user.Role = role
+		users = append(users, user)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
 func (repository *UserRepository) GetUserCount() int {
 	if repository.db == nil {
 		return -1
