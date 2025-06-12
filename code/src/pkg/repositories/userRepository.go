@@ -37,6 +37,38 @@ func (repository *UserRepository) FindById(id uuid.UUID) (*models.User, error) {
 	return nil, errors.New("user not found")
 }
 
+func (repository *UserRepository) FindMultipleByAny(query string) (*[]*models.User, error) {
+	if repository.db == nil {
+		return nil, errors.New("connection to database isn't established")
+	}
+
+	rows, err :=
+		repository.db.Query(`SELECT u.id, u.pseudo, u.avatar, r.id, r.name, r.permission FROM users u
+		INNER JOIN roles r ON u.role_id = r.id
+		WHERE u.pseudo LIKE ? OR u.email LIKE ? OR u.id LIKE ?;`, query, query, query)
+	if err != nil {
+
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []*models.User
+	for rows.Next() {
+		var user models.User
+		var role models.Role
+		err = rows.Scan(&user.ID, &user.Pseudo, &user.Avatar, &role.ID, &role.Name, &role.Permission)
+		user.Role = role
+		user.Role_ID = role.ID
+		user.AvatarBase64 = template.URL(utils.ConvertBytesToBase64(user.Avatar, "image/png"))
+
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, &user)
+	}
+	return &users, nil
+}
+
 func (repository *UserRepository) FindByUsernameOrEmail(pseudo *string, email *string) (*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -178,12 +210,12 @@ func (repository *UserRepository) Create(user *models.User) error {
 
 }
 
-func (repository *UserRepository) GetAllUsers() ([]models.User, error) {
+func (repository *UserRepository) GetAllUsers() ([]*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
 	rows, err := repository.db.Query(`
-		SELECT u.id, u.pseudo, u.createdAt, r.name
+		SELECT u.id, u.pseudo, u.createdAt, r.id, r.name, r.permission
 		FROM users u
 		INNER JOIN roles r ON u.role_id = r.id
 	`)
@@ -192,18 +224,18 @@ func (repository *UserRepository) GetAllUsers() ([]models.User, error) {
 	}
 	defer rows.Close()
 
-	var users []models.User
+	var users []*models.User
 	for rows.Next() {
 		var user models.User
 		var role models.Role
 		err := rows.Scan(
-			&user.ID, &user.Pseudo, &user.CreatedAt, &role.Name,
+			&user.ID, &user.Pseudo, &user.CreatedAt, &role.ID, &role.Name, &role.Permission,
 		)
 		if err != nil {
 			return nil, err
 		}
 		user.Role = role
-		users = append(users, user)
+		users = append(users, &user)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
