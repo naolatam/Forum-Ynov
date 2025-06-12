@@ -30,6 +30,12 @@ func SeePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session 
 	if err != nil {
 		return
 	}
+	postCategories, err := categoryService.FindByPostId(post)
+	if err != nil {
+		ShowCustomError500(w, header, "Error while retrieving categories for post: "+err.Error())
+		return
+	}
+	post.Categories = *postCategories
 
 	comments, success := retrieveComments(w, commentService, post, rs, us, header)
 	if !success {
@@ -82,7 +88,7 @@ func fetchPost(w http.ResponseWriter, r *http.Request, header *dtos.HeaderDto, p
 
 	post, err := ps.FindById(uint32(postIdInt))
 	if err != nil {
-		ShowCustomError500(w, header, "Post not found or error while retrieving post: "+err.Error())
+		ShowCustomError404(w, header, "Post not found or error while retrieving post: "+err.Error())
 		return nil, errors.New("post not found or error while retrieving post")
 	}
 	if _, err = cs.FindByPostId(post); err != nil {
