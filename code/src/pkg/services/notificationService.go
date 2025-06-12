@@ -26,7 +26,7 @@ func (s *NotificationService) FindByUser(user *models.User) (notifs *[]*models.N
 	return s.repo.FindByUserId(user.ID)
 }
 
-func (s *NotificationService) Create(title, description string, userId uuid.UUID) (success bool) {
+func (s *NotificationService) Create(title, description string, fromUserId, userId uuid.UUID, postID uint32) (success bool) {
 	if userId == uuid.Nil {
 		return false
 	}
@@ -39,6 +39,8 @@ func (s *NotificationService) Create(title, description string, userId uuid.UUID
 		Description: description,
 		CreatedAt:   time.Now(),
 		User_ID:     userId,
+		Post_ID:     postID,
+		FromUser_ID: fromUserId,
 	}
 
 	succes, err := s.repo.Create(notif)
