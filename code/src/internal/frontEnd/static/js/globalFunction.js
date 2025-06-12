@@ -146,3 +146,15 @@ function initializePagination(containerId, itemSelector, paginationInfo, paginat
     createPaginationControls();
     showPage(1);
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const bellBtn = document.getElementById('notifications-button');
+    const popup = document.getElementById('notifications-popup');
+    document.addEventListener('click', function(e) {
+        if (bellBtn.contains(e.target)) {
+            popup.classList.toggle('hidden');
+        } else if (!popup.contains(e.target)) {
+            popup.classList.add('hidden');
+        }
+    });
+});
