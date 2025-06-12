@@ -44,6 +44,17 @@ func (service *UserService) FindByUsername(username string) *models.User {
 	return user
 }
 
+func (service *UserService) FindMultipleByAny(search string) *[]*models.User {
+
+	query := "%" + search + "%"
+	users, err := service.repo.FindMultipleByAny(query)
+	if err != nil {
+		log.Println("Error finding users by any:", err)
+		return nil
+	}
+	return users
+}
+
 func (service *UserService) FindByUsernameOrEmail(pseudo *string, email *string) *models.User {
 	if pseudo == nil && email == nil {
 		return nil
@@ -125,7 +136,8 @@ func (service *UserService) GetRole(user *models.User) *models.Role {
 	return role
 }
 
-func (service *UserService) GetAllUsers() ([]models.User, error) {
+func (service *UserService) GetAllUsers() ([]*models.User, error) {
+
 	return service.repo.GetAllUsers()
 }
 
