@@ -243,3 +243,56 @@ func (repository *PostRepository) GetUserPostCount(userId *uuid.UUID) (int, erro
 	}
 	return count, nil
 }
+
+func (repository *PostRepository) UpdatePost(post *models.Post) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	_, err := repository.db.Exec("UPDATE posts SET title = ?, content = ?, picture = ?, validated = ? WHERE id = ?",
+		post.Title, post.Content, post.Picture, post.Validated, post.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *PostRepository) Delete(post *models.Post) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	_, err := repository.db.Exec("DELETE FROM posts WHERE id = ?", post.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *PostRepository) Create(post *models.Post) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	id, err := repository.retrieveLastId()
+	if err != nil {
+		return err
+	}
+	post.ID = uint32(id + 1)
+
+	_, err = repository.db.Exec("INSERT INTO posts (id, title, content, picture, validated, createdAt, user_ID) VALUES (?, ?, ?, ?, ?, ?, ?)",
+		post.ID, post.Title, post.Content, post.Picture, post.Validated, post.CreatedAt, post.User_ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *PostRepository) retrieveLastId() (lastId int, err error) {
+	if repository.db == nil {
+		return -1, errors.New("connection to database isn't established")
+	}
+
+	err = repository.db.QueryRow("SELECT MAX(id) FROM posts").Scan(&lastId)
+	if err != nil {
+		return -1, err
+	}
+	return
+}
