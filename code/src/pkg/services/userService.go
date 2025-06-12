@@ -125,6 +125,10 @@ func (service *UserService) GetRole(user *models.User) *models.Role {
 	return role
 }
 
+func (service *UserService) GetAllUsers() ([]models.User, error) {
+	return service.repo.GetAllUsers()
+}
+
 func (service *UserService) IsEmailAlreadyUse(email string) bool {
 	if email == "" {
 		return false
