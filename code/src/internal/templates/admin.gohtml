@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/1d16096405.js" crossorigin="anonymous"></script>
 </head>
-
 <body class="bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 font-sans min-h-screen flex flex-col">
 {{ template "headerComponent" .Header }}
 <main class="flex-grow flex flex-col">
@@ -76,42 +75,77 @@
     <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" id="modal-moderation-backdrop"></div>
     <div class="relative top-20 mx-auto max-w-4xl w-full bg-gray-800 rounded-lg shadow-xl transform transition-all p-6">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-bold">Content Moderation</h3>
+            <h3 class="text-xl font-bold">Modération du contenu</h3>
             <button class="modal-close text-gray-400 hover:text-white" data-modal="modal-moderation">
-                <i class="fas fa-times text-xl"></i>
+                <i class="fas fa-xmark text-xl"></i>
             </button>
         </div>
-
         <div class="mb-6">
-            <form class="flex gap-4 items-center">
-                <div class="flex-grow">
-                    <input type="text" placeholder="Search a publication..."
-                           class="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-white">
-                </div>
-                <button type="submit" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-md text-white">
-                    <i class="fas fa-search mr-2"></i>Search
+            <div class="flex gap-2">
+                <button class="tab-btn-moderation active-tab bg-gray-700 px-4 py-2 rounded-tl-lg rounded-tr-lg"
+                        data-tab="tab-content-moderation">
+                    <i class="fas fa-gavel mr-2"></i>Signalements
                 </button>
-            </form>
+                <button class="tab-btn-waiting bg-gray-700 px-4 py-2 rounded-tl-lg rounded-tr-lg"
+                        data-tab="tab-content-waiting">
+                    <i class="fas fa-hourglass-half mr-2"></i>En attente
+                </button>
+            </div>
+            <div class="border-t border-gray-600"></div>
         </div>
 
-        <div id="content-tab">
+        <!-- Signalements -->
+        <div class="tab-content-moderation" id="tab-content-moderation">
             <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96">
-                {{range .AllPost}}
-                <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer content-item">
-                    <div class="flex justify-between">
-                        <h4 class="font-medium mb-2">{{.Title}}</h4>
-                        <span class="text-xs text-gray-400">{{.CreatedAt}}</span>
+                <li class="py-4 bg-gray-700 hover:bg-gray-600 px-4 rounded-lg moderation-report-item">
+                    <div class="flex justify-between items-start">
+                        <div class="flex flex-col">
+                            <h4 class="font-medium text-lg mb-1">Titre du post signalé</h4>
+                            <div class="flex items-center text-sm text-gray-400 mb-1">
+                                <span>Par <span class="text-blue-400">AuteurDuPost</span></span>
+                                <span class="mx-2">•</span>
+                                <span>il y a 2 heures</span>
+                            </div>
+                            <p class="text-sm text-gray-300 line-clamp-2 mb-2">
+                                Extrait du contenu du post signalé. Ce texte présente un aperçu du message qui a été
+                                signalé par les utilisateurs.
+                            </p>
+                        </div>
                     </div>
-                    <p class="text-sm text-gray-300 mb-3 line-clamp-2">{{.Content}}</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-400">By <span class="text-blue-400">{{.User.Pseudo}}</span></span>
-                        <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">{{.Validated}}</span>
+                    <div class="mt-3 flex gap-2 justify-end">
+                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
+                            <i class="fas fa-eye mr-1"></i>Voir le post
+                        </button>
+                        <button class="bg-green-600 text-white text-xs px-3 py-1 rounded-full hover:bg-green-700">
+                            <i class="fas fa-check mr-1"></i>Valider
+                        </button>
+                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
+                            <i class="fas fa-trash mr-1"></i>Supprimer
+                        </button>
                     </div>
                 </li>
-                {{end}}
             </ul>
-            <div class="text-center my-4 text-gray-300 pagination-info-content"></div>
-            <div class="flex justify-center space-x-2 mb-8 pagination-controls-content"></div>
+            <div class="text-center my-4 text-gray-300 pagination-info-moderation"></div>
+            <div class="flex justify-center space-x-2 mb-8 pagination-moderation"></div>
+        </div>
+        <!-- En attente -->
+        <div class="tab-content-waiting hidden" id="tab-content-waiting">
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96">
+                <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer waiting-content-item">
+                    <div class="flex justify-between">
+                        <h4 class="font-medium mb-2">Conseils pour farmer les ressources rares</h4>
+                        <span class="text-xs text-gray-400">il y a 3 jours</span>
+                    </div>
+                    <p class="text-sm text-gray-300 mb-3 line-clamp-2">Les meilleures techniques pour obtenir rapidement
+                        des ressources comme la Cellule Orokin...</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-400">Par <span class="text-blue-400">ResourceExpert</span></span>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">En attente</span>
+                    </div>
+                </li>
+            </ul>
+            <div class="text-center my-4 text-gray-300 pagination-info-waiting"></div>
+            <div class="flex justify-center space-x-2 mb-8 pagination-waiting"></div>
         </div>
     </div>
 </div>
@@ -143,37 +177,39 @@
             <ul class="divide-y divide-gray-700">
                 {{ range .AllUsers }}
                     {{ if le (index .Role.Permission 0) 2 }}
-                    <li class="py-4 hover:bg-gray-700 px-4 rounded-lg flex justify-between items-center user-role-item">
-                        <div>
-                            <p class="font-medium">{{ .Pseudo }}</p>
-                            <p class="text-sm text-gray-400">Current role :
-                                <span class="font-semibold text-blue-400">
+                        <li class="py-4 hover:bg-gray-700 px-4 rounded-lg flex justify-between items-center user-role-item">
+                            <div>
+                                <p class="font-medium">{{ .Pseudo }}</p>
+                                <p class="text-sm text-gray-400">Current role :
+                                    <span class="font-semibold text-blue-400">
                                 {{.Role.Name}}
                             </span>
-                            </p>
-                        </div>
-                            <div class="flex gap-2">
-                                {{ if eq (index .Role.Permission 0) 2 }}
-                                    <form action="/admin/user/demote" method="POST">
-                                        <input type="hidden" name="user_id" value="{{ .ID }}">
-                                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700 btn-remove-moderator"
-                                            data-username="{{ .Pseudo }}">
-                                            <i class="fas fa-user-minus mr-1"></i>Remove Moderator
-                                        </button>
-                                    </form>
-                                {{ else }}
-                                    <form action="/admin/user/promote" method="POST">
-                                        <input type="hidden" name="user_id" value="{{ .ID }}">
-                                        <button type="submit" class="bg-green-600 text-white text-xs px-3 py-1 rounded-full hover:bg-green-700 btn-add-moderator"
-                                                data-username="{{ .Pseudo }}">
-                                            <i class="fas fa-user-plus mr-1"></i>Add Moderator
-                                        </button>
-                                    </form>
-                                {{ end }}
+                                </p>
                             </div>
-                    </li>
+                            <form>
+                                <div class="flex gap-2">
+                                    {{ if eq (index .Role.Permission 0) 2 }}
+                                        <form action="/admin/user/demote" method="POST">
+                                            <input type="hidden" name="user_id" value="{{ .ID }}">
+                                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700 btn-remove-moderator"
+                                                    data-username="{{ .Pseudo }}">
+                                                <i class="fas fa-user-minus mr-1"></i>Remove Moderator
+                                            </button>
+                                        </form>
+                                    {{ else }}
+                                        <form action="/admin/user/promote" method="POST">
+                                            <input type="hidden" name="user_id" value="{{ .ID }}">
+                                            <button type="submit"
+                                                    class="bg-green-600 text-white text-xs px-3 py-1 rounded-full hover:bg-green-700 btn-add-moderator"
+                                                    data-username="{{ .Pseudo }}">
+                                                <i class="fas fa-user-plus mr-1"></i>Add Moderator
+                                            </button>
+                                        </form>
+                                    {{ end }}
+                                </div>
+                            </form>
+                        </li>
                     {{end}}
-
                 {{end}}
             </ul>
             <div class="text-center my-4 text-gray-300 pagination-info-roles"></div>
@@ -207,17 +243,17 @@
         <div class="max-h-96 overflow-y-auto">
             <ul class="divide-y divide-gray-700">
                 {{ range .AllCategories }}
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">{{.Name}}</span>
-                    <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-edit mr-1"></i>Edit
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
-                    </div>
-                </li>
+                    <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
+                        <span class="font-medium text-white">{{.Name}}</span>
+                        <div class="flex gap-2">
+                            <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
+                                <i class="fas fa-edit mr-1"></i>Edit
+                            </button>
+                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
+                                <i class="fas fa-trash mr-1"></i>Delete
+                            </button>
+                        </div>
+                    </li>
                 {{ end }}
             </ul>
         </div>

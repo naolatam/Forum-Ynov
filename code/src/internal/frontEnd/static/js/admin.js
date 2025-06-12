@@ -26,45 +26,83 @@ document.querySelectorAll('.absolute[id$="-backdrop"]').forEach(function(backdro
 });
 
 // Tab management
-document.querySelectorAll('.tab-button').forEach(function(button) {
-    button.addEventListener('click', function() {
-        // Change tab style to disable
-        document.querySelectorAll('.tab-button').forEach(function(btn) {
-            btn.classList.remove('active-tab', 'bg-gray-700');
+document.querySelectorAll('.tab-btn-moderation, .tab-btn-waiting').forEach(button => {
+    button.addEventListener('click', () => {
+        const tabId = button.getAttribute('data-tab');
+
+        // Active tab button
+        document.querySelectorAll('.tab-btn-moderation, .tab-btn-waiting').forEach(btn => {
+            btn.classList.remove('active-tab');
             btn.classList.add('bg-gray-600');
         });
+        button.classList.add('active-tab');
+        button.classList.remove('bg-gray-600');
 
-        // Active tab style
-        this.classList.add('active-tab', 'bg-gray-700');
-        this.classList.remove('bg-gray-600');
-
-        // Hide all tab contents
-        document.querySelectorAll('.tab-content').forEach(function(content) {
+        // Show corresponding content
+        document.querySelectorAll('.tab-content-moderation, .tab-content-waiting').forEach(content => {
             content.classList.add('hidden');
         });
-
-        // Show the selected tab content
-        document.getElementById(this.dataset.tab).classList.remove('hidden');
+        document.getElementById(tabId).classList.remove('hidden');
     });
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Pagination for the moderation modal ("Pending" tab)
     document.getElementById('btn-moderation').addEventListener('click', function() {
         document.getElementById('modal-moderation').classList.remove('hidden');
-        initializePagination('content-tab', '.content-item', '.pagination-info-content', '.pagination-controls-content', 4);
+        // Pagination on pending items
+        initializePagination(
+            'tab-content-waiting',
+            '.waiting-content-item',
+            '.pagination-info-waiting',
+            '.pagination-waiting',
+            4
+        );
+        // Pagination on reports
+        initializePagination(
+            'tab-content-moderation',
+            '.moderation-report-item',
+            '.pagination-info-moderation',
+            '.pagination-moderation',
+            2
+        );
     });
 
+    // Pagination for user management
     document.getElementById('btn-reports').addEventListener('click', function() {
         document.getElementById('modal-reports').classList.remove('hidden');
-        initializePagination('reported-users-tab', '.user-report-item', '.pagination-info-users', '.pagination-controls-users', 2);
+        initializePagination(
+            'modal-reports',
+            '.user-role-item',
+            '.pagination-info-roles',
+            '.pagination-controls-roles',
+            2
+        );
     });
 
+    // Pagination for categories management
     document.getElementById('btn-category').addEventListener('click', function() {
         document.getElementById('modal-category').classList.remove('hidden');
-        initializePagination('modal-category', 'li', '.pagination-info', '.pagination-controls', 6);
+        initializePagination(
+            'modal-category',
+            'li',
+            '.pagination-info',
+            '.pagination-controls',
+            6
+        );
     });
 
-    document.querySelector('[data-tab="user-roles-tab"]').addEventListener('click', function() {
-        initializePagination('user-roles-tab', '.user-role-item', '.pagination-info-roles', '.pagination-controls-roles', 2);
-    });
+    // Pagination for the "User roles" tab, if this button exists
+    const userRolesTabBtn = document.querySelector('[data-tab="user-roles-tab"]');
+    if (userRolesTabBtn) {
+        userRolesTabBtn.addEventListener('click', function() {
+            initializePagination(
+                'modal-reports',
+                '.user-role-item',
+                '.pagination-info-roles',
+                '.pagination-controls-roles',
+                2
+            );
+        });
+    }
 });
