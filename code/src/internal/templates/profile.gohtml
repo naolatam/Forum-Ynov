@@ -66,7 +66,12 @@
                         {{ range .RecentActivity }}
                         <li class="p-3 bg-gray-700 bg-opacity-50 rounded-md content-item">
                             <span class="text-gray-200 text-lg">{{ .Action }} </span>
-                            <span class="text-blue-400 font-medium text-lg">{{ .Description }}</span>
+                            <span class="text-blue-400 font-medium text-lg"><a href="/posts?post_id={{.Post_ID}}">{{ .Details }}</a></span>
+                            {{ if .SubTitle}}
+                                <div class="text-gray-500 text-sm mt-1">
+                                    <span class="font-semibold">{{.SubTitle}}</span>
+                                </div>
+                                {{end}}
                             <p class="text-gray-400 mt-1">{{ .TimeAgo }}</p>
                         </li>
                         {{ end }}

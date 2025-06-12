@@ -71,16 +71,20 @@
             >
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <button
-                class="text-gray-300 hover:text-blue-400 transition-colors p-1 relative ml-4"
-                aria-label="Notifications"
-            >
-                <i class="fa-regular fa-bell text-lg"></i>
-                <span
-                    class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center"
-                    >3</span
+                <button
+                    class="text-gray-300 hover:text-blue-400 transition-colors p-1 relative ml-4"
+                    aria-label="Notifications"
                 >
-            </button>
+                <i class="fa-regular fa-bell text-lg"></i>
+                {{ if and .Notifications (gt (len .Notifications) 0)}}
+
+                    <span
+                        class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center"
+                        >{{ len .Notifications}}</span
+                    >
+                {{end}}
+
+                </button>
         </div>
     </div>
     <div
