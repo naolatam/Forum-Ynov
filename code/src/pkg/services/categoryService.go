@@ -39,3 +39,32 @@ func (s *CategoryService) FindByPostId(post *models.Post) (*[]*models.Category, 
 	post.Categories = *c
 	return c, nil
 }
+
+func (service *CategoryService) Create(category *models.Category) bool {
+	if category == nil {
+		return false
+	}
+	if err := service.repo.Create(category); err != nil {
+		return false
+	}
+	return true
+}
+
+func (service *CategoryService) Delete(category *models.Category) bool {
+	if category == nil {
+		return false
+	}
+	if err := service.repo.Delete(category); err != nil {
+		return false
+	}
+	return true
+}
+func (service *CategoryService) Update(category *models.Category) bool {
+	if category == nil {
+		return false
+	}
+	if err := service.repo.Update(category); err != nil {
+		return false
+	}
+	return true
+}

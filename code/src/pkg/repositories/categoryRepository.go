@@ -120,3 +120,48 @@ func (repository *CategoryRepository) AssociateCategoryToAPost(categoryId uuid.U
 
 	return nil
 }
+
+func (repository *CategoryRepository) Create(category *models.Category) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	if category == nil {
+		return errors.New("category cannot be nil")
+	}
+	if category.ID == uuid.Nil {
+		category.ID = uuid.New()
+	}
+	_, err := repository.db.Exec("INSERT INTO categories (id, name) VALUES (?, ?)", category.ID, category.Name)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *CategoryRepository) Delete(category *models.Category) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	if category == nil || category.ID == uuid.Nil {
+		return errors.New("category cannot be nil or have a nil ID")
+	}
+	_, err := repository.db.Exec("DELETE FROM categories WHERE id = ?", category.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *CategoryRepository) Update(category *models.Category) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	if category == nil || category.ID == uuid.Nil {
+		return errors.New("category cannot be nil or have a nil ID")
+	}
+	_, err := repository.db.Exec("UPDATE categories SET name = ? WHERE id = ?", category.Name, category.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
