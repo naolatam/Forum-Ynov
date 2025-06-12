@@ -20,6 +20,10 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session 
 	postService := services.NewPostService(db)
 	commentService := services.NewCommentService(db)
 
+	if session == nil { // If the user is not connected, session will be nil
+		session = &models.Session{User_ID: uuid.Nil} // Create a session with a nil user ID to avoid nil pointer dereference
+	}
+
 	// Fetch user_id from URL query
 	userUuid := getUserIdFromURL(w, r, header, &session.User_ID)
 	if userUuid == uuid.Nil {

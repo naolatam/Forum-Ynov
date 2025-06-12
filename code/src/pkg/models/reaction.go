@@ -6,7 +6,7 @@ import (
 
 // Reaction represent a line in the reactions table
 type Reaction struct {
-	ID         uint64
+	ID         uuid.UUID
 	Post_id    *uint32
 	Post       Post
 	Comment_id *uint32

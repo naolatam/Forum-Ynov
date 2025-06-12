@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         textarea.addEventListener('input', function() {
             preview.innerHTML = markdown.toHTML(textarea.value);
         });
+        preview.innerHTML = markdown.toHTML(textarea.value);
     }
 });
 

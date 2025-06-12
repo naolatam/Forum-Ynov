@@ -6,6 +6,9 @@
     <title>Publication</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/1d16096405.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown@0.5.0/lib/markdown.js"></script>
+    <link href="/static/css/markdownVisualisation.css" rel="stylesheet">
+
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans">
 {{ template "headerComponent" .Header }}
@@ -15,54 +18,96 @@
         <div class="bg-gray-800 p-4 rounded-lg shadow-md flex flex-col lg:flex-row items-start gap-6">
 
             <div class="w-full lg:w-1/3">
-                <h2 class="text-2xl sm:text-3xl font-bold mb-4">{{.Post.Tile}}</h2>
+                <h2 class="text-2xl sm:text-3xl font-bold mb-4">{{.Post.Title}}</h2>
                 <div class="rounded-lg overflow-hidden mb-4 relative">
-                    <img src="/static/imgs/forums_background.jpg" alt="Publication Image"
+                    <img src="{{ .Post.PictureBase64}}" alt="Publication Image"
                          class="w-full h-auto object-cover">
-                    <button class="absolute top-2 right-2 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-gray-600 transition-colors focus:outline-none">
-                        <i class="fa-solid fa-cog fa-lg text-white"></i>
-                    </button>
-                    <form>
+                        {{ if .Header.IsAdmin }}
+                        <a href="/posts/edit?post_id={{.Post.ID}}" >
+                            <button class="absolute top-2 right-2 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-gray-600 transition-colors focus:outline-none">
+                                <i class="fa-solid fa-cog fa-lg text-white"></i>
+                            </button>
+                        </a>
+                        <form>
                         <button class="absolute top-2 right-12 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Signaler">
                             <i class="fa-solid fa-circle-exclamation fa-lg text-white"></i>
                         </button>
                     </form>
+                    {{else if eq .Post.User.ID .ActualUserId}}
+                        <a href="/posts/edit?post_id={{.Post.ID}}">
+                            <button class="absolute top-2 right-2 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-gray-600 transition-colors focus:outline-none">
+                                <i class="fa-solid fa-cog fa-lg text-white"></i>
+                            </button>
+                        </a>
+                    {{ else}}
+                    <form>
+                        <button class="absolute top-2 right-2 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Signaler">
+                            <i class="fa-solid fa-circle-exclamation fa-lg text-white"></i>
+                        </button>
+                    </form>
+                    {{ end}}
                 </div>
                 <div class="flex flex-wrap sm:flex-nowrap items-end justify-between gap-4">
                     <div class="text-gray-300 flex items-center gap-3 flex flex-col">
                         <p class="text-sm">{{.Post.CreatedAt}}</p>
                         <div class="flex items-center gap-2">
-                            <img src="{{ .Post.User.Avatar}}" alt="Avatar"
+                            <img src="{{ .Post.User.AvatarBase64}}" alt="Avatar"
                                  class="w-10 h-10 rounded-full">
-                            <span class="font-semibold">{{.Post.User.Pseudo}}</span>
+                            <span class="font-semibold text-blue-400"><a href="/profile?user_id={{.Post.User.ID}}">{{.Post.User.Pseudo}}</a></span>
                         </div>
                     </div>
                     <div class="flex items-center gap-6 p-2">
                         <div class="flex items-center">
-                            <button class="focus:outline-none group">
-                                <i class="fa-regular fa-thumbs-up fa-lg hover:text-green-500 transition-colors"></i>
-                            </button>
-                            <span class="ml-2 text-gray-300">{{.Post.Like}}</span>
+                            {{if .Header.IsConnected}}
+                                <form action="/posts/like" method="POST">
+                                    <input type="hidden" name="post_id" value="{{.Post.ID}}">
+                                    <button class="focus:outline-none group">
+                                    <i class='fa-regular fa-thumbs-up fa-lg {{if or (not .UserReaction) (ne .UserReaction.Label "like")}}hover:{{end}}text-green-500 transition-colors'></i>
+                                    </button>
+                                    <span class="ml-1 text-sm text-gray-300">{{.Like}}</span>
+                                </form>
+                            {{else}}
+                                <button class="focus:outline-none group" disabled>
+                                    <i class="fa-regular fa-thumbs-up fa-lg hover:text-green-500 transition-colors"></i>
+                                </button>
+                                <span class="ml-1 text-sm text-gray-300">{{.Like}}</span>
+                            {{end}}      
                         </div>
                         <div class="flex items-center">
-                            <button class="focus:outline-none group">
-                                <i class="fa-regular fa-thumbs-down fa-lg hover:text-red-500 transition-colors"></i>
-                            </button>
-                            <span class="ml-2 text-gray-300">{{.Post.Dilike}}</span>
+                            {{if .Header.IsConnected}}
+                                <form action="/posts/dislike" method="POST">
+                                    <input type="hidden" name="post_id" value="{{.Post.ID}}">
+                                    <button class="focus:outline-none group">
+                                        <i class='fa-regular fa-thumbs-down fa-lg {{if or (not .UserReaction) (ne .UserReaction.Label "dislike")}}hover:{{end}}text-red-500 transition-colors'></i>
+                                    </button>
+                                    <span class="ml-1 text-sm text-gray-300">{{.Dislike}}</span>
+                                </form>
+                            {{else}}
+                                <button class="focus:outline-none group" disabled>
+                                    <i class="fa-regular fa-thumbs-down fa-lg hover:text-red-500 transition-colors"></i>
+                                </button>
+                                <span class="ml-1 text-sm text-gray-300">{{.Dislike}}</span>
+                            {{end}}
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="w-full lg:w-2/3 mt-6 lg:mt-0">
-                <h3 class="text-xl font-semibold mb-4 pt-12">Description:</h3>
-                <p class="text-gray-300 mb-4">{{.Post.Content}}<div class="mt-6">
-                    <h3 class="text-xl font-semibold mb-2">Tags:</h3>
+                <h3 class="text-xl font-semibold mb-4 pt-12">Content:</h3>
+                
+                <div id="markdown-preview" class="markdown p-0 text-gray-300 mb-4">
+                </div><div class="mt-6">
+                    {{ if gt (len .Post.Categories) 0 }}
+                    <h3 class="text-xl font-semibold mb-2">Categories:</h3>
                     <div class="flex flex-wrap gap-2">
                         {{range .Post.Categories}}
                         <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">{{.Name}}</span>
                         {{end}}
                     </div>
+                    {{else}}
+                    <p class="text-gray-400">No categories available for this post.</p>
+                    {{end}}
                 </div>
             </div>
         </div>
@@ -71,46 +116,91 @@
     <div class="max-w-7xl mx-auto mt-8">
         <div>
             <h3 class="text-xl sm:text-2xl font-bold mb-4 px-4">Add a Comment</h3>
-            <form class="bg-gray-800 p-4 rounded-lg shadow-md">
-                <textarea class="w-full p-2 bg-gray-700 text-gray-300 rounded-lg mb-4" rows="3"
-                          placeholder="Write your comment..."></textarea>
+            {{ if .Header.IsConnected }}
+            <form class="bg-gray-800 p-4 rounded-lg shadow-md" action="/posts/comments/add" method="POST">
+                <textarea class="w-full p-2 bg-gray-700 text-gray-300 rounded-lg mb-4" name="content" rows="3"
+                          placeholder="Write your comment here... (max 200 char)" maxlength="200"></textarea>
                 <button type="submit"
                         class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors">Submit
                 </button>
+                <input type="hidden" name="post_id" value="{{.Post.ID}}">
             </form>
+            {{else}}
+
+            <div class="bg-gray-800 p-4 rounded-lg shadow-md">
+                <textarea class="w-full p-2 bg-gray-700 text-gray-300 rounded-lg mb-4" rows="1"
+                          placeholder="You need to login before sending a comment" disabled></textarea>
+                <a href="/auth/login"><button 
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors">Login
+                </button></a>
+            </div>
+            {{end}}
         </div>
         <h3 class="text-xl sm:text-2xl font-bold my-4 px-4">Comments</h3>
-
-        <div class="space-y-4">
-            <div class="bg-gray-800 p-4 rounded-lg shadow-md">
+        {{ if eq (len .Comments) 0 }}
+        <p class="text-gray-400 px-4">No comments yet. Be the first to comment!</p>
+        {{end}}
+        {{ range .Comments}} <div class="space-y-4">
+            <div class="bg-gray-800 p-4 rounded-lg shadow-md mb-4">
                 <p class="text-gray-300">{{.Content}}</p>
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-3 gap-2">
-                    <p class="text-gray-400 text-sm">Posted by <span class="text-blue-400"><a href="/profile?user_id={{.User.ID}}">{{.User.Pseudo}}</a></span>{{.Date}}</p>
+                    <p class="text-gray-400 text-sm">Posted by <span class="text-blue-400 p-2"><a href="/profile?user_id={{.User.ID}}">{{.User.Pseudo}}</a></span>{{.Date}}</p>
                     <div class="flex items-center space-x-4">
                         <div class="flex items-center">
-                            <button class="focus:outline-none group">
-                                <i class="fa-regular fa-thumbs-up fa-lg hover:text-green-500 transition-colors"></i>
+                            {{if $.Header.IsConnected}}
+                                <form action="/posts/comments/like" method="POST">
+                                    <input type="hidden" name="comment_id" value="{{.ID}}">
+                                    <input type="hidden" name="post_id" value="{{$.Post.ID}}">
+                                    <button class="focus:outline-none group">
+                                    <i class='fa-regular fa-thumbs-up fa-lg {{if or (not .UserReaction) (ne .UserReaction.Label "like")}}hover:{{end}}text-green-500 transition-colors'></i>
+                                    </button>
+                                    <span class="ml-1 text-sm text-gray-300">{{.Like}}</span>
+                                </form>
+                            {{else}}
+                                <button class="focus:outline-none group" disabled>
+                                    <i class="fa-regular fa-thumbs-up fa-lg hover:text-green-500 transition-colors"></i>
                                 </button>
-                            <span class="ml-1 text-sm text-gray-300">{{.Like}}</span>
+                                <span class="ml-1 text-sm text-gray-300">{{.Like}}</span>
+                            {{end}}      
                         </div>
                         <div class="flex items-center">
-                            <button class="focus:outline-none group">
-                                <i class="fa-regular fa-thumbs-down fa-lg hover:text-red-500 transition-colors"></i>
-                            </button>
-                            <span class="ml-1 text-sm text-gray-300">{{.Dislike}}</span>
+                            {{if $.Header.IsConnected}}
+                                <form action="/posts/comments/dislike" method="POST">
+                                    <input type="hidden" name="comment_id" value="{{.ID}}">
+                                    <input type="hidden" name="post_id" value="{{$.Post.ID}}">
+                                    <button class="focus:outline-none group">
+                                        <i class='fa-regular fa-thumbs-down fa-lg {{if or (not .UserReaction) (ne .UserReaction.Label "dislike")}}hover:{{end}}text-red-500 transition-colors'></i>
+                                    </button>
+                                    <span class="ml-1 text-sm text-gray-300">{{.Dislike}}</span>
+                                </form>
+                            {{else}}
+                                <button class="focus:outline-none group" disabled>
+                                    <i class="fa-regular fa-thumbs-down fa-lg hover:text-red-500 transition-colors"></i>
+                                </button>
+                                <span class="ml-1 text-sm text-gray-300">{{.Dislike}}</span>
+                            {{end}}
                         </div>
-                        <form>
-                            <button class="top-2 right-12 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Signaler">
-                                <i class="fa-solid fa-trash text-white"></i>
-                            </button>
-                        </form>
+                        {{ if or (or $.Header.IsAdmin $.Header.IsModerator) ( eq .User.ID $.ActualUserId) }}
+                            <form action="/posts/comments/delete" method="POST">
+                                <input type="hidden" name="comment_id" value="{{.ID}}">
+                                <input type="hidden" name="post_id" value="{{$.Post.ID}}">
+                                <button type="submit" class="top-2 right-12 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Delete">
+                                    <i class="fa-solid fa-trash text-white"></i>
+                                </button>
+                            </form>
+                        {{ end }}
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
+        {{end}}
     </div>
 </main>
 {{ template "footerComponent" . }}
 <script src="/static/js/globalFunction.js"></script>
+<script>
+    md = "{{.Post.Content}}";
+    document.getElementById("markdown-preview").innerHTML = markdown.toHTML(md);
+    </script>
 </body>
 </html>

@@ -17,3 +17,15 @@ func (service *CategoryService) FindAll() *[]*models.Category {
 	} */
 	return res
 }
+
+func (s *CategoryService) FindByPostId(post *models.Post) (*[]*models.Category, error) {
+	if post == nil {
+		return nil, nil
+	}
+	c, err := s.repo.FindByPostId((post.ID))
+	if err != nil {
+		return nil, err
+	}
+	post.Categories = *c
+	return c, nil
+}

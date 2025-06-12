@@ -31,6 +31,8 @@ func NewCommentService(db *sql.DB) *CommentService {
 	}
 	return &CommentService{
 		repo: repositories.NewCommentRepository(db),
+		us:   repositories.NewUserRepository(db),
+		ps:   repositories.NewPostRepository(db),
 	}
 }
 
@@ -40,6 +42,25 @@ func NewPostService(db *sql.DB) *PostService {
 	}
 	return &PostService{
 		repo: repositories.NewPostRepository(db),
+		ur:   repositories.NewUserRepository(db),
+	}
+}
+
+func NewReactionService(db *sql.DB) *ReactionService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &ReactionService{
+		repo: repositories.NewReactionRepository(db),
+	}
+}
+
+func NewRoleService(db *sql.DB) *RoleService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &RoleService{
+		repo: repositories.NewRoleRepository(db),
 	}
 }
 

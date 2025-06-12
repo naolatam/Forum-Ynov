@@ -6,6 +6,8 @@ import (
 	"Forum-back/pkg/repositories"
 	"Forum-back/pkg/utils"
 	"fmt"
+
+	"log"
 	"os"
 	"time"
 
@@ -290,4 +292,40 @@ func (service *UserService) Delete(user *models.User) (bool, error) {
 		return false, err
 	}
 	return true, nil
+}
+
+func (service *UserService) IsAdmin(user *models.User) bool {
+	if user == nil || user.ID == uuid.Nil {
+		return false
+	}
+	role, err := service.roleRepo.FindById(user.Role_ID)
+	if err != nil || role == nil {
+		log.Println(err)
+		return false
+	}
+	if r, err := service.roleRepo.FindHighestPermRole(); err == nil && r.ID == role.ID {
+		return true
+	}
+	return false
+}
+
+func (service *UserService) IsModerator(user *models.User) bool {
+	if user == nil || user.ID == uuid.Nil {
+		return false
+	}
+	role, err := service.roleRepo.FindById(user.Role_ID)
+	if err != nil || role == nil {
+		return false
+	}
+	if r, err := service.roleRepo.FindMidPermRole(); err == nil && r.ID == role.ID {
+		return true
+	}
+	return false
+}
+
+func (service *UserService) IsAdminOrModerator(user *models.User) bool {
+	if user == nil || user.ID == uuid.Nil {
+		return false
+	}
+	return service.IsAdmin(user) || service.IsModerator(user)
 }

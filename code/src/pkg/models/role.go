@@ -8,5 +8,5 @@ import (
 type Role struct {
 	ID         uuid.UUID
 	Name       string
-	Permission uint8
+	Permission []uint8
 }

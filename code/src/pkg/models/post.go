@@ -18,5 +18,5 @@ type Post struct {
 	CreatedAt     time.Time
 	User_ID       uuid.UUID
 	User          User
-	Categories    []Category
+	Categories    []*Category
 }
