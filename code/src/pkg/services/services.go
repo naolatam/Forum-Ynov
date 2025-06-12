@@ -10,10 +10,8 @@ func checkDBConnection(db *sql.DB) bool {
 		return false
 	}
 	err := db.Ping()
-	if err != nil {
-		return false
-	}
-	return true
+
+	return err == nil
 }
 
 func NewCategoryService(db *sql.DB) *CategoryService {
