@@ -12,6 +12,11 @@ document.getElementById('btn-category').addEventListener('click', function() {
     document.getElementById('modal-category').classList.remove('hidden');
 });
 
+document.getElementById('btn-add-category').addEventListener('click', function() {
+    document.getElementById('modal-add-category').classList.remove('hidden');
+}
+);
+
 // Close modal management
 document.querySelectorAll('.modal-close').forEach(function(button) {
     button.addEventListener('click', function() {
@@ -66,43 +71,32 @@ document.addEventListener('DOMContentLoaded', function() {
             '.pagination-moderation',
             2
         );
+
+    initializePagination('reported-users-tab', '.user-report-item', '.pagination-info-users', '.pagination-controls-users', 2);
+    initializePagination('modal-category', 'li', '.pagination-info', '.pagination-controls', 6);
+    document.getElementById('btn-moderation').addEventListener('click', function() {
+        document.getElementById('modal-moderation').classList.remove('hidden');
     });
 
     // Pagination for user management
     document.getElementById('btn-reports').addEventListener('click', function() {
         document.getElementById('modal-reports').classList.remove('hidden');
-        initializePagination(
-            'modal-reports',
-            '.user-role-item',
-            '.pagination-info-roles',
-            '.pagination-controls-roles',
-            2
-        );
     });
 
     // Pagination for categories management
     document.getElementById('btn-category').addEventListener('click', function() {
         document.getElementById('modal-category').classList.remove('hidden');
-        initializePagination(
-            'modal-category',
-            'li',
-            '.pagination-info',
-            '.pagination-controls',
-            6
-        );
     });
 
-    // Pagination for the "User roles" tab, if this button exists
-    const userRolesTabBtn = document.querySelector('[data-tab="user-roles-tab"]');
-    if (userRolesTabBtn) {
-        userRolesTabBtn.addEventListener('click', function() {
-            initializePagination(
-                'modal-reports',
-                '.user-role-item',
-                '.pagination-info-roles',
-                '.pagination-controls-roles',
-                2
-            );
-        });
-    }
+    document.querySelector('[data-tab="user-roles-tab"]').addEventListener('click', function() {
+        initializePagination('user-roles-tab', '.user-role-item', '.pagination-info-roles', '.pagination-controls-roles', 2);
+    });
 });
+})
+
+function openEditCategoryPopup(categoryId) {
+    const modal = document.getElementById('edit-category-popup-' + categoryId);
+    if (modal) {
+        modal.classList.remove('hidden');
+    }
+}
