@@ -11,10 +11,11 @@ import (
 )
 
 func NewCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
-
+	us := services.NewUserService(db)
 	commentService := services.NewCommentService(db)
 	postService := services.NewPostService(db)
 	ras := services.NewRecentActivityService(db)
+	ns := services.NewNotificationService(db)
 
 	post, ok := getPostFromBody(w, r, postService, isConnected)
 	if !ok {
@@ -41,6 +42,12 @@ func NewCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 	}
 
 	ras.Create("New comment under", post.Title[:min(100, len(post.Title))], &comment.Content, session.User_ID, post.ID)
+
+	if user := us.FindById(session.User_ID); user != nil {
+		ns.Create("New comment",
+			"have leave a comment under post:",
+			session.User_ID, post.User_ID, post.ID)
+	}
 
 	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
 }

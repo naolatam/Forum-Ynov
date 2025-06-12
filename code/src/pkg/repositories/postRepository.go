@@ -86,6 +86,28 @@ func (repository *PostRepository) FindMultipleByText(text *string) (*[]*models.P
 	return &res, nil
 }
 
+func (repository *PostRepository) FindAll() (*[]*models.Post, error) {
+	if repository.db == nil {
+		return nil, errors.New("connection to database isn't established")
+	}
+	rows, err := repository.db.Query("SELECT id, title, content, picture, validated, createdAt, user_ID FROM posts")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var res = []*models.Post{}
+	for rows.Next() {
+		var post models.Post
+		err = rows.Scan(&post.ID, &post.Title, &post.Content, &post.Picture, &post.Validated, &post.CreatedAt, &post.User_ID)
+		if err != nil {
+			return nil, err
+		}
+		post.PictureBase64 = template.URL(utils.ConvertBytesToBase64(post.Picture, "image/png"))
+		res = append(res, &post)
+	}
+	return &res, nil
+}
+
 func (repository *PostRepository) FindByCategoryId(categoryId *uuid.UUID, limit *int) (*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")

@@ -42,7 +42,10 @@ func NewNotificationRepository(db *sql.DB) *NotificationRepository {
 	if !checkDBConnection(db) {
 		return nil
 	}
-	return &NotificationRepository{db: db}
+	return &NotificationRepository{db: db,
+		ur: NewUserRepository(db),
+		pr: NewPostRepository(db),
+	}
 }
 
 func NewPostRepository(db *sql.DB) *PostRepository {

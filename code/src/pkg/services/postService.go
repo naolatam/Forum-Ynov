@@ -15,9 +15,10 @@ import (
 )
 
 type PostService struct {
-	repo *repositories.PostRepository
-	ur   *repositories.UserRepository
-	cr   *repositories.CategoryRepository
+	repo     *repositories.PostRepository
+	ur       *repositories.UserRepository
+	cr       *repositories.CategoryRepository
+	roleRepo *repositories.RoleRepository
 }
 
 func (s *PostService) FindPostByQueryAndCategory(searchTerm string, categoryID *uuid.UUID) (*[]*models.Post, error) {
@@ -47,6 +48,29 @@ func (s *PostService) FindPostByQueryAndCategory(searchTerm string, categoryID *
 	}
 	return res, err
 }
+
+func (s *PostService) FindAll() (*[]*models.Post, error) {
+	var res *[]*models.Post
+	var err error
+	if res, err = s.repo.FindAll(); err != nil {
+		return nil, err
+	}
+
+	for _, post := range *res {
+		s.FetchUserId(post)
+
+		if role, err := s.roleRepo.FindById(post.User.Role_ID); err == nil {
+			post.User.Role = *role
+		} else {
+			post.User.Role = models.Role{
+				Permission: []uint8{1},
+			}
+		}
+	}
+
+	return res, err
+}
+
 func (service *PostService) FindById(id uint32) (*models.Post, error) {
 	post, err := service.repo.FindById(id)
 	if err != nil {

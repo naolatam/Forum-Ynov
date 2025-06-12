@@ -12,6 +12,10 @@ type Notification struct {
 	Title       string
 	Description string
 	CreatedAt   time.Time
-	TimeAgo     string // Human-readable time difference
+	TimeAgo     string    // Human-readable time difference
+	FromUser_ID uuid.UUID // User who created the notification
 	User_ID     uuid.UUID
+	Post_ID     uint32
+	FromUser    User
+	Post        Post
 }
