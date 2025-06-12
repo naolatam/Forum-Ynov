@@ -29,6 +29,10 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request) {
 	sessionService := services.NewSessionService(db)
 	isConnected, session := sessionService.IsAuthenticated(r)
 
+	if session == nil { // If the user is not connected, session will be nil
+		session = &models.Session{User_ID: uuid.Nil} // Create a session with a nil user ID to avoid nil pointer dereference
+	}
+
 	// Fetch user_id from URL query
 	userUuid := getUserIdFromURL(w, r, isConnected, &session.User_ID)
 	if userUuid == uuid.Nil {
@@ -52,13 +56,19 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request) {
 func MyProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 
 	userService := services.NewUserService(db)
+	postService := services.NewPostService(db)
+	commentService := services.NewCommentService(db)
 
 	user := userService.FindById(session.User_ID)
 	if user == nil {
-		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Unable to retrieve user information from the database.")
+		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Unable to retrieve your information from the database.")
 		return
 	}
-	data := createDto(isConnected, user, nil, nil, true, 0, 0)
+
+	postCount := postService.GetUserPostCount(user) // Get user stats
+	commentCount := commentService.GetUserCommentCount(user)
+
+	data := createDto(isConnected, user, nil, nil, true, postCount, commentCount)
 	showProfilePage(w, data)
 }
 
