@@ -14,33 +14,31 @@ import (
 	"github.com/google/uuid"
 )
 
-func SearchPostsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
+func SearchPostsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 
 	categoryService := services.NewCategoryService(db)
 	postService := services.NewPostService(db)
 
 	categories := categoryService.FindAll()
 	if categories == nil {
-		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "No categories found. Contact the administrator to add categories.")
+		ShowCustomError500(w, header, "No categories found. Contact the administrator to add categories.")
 		return
 	}
 
 	searchTerm, searchCategory, err := parseSearchParams(r)
 	if err != nil {
-		ShowError400(w, &dtos.HeaderDto{IsConnected: isConnected})
+		ShowError400(w, header)
 		return
 	}
 
 	posts, err := postService.FindPostByQueryAndCategory(searchTerm, searchCategory)
 	if err != nil {
-		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error while searching posts: "+err.Error())
+		ShowCustomError500(w, header, "Error while searching posts: "+err.Error())
 		return
 	}
 
 	data := dtos.SearchPostsDto{
-		Header: dtos.HeaderDto{
-			IsConnected: isConnected,
-		},
+		Header:         *header,
 		Categories:     *categories,
 		SearchTerm:     searchTerm,
 		SearchCategory: *searchCategory,

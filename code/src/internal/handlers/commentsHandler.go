@@ -14,23 +14,13 @@ func NewCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 
 	commentService := services.NewCommentService(db)
 	postService := services.NewPostService(db)
+	ras := services.NewRecentActivityService(db)
 
-	postId := r.FormValue("post_id")
-	if postId == "" {
-		ShowCustomError400(w, &dtos.HeaderDto{IsConnected: isConnected}, "Post ID is required")
-		return
-	}
-	postIdInt, err := strconv.Atoi(postId)
-	if err != nil || postIdInt <= 0 {
-		ShowCustomError400(w, &dtos.HeaderDto{IsConnected: isConnected}, "Invalid Post ID")
+	post, ok := getPostFromBody(w, r, postService, isConnected)
+	if !ok {
 		return
 	}
 
-	post, err := postService.FindById(uint32(postIdInt))
-	if err != nil || post == nil {
-		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error retrieving post: "+err.Error())
-		return
-	}
 	content := r.FormValue("content")
 	if len(content) < 1 || len(content) > 200 {
 		ShowCustomError400(w, &dtos.HeaderDto{IsConnected: isConnected}, "Comment content must be between 1 and 200 characters")
@@ -39,7 +29,7 @@ func NewCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 
 	comment := &models.Comment{
 		Content:   r.FormValue("content"),
-		Post_id:   uint32(postIdInt),
+		Post_id:   post.ID,
 		User_ID:   session.User_ID,
 		CreatedAt: time.Now(),
 		Post:      *post,
@@ -49,13 +39,21 @@ func NewCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error creating comment")
 		return
 	}
-	http.Redirect(w, r, "/posts?post_id="+postId, http.StatusSeeOther)
+
+	ras.Create("New comment under", post.Title[:min(100, len(post.Title))], &comment.Content, session.User_ID, post.ID)
+
+	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
 }
 
 func DeleteCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 	commentService := services.NewCommentService(db)
 	userService := services.NewUserService(db)
+	ras := services.NewRecentActivityService(db)
 
+	post, success := getPostFromBody(w, r, services.NewPostService(db), isConnected)
+	if !success {
+		return
+	}
 	comment, success := getCommentFromBody(w, r, commentService, isConnected)
 	if !success {
 		return
@@ -77,8 +75,9 @@ func DeleteCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, se
 		return
 	}
 
-	postId := r.FormValue("post_id")
-	http.Redirect(w, r, "/posts?post_id="+postId, http.StatusSeeOther)
+	ras.Create("Deleted comment under", post.Title[:min(100, len(post.Title))], &comment.Content, session.User_ID, post.ID)
+
+	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
 }
 
 func LikeCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
@@ -142,7 +141,17 @@ func reactionCommentHandler(w http.ResponseWriter, r *http.Request, label string
 	commentService := services.NewCommentService(db)
 	userService := services.NewUserService(db)
 	reactionService := services.NewReactionService(db)
+	ras := services.NewRecentActivityService(db)
 
+	if label != "like" && label != "dislike" {
+		ShowCustomError400(w, &dtos.HeaderDto{IsConnected: isConnected}, "Invalid reaction label")
+		return
+	}
+
+	post, ok := getPostFromBody(w, r, services.NewPostService(db), isConnected)
+	if !ok {
+		return
+	}
 	comment, ok := getCommentFromBody(w, r, commentService, isConnected)
 	if !ok {
 		return
@@ -164,6 +173,7 @@ func reactionCommentHandler(w http.ResponseWriter, r *http.Request, label string
 			return
 		}
 	}
+	ras.Create(label+"d comment under", post.Title[:min(100, len(post.Title))], nil, session.User_ID, post.ID)
 
-	http.Redirect(w, r, "/posts?post_id="+r.FormValue("post_id"), http.StatusSeeOther)
+	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
 }
