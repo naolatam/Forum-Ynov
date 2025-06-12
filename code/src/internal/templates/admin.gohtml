@@ -95,18 +95,19 @@
 
         <div id="content-tab">
             <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96">
+                {{range .AllPost}}
                 <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer content-item">
                     <div class="flex justify-between">
-                        <h4 class="font-medium mb-2">Tips for farmer scarce resources</h4>
-                        <span class="text-xs text-gray-400">3 days ago</span>
+                        <h4 class="font-medium mb-2">{{.Title}}</h4>
+                        <span class="text-xs text-gray-400">{{.CreatedAt}}</span>
                     </div>
-                    <p class="text-sm text-gray-300 mb-3 line-clamp-2">The best techniques for quickly obtaining
-                        resources like Orokin Cell...</p>
+                    <p class="text-sm text-gray-300 mb-3 line-clamp-2">{{.Content}}</p>
                     <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-400">By<span class="text-blue-400">ResourceExpert</span></span>
-                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Waiting</span>
+                        <span class="text-xs text-gray-400">By <span class="text-blue-400">{{.User.Pseudo}}</span></span>
+                        <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">{{.Validated}}</span>
                     </div>
                 </li>
+                {{end}}
             </ul>
             <div class="text-center my-4 text-gray-300 pagination-info-content"></div>
             <div class="flex justify-center space-x-2 mb-8 pagination-controls-content"></div>
@@ -119,66 +120,17 @@
     <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" id="modal-reports-backdrop"></div>
     <div class="relative top-20 mx-auto max-w-4xl w-full bg-gray-800 rounded-lg shadow-xl transform transition-all p-6">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-bold">User Management</h3>
+            <h3 class="text-xl font-bold">User Role Management</h3>
             <button class="modal-close text-gray-400 hover:text-white" data-modal="modal-reports">
                 <i class="fas fa-times text-xl"></i>
             </button>
         </div>
 
-        <div class="mb-6">
-            <div class="flex gap-2">
-                <button class="tab-button active-tab bg-gray-700 px-4 py-2 rounded-tl-lg rounded-tr-lg"
-                        data-tab="reported-users-tab">
-                    <i class="fas fa-user-shield mr-2"></i>Reported Users
-                </button>
-                <button class="tab-button bg-gray-600 px-4 py-2 rounded-tl-lg rounded-tr-lg"
-                        data-tab="user-roles-tab">
-                    <i class="fas fa-user-cog mr-2"></i>Roles Management
-                </button>
-            </div>
-            <div class="border-t border-gray-600"></div>
-        </div>
-
-        <div class="tab-content" id="reported-users-tab">
-            <ul class="divide-y divide-gray-700">
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg user-report-item">
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center mr-3">
-                                <span class="text-white font-bold">T</span>
-                            </div>
-                            <div>
-                                <p class="font-medium">TrollUser123</p>
-                                <p class="text-sm text-gray-400">Reported 5 times</p>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Harassment</span>
-                        </div>
-                    </div>
-                    <div class="mt-3 pl-12">
-                        <p class="text-sm text-gray-300">Inappropriate and insulting comments across multiple
-                            publications.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                                <i class="fas fa-ban mr-1"></i>Suspend
-                            </button>
-                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                                <i class="fas fa-trash mr-1"></i>Ban
-                            </button>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <div class="text-center my-4 text-gray-300 pagination-info-users"></div>
-            <div class="flex justify-center space-x-2 mb-8 pagination-controls-users"></div>
-        </div>
-
-        <div class="tab-content hidden" id="user-roles-tab">
+        <div class="tab-content" id="user-roles-tab">
             <div class="mb-6">
                 <form class="flex gap-4 items-center">
                     <div class="flex-grow">
-                        <input type="text" placeholder="Search a publication..."
+                        <input type="text" placeholder="Search an user..."
                                class="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-white">
                     </div>
                     <button type="submit" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-md text-white">
@@ -186,15 +138,15 @@
                     </button>
                 </form>
             </div>
-            
+
             <ul class="divide-y divide-gray-700">
-                {{ range .Users }}
+                {{ range .AllUsers }}
                     <li class="py-4 hover:bg-gray-700 px-4 rounded-lg flex justify-between items-center user-role-item">
                         <div>
-                            <p class="font-medium">{{ .Username }}</p>
+                            <p class="font-medium">{{ .Pseudo }}</p>
                             <p class="text-sm text-gray-400">Current role :
                                 <span class="font-semibold text-blue-400">
-                                {{ if .IsModerator }}Moderator{{ else }}User{{ end }}
+                                {{.Role.Name}}
                             </span>
                             </p>
                         </div>
@@ -202,12 +154,12 @@
                             <div class="flex gap-2">
                                 {{ if .IsModerator }}
                                     <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700 btn-remove-moderator"
-                                            data-username="{{ .Username }}">
+                                            data-username="{{ .Pseudo }}">
                                         <i class="fas fa-user-minus mr-1"></i>Removed Moderator
                                     </button>
                                 {{ else }}
                                     <button class="bg-green-600 text-white text-xs px-3 py-1 rounded-full hover:bg-green-700 btn-add-moderator"
-                                            data-username="{{ .Username }}">
+                                            data-username="{{ .Pseudo }}">
                                         <i class="fas fa-user-plus mr-1"></i>Add Moderator
                                     </button>
                                 {{ end }}
@@ -246,8 +198,9 @@
 
         <div class="max-h-96 overflow-y-auto">
             <ul class="divide-y divide-gray-700">
+                {{ range .AllCategories }}
                 <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">General Discussion</span>
+                    <span class="font-medium text-white">{{.Name}}</span>
                     <div class="flex gap-2">
                         <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
                             <i class="fas fa-edit mr-1"></i>Edit
@@ -257,6 +210,7 @@
                         </button>
                     </div>
                 </li>
+                {{ end }}
             </ul>
         </div>
         <div class="text-center my-4 text-gray-300 pagination-info"></div>
