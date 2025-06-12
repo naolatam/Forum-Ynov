@@ -1,6 +1,6 @@
 // Mobile menu management
 document.addEventListener('DOMContentLoaded', function () {
-    /* const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
     mobileMenuButton.addEventListener('click', function () {
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             !mobileMenu.classList.contains('hidden')) {
             mobileMenu.classList.add('hidden');
         }
-    }); */
+    });
 
     const textarea = document.getElementById('content-textarea');
     const preview = document.getElementById('markdown-preview');
