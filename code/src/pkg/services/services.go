@@ -36,6 +36,16 @@ func NewCommentService(db *sql.DB) *CommentService {
 	}
 }
 
+func NewNotificationService(db *sql.DB) *NotificationService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &NotificationService{
+		repo: repositories.NewNotificationRepository(db),
+		ur:   repositories.NewUserRepository(db),
+	}
+}
+
 func NewPostService(db *sql.DB) *PostService {
 	if !checkDBConnection(db) {
 		return nil
@@ -52,6 +62,17 @@ func NewReactionService(db *sql.DB) *ReactionService {
 	}
 	return &ReactionService{
 		repo: repositories.NewReactionRepository(db),
+	}
+}
+
+func NewRecentActivityService(db *sql.DB) *RecentActivityService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &RecentActivityService{
+		repo: repositories.NewRecentActivityRepository(db),
+		ur:   repositories.NewUserRepository(db),
+		pr:   repositories.NewPostRepository(db),
 	}
 }
 
