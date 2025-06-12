@@ -17,6 +17,13 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 	return &UserRepository{db: db}
 }
 
+func NewRecentActivityRepository(db *sql.DB) *RecentActivityRepository {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &RecentActivityRepository{db: db}
+}
+
 func NewRoleRepository(db *sql.DB) *RoleRepository {
 	if !checkDBConnection(db) {
 		return nil
@@ -29,6 +36,13 @@ func NewSessionRepository(db *sql.DB) *SessionRepository {
 		return nil
 	}
 	return &SessionRepository{db: db}
+}
+
+func NewNotificationRepository(db *sql.DB) *NotificationRepository {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &NotificationRepository{db: db}
 }
 
 func NewPostRepository(db *sql.DB) *PostRepository {
