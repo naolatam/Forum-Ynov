@@ -34,8 +34,8 @@ func GetMethodOnly(
 	}
 }
 
-func WithDBAndAuth(
-	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool)) func(w http.ResponseWriter, r *http.Request) {
+func WithDB(
+	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB)) func(w http.ResponseWriter, r *http.Request) {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		db, err := config.OpenDBConnection()
@@ -44,24 +44,61 @@ func WithDBAndAuth(
 			return
 		}
 		defer db.Close()
+		handler(w, r, db)
+	}
+}
+
+func WithAuth(
+	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool)) func(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+
+	return func(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 		sessionService := services.NewSessionService(db)
 		isConnected, session := sessionService.IsAuthenticated(r)
+
+		if !isConnected {
+			handlers.ShowError403(w, &dtos.HeaderDto{IsConnected: false})
+			return
+		}
 
 		handler(w, r, db, session, isConnected)
 	}
 }
 
-func WithDBAndAuthRequired(
-	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool)) func(w http.ResponseWriter, r *http.Request) {
+func WithHeader(
+	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto),
+) func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 
-	return func(w http.ResponseWriter, r *http.Request) {
-		db, err := config.OpenDBConnection()
-		if err != nil {
-			handlers.ShowDatabaseError500(w, &dtos.HeaderDto{})
-			return
+	return func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
+
+		userService := services.NewUserService(db)
+		ns := services.NewNotificationService(db)
+
+		header := &dtos.HeaderDto{
+			IsConnected: isConnected,
 		}
-		defer db.Close()
+
+		user := userService.FindById(session.User_ID)
+		if user != nil {
+			header.IsAdmin = userService.IsAdmin(user)
+			header.IsModerator = userService.IsModerator(user)
+			notif, err := ns.FindByUser(user)
+			if err != nil {
+				handlers.ShowCustomError500(w, header, "Unable to retrieve notifications from the database: "+err.Error())
+				return
+			}
+			header.Notifications = *notif
+
+		}
+
+		handler(w, r, db, session, header)
+	}
+}
+
+func WithAuthRequired(
+	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool)) func(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+
+	return func(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 		sessionService := services.NewSessionService(db)
 		isConnected, session := sessionService.IsAuthenticated(r)
@@ -74,17 +111,11 @@ func WithDBAndAuthRequired(
 	}
 }
 
-func WithDBAndAuthForbidden(
+func WithAuthForbidden(
 	urlToRedirect string,
-	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool)) func(w http.ResponseWriter, r *http.Request) {
+	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool)) func(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
-	return func(w http.ResponseWriter, r *http.Request) {
-		db, err := config.OpenDBConnection()
-		if err != nil {
-			handlers.ShowDatabaseError500(w, &dtos.HeaderDto{})
-			return
-		}
-		defer db.Close()
+	return func(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 		sessionService := services.NewSessionService(db)
 		isConnected, session := sessionService.IsAuthenticated(r)
@@ -97,17 +128,11 @@ func WithDBAndAuthForbidden(
 	}
 }
 
-func WithDBAndRequireAuthRedirect(
+func WithRequiredAuthRedirect(
 	urlToRedirect string,
-	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool)) func(w http.ResponseWriter, r *http.Request) {
+	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool)) func(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
-	return func(w http.ResponseWriter, r *http.Request) {
-		db, err := config.OpenDBConnection()
-		if err != nil {
-			handlers.ShowDatabaseError500(w, &dtos.HeaderDto{})
-			return
-		}
-		defer db.Close()
+	return func(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 		sessionService := services.NewSessionService(db)
 		isConnected, session := sessionService.IsAuthenticated(r)

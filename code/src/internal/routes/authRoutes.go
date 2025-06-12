@@ -10,9 +10,9 @@ import (
 
 func initAuthRoutes() {
 	// Routes for classic authentication
-	http.HandleFunc("/auth/login", mw.WithDBAndAuthForbidden("/home", handlers.LoginHandler))
-	http.HandleFunc("/auth/register", mw.WithDBAndAuthForbidden("/home", handlers.RegisterHandler))
-	http.HandleFunc("/auth/logout", mw.GetMethodOnly(mw.WithDBAndRequireAuthRedirect("/", handlers.LogoutHandler)))
+	http.HandleFunc("/auth/login", mw.WithDB(mw.WithAuthForbidden("/home", handlers.LoginHandler)))
+	http.HandleFunc("/auth/register", mw.WithDB(mw.WithAuthForbidden("/home", handlers.RegisterHandler)))
+	http.HandleFunc("/auth/logout", mw.GetMethodOnly(mw.WithDB(mw.WithRequiredAuthRedirect("/", handlers.LogoutHandler))))
 
 	// Routes for social authentication
 	http.HandleFunc("/auth/google", mw.GetMethodOnly(handlers.LoginViaGoogleHandler))

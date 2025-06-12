@@ -14,7 +14,7 @@ import (
 	"net/http"
 )
 
-func SeePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
+func SeePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 
 	ps := services.NewPostService(db)
 	us := services.NewUserService(db)
@@ -26,22 +26,18 @@ func SeePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session 
 	if session != nil {
 		user = *us.FindById(session.User_ID)
 	}
-	post, err := fetchPost(w, r, isConnected, ps, categoryService)
+	post, err := fetchPost(w, r, header, ps, categoryService)
 	if err != nil {
 		return
 	}
 
-	comments, success := retrieveComments(w, commentService, post, rs, us, isConnected)
+	comments, success := retrieveComments(w, commentService, post, rs, us, header)
 	if !success {
 		return
 	}
 
 	data := dtos.PostPageDto{
-		Header: dtos.HeaderDto{
-			IsConnected: isConnected,
-			IsAdmin:     us.IsAdmin(&user),
-			IsModerator: us.IsModerator(&user),
-		},
+		Header:       *header,
 		Post:         *post,
 		Comments:     comments,
 		ActualUserId: user.ID,
@@ -65,10 +61,10 @@ func SeePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session 
 
 }
 
-func fetchPost(w http.ResponseWriter, r *http.Request, isConnected bool, ps *services.PostService, cs *services.CategoryService) (*models.Post, error) {
+func fetchPost(w http.ResponseWriter, r *http.Request, header *dtos.HeaderDto, ps *services.PostService, cs *services.CategoryService) (*models.Post, error) {
 	postId := r.URL.Query().Get("post_id")
 	if postId == "" {
-		ShowError400(w, &dtos.HeaderDto{IsConnected: isConnected})
+		ShowError400(w, header)
 		return nil, errors.New("post_id is required")
 	}
 	var (
@@ -76,25 +72,25 @@ func fetchPost(w http.ResponseWriter, r *http.Request, isConnected bool, ps *ser
 		err       error
 	)
 	if postIdInt, err = strconv.Atoi(postId); err != nil {
-		ShowError400(w, &dtos.HeaderDto{IsConnected: isConnected})
+		ShowError400(w, header)
 		return nil, errors.New("post_id should be a valid integer")
 	}
 	if postIdInt <= 0 {
-		ShowError400(w, &dtos.HeaderDto{IsConnected: isConnected})
+		ShowError400(w, header)
 		return nil, errors.New("post_id should be a valid positive integer")
 	}
 
 	post, err := ps.FindById(uint32(postIdInt))
 	if err != nil {
-		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Post not found or error while retrieving post: "+err.Error())
+		ShowCustomError500(w, header, "Post not found or error while retrieving post: "+err.Error())
 		return nil, errors.New("post not found or error while retrieving post")
 	}
 	if _, err = cs.FindByPostId(post); err != nil {
-		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error while retrieving categories for post: "+err.Error())
+		ShowCustomError500(w, header, "Error while retrieving categories for post: "+err.Error())
 		return nil, errors.New("post categories not found or error while retrieving categories")
 	}
 	if _, err = ps.FetchUserId(post); err != nil {
-		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error while retrieving user for post: "+err.Error())
+		ShowCustomError500(w, header, "Error while retrieving user for post: "+err.Error())
 		return nil, errors.New("post owner not found or error while retrieving categories")
 	}
 	return post, nil
@@ -105,7 +101,7 @@ func translateCommentsIntoCommentsDto(
 	commentsModels *[]*models.Comment,
 	rs *services.ReactionService,
 	us *services.UserService,
-	isConnected bool,
+	header *dtos.HeaderDto,
 ) []*dtos.CommentDto {
 
 	var comments []*dtos.CommentDto
@@ -113,7 +109,7 @@ func translateCommentsIntoCommentsDto(
 		// Fetch user who made the comment
 		user := us.FindById(comment.User_ID)
 		if user == nil {
-			ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error while retrieving user for comment")
+			ShowCustomError500(w, header, "Error while retrieving user for comment")
 			return nil
 		}
 		dateStr := utils.TimeAgo(comment.CreatedAt)
@@ -137,15 +133,15 @@ func retrieveComments(
 	post *models.Post,
 	rs *services.ReactionService,
 	us *services.UserService,
-	isConnected bool,
+	header *dtos.HeaderDto,
 ) (comments []*dtos.CommentDto, success bool) {
 	commentsModels, err := commentService.FindByPost(post)
 	if err != nil {
-		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error while retrieving comments for post: "+err.Error())
+		ShowCustomError500(w, header, "Error while retrieving comments for post: "+err.Error())
 		return nil, false
 	}
 
-	comments = translateCommentsIntoCommentsDto(w, commentsModels, rs, us, isConnected)
+	comments = translateCommentsIntoCommentsDto(w, commentsModels, rs, us, header)
 	if comments == nil {
 		return nil, true
 	}

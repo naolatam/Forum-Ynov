@@ -41,20 +41,21 @@ func reactionPostHandler(w http.ResponseWriter, r *http.Request, label string, d
 	postService := services.NewPostService(db)
 	userService := services.NewUserService(db)
 	reactionService := services.NewReactionService(db)
+	ras := services.NewRecentActivityService(db)
 
-	comment, ok := getPostFromBody(w, r, postService, isConnected)
+	post, ok := getPostFromBody(w, r, postService, isConnected)
 	if !ok {
 		return
 	}
 
-	reac := reactionService.FindByPostAndUserId(comment.ID, session.User_ID)
+	reac := reactionService.FindByPostAndUserId(post.ID, session.User_ID)
 	if reac == nil {
 		user := userService.FindById(session.User_ID)
 		if user == nil {
 			ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error retrieving user")
 			return
 		}
-		if err := reactionService.Create(nil, &comment.ID, user, label); err != nil {
+		if err := reactionService.Create(&post.ID, nil, user, label); err != nil {
 			ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error creating reaction: "+err.Error())
 			return
 		}
@@ -63,6 +64,7 @@ func reactionPostHandler(w http.ResponseWriter, r *http.Request, label string, d
 			return
 		}
 	}
+	ras.Create(label+"d Post ", post.Title[:min(100, len(post.Title))], nil, session.User_ID, post.ID)
 
-	http.Redirect(w, r, "/posts?post_id="+r.FormValue("post_id"), http.StatusSeeOther)
+	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
 }

@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func HomeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
+func HomeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 
 	userService := services.NewUserService(db)
 	sessionService := services.NewSessionService(db)
@@ -20,9 +20,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *mo
 	countOnlineUsers, _ := sessionService.GetActiveSessionCount()
 
 	data := dtos.HomePageDto{
-		Header: dtos.HeaderDto{
-			IsConnected: isConnected,
-		},
+		Header:           *header,
 		UserCount:        countUsers,
 		PostCount:        countPosts,
 		ActiveUsersCount: countOnlineUsers,
