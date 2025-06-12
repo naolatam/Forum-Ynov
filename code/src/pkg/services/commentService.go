@@ -3,6 +3,7 @@ package services
 import (
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/repositories"
+	"log"
 
 	"github.com/google/uuid"
 )
@@ -67,5 +68,24 @@ func (service *CommentService) Delete(comment *models.Comment) bool {
 	if err := service.repo.Delete(comment); err != nil {
 		return false
 	}
+	return true
+}
+
+func (service *CommentService) Update(comment *models.Comment) bool {
+	if comment == nil {
+		return false
+	}
+	if p, err := service.ps.FindById(comment.Post_id); err != nil && p == nil {
+		return false // Post does not exist
+	}
+	if u, err := service.us.FindById(comment.User_ID); err != nil && u == nil {
+		log.Println(err)
+		return false // User does not exist
+	}
+
+	if err := service.repo.Update(comment); err != nil {
+		return false
+	}
+
 	return true
 }
