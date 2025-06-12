@@ -64,9 +64,9 @@ func (repository *CategoryRepository) FindByPostId(postId uint32) (*[]*models.Ca
 	}
 	defer rows.Close()
 
-	var category models.Category
 	var res = []*models.Category{}
 	for rows.Next() {
+		var category models.Category
 		err = rows.Scan(&category.ID, &category.Name)
 		if err != nil {
 			return nil, err
@@ -96,4 +96,27 @@ func (repository *CategoryRepository) FindAll() (*[]*models.Category, error) {
 		res = append(res, &category)
 	}
 	return &res, nil
+}
+
+func (repository *CategoryRepository) DeleteCategoryByPostId(postId uint32) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	_, err := repository.db.Exec("DELETE FROM posts_category WHERE post_id = ?", postId)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *CategoryRepository) AssociateCategoryToAPost(categoryId uuid.UUID, postId uint32) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	_, err := repository.db.Exec("INSERT INTO posts_category (category_id, post_id) VALUES (?, ?)", categoryId, postId)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

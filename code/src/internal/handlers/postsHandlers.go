@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"Forum-back/internal/config"
 	"Forum-back/internal/templates"
 	dtos "Forum-back/pkg/dtos/templates"
 	"Forum-back/pkg/models"
@@ -9,7 +8,6 @@ import (
 
 	"Forum-back/pkg/services"
 	"net/http"
-	"text/template"
 
 	"github.com/google/uuid"
 )
@@ -56,29 +54,31 @@ func SearchPostsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sess
 	}
 }
 
-func NotForNowHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("This feature is not implemented yet."))
+func DeletePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
+	postService := services.NewPostService(db)
+	userService := services.NewUserService(db)
 
-	// What to do here ?
-}
-
-func EditPostHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "internal/templates/publicationEdit.gohtml")
-
-	db, err := config.OpenDBConnection()
-	if err != nil {
-		ShowDatabaseError500(w, &dtos.HeaderDto{})
-		return
-	}
-	defer db.Close()
-
-	tmpl, err := template.ParseFiles("internal/templates/publicationEdit.gohtml", "internal/templates/components/headerComponent.gohtml")
-	if err != nil {
-		ShowTemplateError500(w, &dtos.HeaderDto{})
+	user := userService.FindById(session.User_ID)
+	if user == nil {
+		ShowError403(w, header)
 		return
 	}
 
-	tmpl.Execute(w, nil)
+	post, ok := getPostFromBody(w, r, postService, header.IsConnected)
+	if !ok {
+		return
+	}
+
+	authorized := post.User_ID == user.ID || userService.IsAdmin(user)
+	if !authorized {
+		ShowError403(w, header)
+		return
+	}
+	if err := postService.Delete(post); err != nil {
+		ShowCustomError500(w, header, "Error while deleting post: "+err.Error())
+		return
+	}
+
 }
 
 func parseSearchParams(r *http.Request) (string, *uuid.UUID, error) {

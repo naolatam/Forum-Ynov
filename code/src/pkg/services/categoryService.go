@@ -3,12 +3,22 @@ package services
 import (
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/repositories"
+
+	"github.com/google/uuid"
 )
 
 type CategoryService struct {
 	repo *repositories.CategoryRepository
 }
 
+func (service *CategoryService) FindById(id uuid.UUID) *models.Category {
+
+	res, _ := service.repo.FindById(&id)
+	/* if err != nil {
+		log.Println("Error finding all categories:", err)
+	} */
+	return res
+}
 func (service *CategoryService) FindAll() *[]*models.Category {
 
 	res, _ := service.repo.FindAll()

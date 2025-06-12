@@ -51,6 +51,7 @@ func NewPostService(db *sql.DB) *PostService {
 	return &PostService{
 		repo: repositories.NewPostRepository(db),
 		ur:   repositories.NewUserRepository(db),
+		cr:   repositories.NewCategoryRepository(db),
 	}
 }
 
