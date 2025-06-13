@@ -14,6 +14,7 @@ type UserRepository struct {
 	db *sql.DB
 }
 
+// FindById retrieves a user by their ID.
 func (repository *UserRepository) FindById(id uuid.UUID) (*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -37,6 +38,7 @@ func (repository *UserRepository) FindById(id uuid.UUID) (*models.User, error) {
 	return nil, errors.New("user not found")
 }
 
+// FindMultipleByAny retrieves users based on a query that matches pseudo, email, or ID.
 func (repository *UserRepository) FindMultipleByAny(query string) (*[]*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -69,6 +71,7 @@ func (repository *UserRepository) FindMultipleByAny(query string) (*[]*models.Us
 	return &users, nil
 }
 
+// FindByUsernameOrEmail retrieves a user by their username or email.
 func (repository *UserRepository) FindByUsernameOrEmail(pseudo *string, email *string) (*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -91,6 +94,7 @@ func (repository *UserRepository) FindByUsernameOrEmail(pseudo *string, email *s
 	return nil, errors.New("user not found")
 }
 
+// FindByEmail retrieves a user by their email address.
 func (repository *UserRepository) FindByEmail(email *string) (*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -113,6 +117,7 @@ func (repository *UserRepository) FindByEmail(email *string) (*models.User, erro
 	return nil, errors.New("user not found")
 }
 
+// FindByUsername retrieves a user by their username.
 func (repository *UserRepository) FindByUsername(username *string) (*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -135,6 +140,7 @@ func (repository *UserRepository) FindByUsername(username *string) (*models.User
 	return nil, errors.New("user not found")
 }
 
+// FindByGoogleID retrieves a user by their Google ID.
 func (repository *UserRepository) FindByGoogleID(googleID string) (*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -157,6 +163,7 @@ func (repository *UserRepository) FindByGoogleID(googleID string) (*models.User,
 	return nil, errors.New("user not found")
 }
 
+// FindByGithubID retrieves a user by their GitHub ID.
 func (repository *UserRepository) FindByGithubID(githubID int64) (*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -179,6 +186,7 @@ func (repository *UserRepository) FindByGithubID(githubID int64) (*models.User, 
 	return nil, errors.New("user not found")
 }
 
+// Update modifies an existing user in the database.
 func (repository *UserRepository) Update(user *models.User) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -193,6 +201,7 @@ func (repository *UserRepository) Update(user *models.User) error {
 
 }
 
+// Create inserts a new user into the database.
 func (repository *UserRepository) Create(user *models.User) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -210,6 +219,7 @@ func (repository *UserRepository) Create(user *models.User) error {
 
 }
 
+// GetAllUsers retrieves all users from the database.
 func (repository *UserRepository) GetAllUsers() ([]*models.User, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -243,6 +253,7 @@ func (repository *UserRepository) GetAllUsers() ([]*models.User, error) {
 	return users, nil
 }
 
+// GetUserCount retrieves the total number of users in the database.
 func (repository *UserRepository) GetUserCount() int {
 	if repository.db == nil {
 		return -1
@@ -256,6 +267,7 @@ func (repository *UserRepository) GetUserCount() int {
 	return userCount
 }
 
+// Delete removes a user from the database by their ID.
 func (repository *UserRepository) Delete(userId *uuid.UUID) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
