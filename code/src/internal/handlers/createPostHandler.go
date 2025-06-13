@@ -108,7 +108,7 @@ func retrieveNewPostFromBody(w http.ResponseWriter, r *http.Request, ps *service
 		return nil, false
 	}
 
-	if pictureFile, fileMeta, err := r.FormFile("avatar-upload"); err == nil {
+	if pictureFile, fileMeta, err := r.FormFile("image"); err == nil {
 		defer pictureFile.Close()
 		if fileMeta.Size > 20*1024*1024 { // 5 MB limit
 			ShowCustomError400(w, &dtos.HeaderDto{}, "File size cannot exceeds 20 MB limit.")

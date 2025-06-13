@@ -52,7 +52,7 @@
                 </div>
                 <div class="flex flex-wrap sm:flex-nowrap items-end justify-between gap-4">
                     <div class="text-gray-300 flex gap-3 flex flex-col">
-                        <p class="text-sm">Create at {{.Post.CreatedAt}}</p>
+                        <p class="text-sm">Create {{.Post.TimeAgo}}</p>
                         <div class="flex items-center gap-2">
                             <img src="{{ .Post.User.AvatarBase64}}" alt="Avatar"
                                  class="w-10 h-10 rounded-full">
