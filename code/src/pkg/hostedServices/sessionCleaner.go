@@ -9,6 +9,7 @@ import (
 	"Forum-back/pkg/services"
 )
 
+// startSessionCleanerHostedService initializes the session cleaner service that runs periodically
 func startSessionCleanerHostedService(ctx context.Context) {
 	log.Println("[HostedService] Session cleaner service started")
 	ticker := time.NewTicker(3 * time.Hour) // Service will run every 3 hours
@@ -28,6 +29,7 @@ func startSessionCleanerHostedService(ctx context.Context) {
 
 }
 
+// cleanSession deletes expired sessions from the database
 func cleanSession(ctx context.Context) {
 
 	db, err := config.OpenDBConnection()
