@@ -6,6 +6,7 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
+// SendNotificationEmail sends a plain text email notification.
 func SendNotificationEmail(to string, subject string, body string) error {
 	m := gomail.NewMessage()
 	m.SetHeader("From", os.Getenv("FORUM_NOTIFICATION_EMAIL_FROM"))
@@ -25,6 +26,7 @@ func SendNotificationEmail(to string, subject string, body string) error {
 	return nil
 }
 
+// SendHTMLNotificationEmail sends an HTML formatted email notification.
 func SendHTMLNotificationEmail(to string, subject string, body string) error {
 	m := gomail.NewMessage()
 	m.SetHeader("From", os.Getenv("FORUM_NOTIFICATION_EMAIL_FROM"))
