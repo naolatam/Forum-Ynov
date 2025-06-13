@@ -9,14 +9,17 @@ import (
 	"strconv"
 )
 
+// LikePostHandler handles the liking of a post.
 func LikePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 	reactionPostHandler(w, r, "like", db, session, isConnected)
 }
 
-func DisikePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
+// DisLikePostHandler handles the disliking of a post.
+func DisLikePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 	reactionPostHandler(w, r, "dislike", db, session, isConnected)
 }
 
+// getPostFromBody retrieves the post from the request body.
 func getPostFromBody(w http.ResponseWriter, r *http.Request, postService *services.PostService, isConnected bool) (*models.Post, bool) {
 	postId := r.FormValue("post_id")
 	if postId == "" {
@@ -37,6 +40,7 @@ func getPostFromBody(w http.ResponseWriter, r *http.Request, postService *servic
 	return post, true
 }
 
+// reactionPostHandler handles the reaction (like/dislike) to a post.
 func reactionPostHandler(w http.ResponseWriter, r *http.Request, label string, db *sql.DB, session *models.Session, isConnected bool) {
 	postService := services.NewPostService(db)
 	userService := services.NewUserService(db)
