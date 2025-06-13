@@ -74,70 +74,68 @@
 │   │       ├── publicationEdit.gohtml
 │   │       ├── publication.gohtml
 │   │       └── template.go
-│   ├── pkg
-│   │   ├── dtos
-│   │   │   ├── githubUserInfo.go
-│   │   │   ├── googleUserInfo.go
-│   │   │   └── templates
-│   │   │       ├── adminPageDto.go
-│   │   │       ├── authenticationPageDto.go
-│   │   │       ├── editPostPageDto.go
-│   │   │       ├── errorPageDto.go
-│   │   │       ├── headerDto.go
-│   │   │       ├── homePageDtos.go
-│   │   │       ├── postPageDto.go
-│   │   │       ├── profilePageDto.go
-│   │   │       ├── recentActivityDto.go
-│   │   │       └── searchPostsDto.go
-│   │   ├── hostedServices
-│   │   │   ├── runner.go
-│   │   │   └── sessionCleaner.go
-│   │   ├── models
-│   │   │   ├── category.go
-│   │   │   ├── comment.go
-│   │   │   ├── notification.go
-│   │   │   ├── post.go
-│   │   │   ├── reaction.go
-│   │   │   ├── recentActivity.go
-│   │   │   ├── report.go
-│   │   │   ├── role.go
-│   │   │   ├── session.go
-│   │   │   └── user.go
-│   │   ├── repositories
-│   │   │   ├── categoryRepository.go
-│   │   │   ├── commentRepository.go
-│   │   │   ├── notificationRepository.go
-│   │   │   ├── postRepository.go
-│   │   │   ├── reactionRepository.go
-│   │   │   ├── recentActivityRepository.go
-│   │   │   ├── reportRepository.go
-│   │   │   ├── repositories.go
-│   │   │   ├── roleRepository.go
-│   │   │   ├── sessionRepository.go
-│   │   │   └── userRepository.go
-│   │   ├── services
-│   │   │   ├── categoryService.go
-│   │   │   ├── commentService.go
-│   │   │   ├── notificationService.go
-│   │   │   ├── postService.go
-│   │   │   ├── reactionService.go
-│   │   │   ├── recentActivityService.go
-│   │   │   ├── reportService.go
-│   │   │   ├── roleService.go
-│   │   │   ├── services.go
-│   │   │   ├── sessionService.go
-│   │   │   └── userService.go
-│   │   └── utils
-│   │       ├── auth.go
-│   │       ├── certificate.go
-│   │       ├── image.go
-│   │       ├── oauth
-│   │       │   ├── github.go
-│   │       │   ├── google.go
-│   │       │   └── oauthTools.go
-│   │       └── timeAgo.go
-│   ├── static
-│   └── tree.txt
+│   └── pkg
+│       ├── dtos
+│       │   ├── githubUserInfo.go
+│       │   ├── googleUserInfo.go
+│       │   └── templates
+│       │       ├── adminPageDto.go
+│       │       ├── authenticationPageDto.go
+│       │       ├── editPostPageDto.go
+│       │       ├── errorPageDto.go
+│       │       ├── headerDto.go
+│       │       ├── homePageDtos.go
+│       │       ├── postPageDto.go
+│       │       ├── profilePageDto.go
+│       │       ├── recentActivityDto.go
+│       │       └── searchPostsDto.go
+│       ├── hostedServices
+│       │   ├── runner.go
+│       │   └── sessionCleaner.go
+│       ├── models
+│       │   ├── category.go
+│       │   ├── comment.go
+│       │   ├── notification.go
+│       │   ├── post.go
+│       │   ├── reaction.go
+│       │   ├── recentActivity.go
+│       │   ├── report.go
+│       │   ├── role.go
+│       │   ├── session.go
+│       │   └── user.go
+│       ├── repositories
+│       │   ├── categoryRepository.go
+│       │   ├── commentRepository.go
+│       │   ├── notificationRepository.go
+│       │   ├── postRepository.go
+│       │   ├── reactionRepository.go
+│       │   ├── recentActivityRepository.go
+│       │   ├── reportRepository.go
+│       │   ├── repositories.go
+│       │   ├── roleRepository.go
+│       │   ├── sessionRepository.go
+│       │   └── userRepository.go
+│       ├── services
+│       │   ├── categoryService.go
+│       │   ├── commentService.go
+│       │   ├── notificationService.go
+│       │   ├── postService.go
+│       │   ├── reactionService.go
+│       │   ├── recentActivityService.go
+│       │   ├── reportService.go
+│       │   ├── roleService.go
+│       │   ├── services.go
+│       │   ├── sessionService.go
+│       │   └── userService.go
+│       └── utils
+│           ├── auth.go
+│           ├── certificate.go
+│           ├── image.go
+│           ├── oauth
+│           │   ├── github.go
+│           │   ├── google.go
+│           │   └── oauthTools.go
+│           └── timeAgo.go
 └── tree.txt
 
-27 directories, 114 files
+26 directories, 113 files
