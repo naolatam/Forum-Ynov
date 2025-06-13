@@ -25,6 +25,7 @@ const (
 	maxGeneralRequests = 30
 )
 
+// RateLimitMiddleware limits the number of requests a client can make to the server.
 func RateLimitMiddleware(next http.Handler) http.Handler {
 	if next == nil {
 		next = http.DefaultServeMux
@@ -45,6 +46,7 @@ func RateLimitMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+// extractIP extracts the IP address from the remote address string.
 func extractIP(remoteAddr string) string {
 	host, _, err := net.SplitHostPort(remoteAddr)
 	if err != nil {
@@ -53,10 +55,12 @@ func extractIP(remoteAddr string) string {
 	return host
 }
 
+// isStaticRequest checks if the request is for a static resource.
 func isStaticRequest(r *http.Request) bool {
 	return strings.HasPrefix(r.URL.Path, "/static")
 }
 
+// handleClientRateLimit checks and updates the client's request count.
 func handleClientRateLimit(ip string, isStatic bool, now time.Time) (rateLimitExceeded bool) {
 	clientsLock.Lock()
 	defer clientsLock.Unlock()
