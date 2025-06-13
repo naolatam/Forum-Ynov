@@ -13,6 +13,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// SearchPostsHandler handles the search for posts based on a search term, category, and filter.
 func SearchPostsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 
 	categoryService := services.NewCategoryService(db)
@@ -57,6 +58,7 @@ func SearchPostsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sess
 	}
 }
 
+// DeletePostHandler handles the deletion of a post.
 func DeletePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	postService := services.NewPostService(db)
 	userService := services.NewUserService(db)
@@ -85,6 +87,7 @@ func DeletePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 	http.Redirect(w, r, "/home", http.StatusSeeOther)
 }
 
+// ReportPostHandler handles the reporting of a post by a moderator or admin.
 func ReportPostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if !header.IsModerator && !header.IsAdmin {
 		ShowError403(w, header)
@@ -117,6 +120,7 @@ func ReportPostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 
 }
 
+// parseSearchParams extracts search parameters from the request.
 func parseSearchParams(r *http.Request) (string, *uuid.UUID, string, error) {
 	query := r.URL.Query()
 	searchTerm := query.Get("search")
