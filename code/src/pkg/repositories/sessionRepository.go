@@ -13,6 +13,7 @@ type SessionRepository struct {
 	db *sql.DB
 }
 
+// FindByID retrieves a session by its ID.
 func (repository *SessionRepository) FindByID(id uuid.UUID) (*models.Session, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -39,6 +40,7 @@ func (repository *SessionRepository) FindByID(id uuid.UUID) (*models.Session, er
 	return nil, errors.New("session not found")
 }
 
+// FindByUserID retrieves a session by its associated user ID.
 func (repository *SessionRepository) FindByUserID(userID uuid.UUID) (*models.Session, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -65,6 +67,7 @@ func (repository *SessionRepository) FindByUserID(userID uuid.UUID) (*models.Ses
 	return nil, errors.New("session not found")
 }
 
+// Create inserts a new session into the database.
 func (repository *SessionRepository) Create(session *models.Session) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -76,6 +79,7 @@ func (repository *SessionRepository) Create(session *models.Session) error {
 	return nil
 }
 
+// Delete removes a session from the database by its ID.
 func (repository *SessionRepository) Delete(id uuid.UUID) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -87,6 +91,7 @@ func (repository *SessionRepository) Delete(id uuid.UUID) error {
 	return nil
 }
 
+// DeleteExpiredSessions removes all sessions that have expired before the specified time.
 func (repository *SessionRepository) DeleteExpiredSessions(before time.Time) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -98,6 +103,7 @@ func (repository *SessionRepository) DeleteExpiredSessions(before time.Time) err
 	return nil
 }
 
+// GetActiveSessionCount retrieves the count of active sessions (not expired).
 func (repository *SessionRepository) GetActiveSessionCount() int {
 	if repository.db == nil {
 		return -1
