@@ -15,6 +15,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// LoginHandler handles user login requests.
 func LoginHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 
 	if r.Method == http.MethodPost {
@@ -27,6 +28,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *m
 	}
 }
 
+// RegisterHandler handles user registration requests.
 func RegisterHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 
 	userService := services.NewUserService(db)
@@ -72,6 +74,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
+// LogoutHandler handles user logout requests.
 func LogoutHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, _ bool) {
 	// Initialize session service
 	sessionService := services.NewSessionService(db)
@@ -83,6 +86,7 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
+// PostLoginHandler processes the login form submission.
 func postLoginHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	userService := services.NewUserService(db)
 	usernameOrEmail := r.FormValue("username")
@@ -116,6 +120,7 @@ func postLoginHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
+// ShowLoginPage renders the login page with optional error details.
 func showLoginPage(w http.ResponseWriter, r *http.Request, errDto dtos.ErrorPageDto) {
 	tmpl, err := template.ParseFiles("internal/templates/authentification.gohtml")
 	if err != nil {
@@ -132,6 +137,7 @@ func showLoginPage(w http.ResponseWriter, r *http.Request, errDto dtos.ErrorPage
 	}
 }
 
+// SetSessionCookie sets a session cookie for the user.
 func setSessionCookie(
 	w http.ResponseWriter,
 	expireAt time.Time,
@@ -156,6 +162,7 @@ func setSessionCookie(
 	http.SetCookie(w, sessionCookie)
 }
 
+// DeleteSessionCookie deletes the session cookie from the user's browser.
 func deleteSessionCookie(w http.ResponseWriter) {
 
 	sessionCookie := &http.Cookie{
