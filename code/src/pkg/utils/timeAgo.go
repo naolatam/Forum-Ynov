@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// TimeAgo returns a human-readable string representing the time elapsed since the given time.
 func TimeAgo(t time.Time) string {
 	now := time.Now()
 	diff := now.Sub(t)
