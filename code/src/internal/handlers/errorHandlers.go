@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// ShowError renders an error page with the provided error data.
 func ShowError(w http.ResponseWriter, errorData dtos.ErrorPageDto) {
 	tmpl, err := templates.GetTemplateWithLayout(&errorData.Header, "error", "internal/templates/error.gohtml")
 	if err != nil {
@@ -17,6 +18,7 @@ func ShowError(w http.ResponseWriter, errorData dtos.ErrorPageDto) {
 	tmpl.Execute(w, errorData)
 }
 
+// DefaultErrorHandler handles the default error case, rendering a 404 Not Found page.
 func DefaultErrorHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("internal/templates/error.gohtml")
 	if err != nil {
