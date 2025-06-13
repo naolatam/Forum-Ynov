@@ -12,6 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// AdminHandler handles the admin page, displaying all users, waiting posts, reports, and categories.
 func AdminHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if !header.IsAdmin {
 		ShowError403(w, header)
@@ -48,6 +49,7 @@ func AdminHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *m
 	}
 }
 
+// AdminCategoryHandler handles the admin category page, displaying all categories and providing options to create, edit, or delete categories.
 func AdminCategoryHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if !header.IsAdmin {
 		ShowError403(w, header)
@@ -85,6 +87,7 @@ func AdminCategoryHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, se
 	}
 }
 
+// AdminReportDelete handles the deletion of a report by an admin.
 func AdminReportDelete(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if !header.IsAdmin {
 		ShowError403(w, header)
