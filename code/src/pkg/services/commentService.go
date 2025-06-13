@@ -14,6 +14,7 @@ type CommentService struct {
 	ps   *repositories.PostRepository
 }
 
+// FindByPost retrieves all comments associated with a specific post.
 func (s *CommentService) FindByPost(post *models.Post) (*[]*models.Comment, error) {
 	if post == nil {
 		return nil, nil
@@ -25,6 +26,7 @@ func (s *CommentService) FindByPost(post *models.Post) (*[]*models.Comment, erro
 	return comments, nil
 }
 
+// FindByID retrieves a comment by its ID.
 func (s *CommentService) FindByID(commentId uint32) (*models.Comment, error) {
 
 	comment, err := s.repo.FindById(commentId)
@@ -34,6 +36,7 @@ func (s *CommentService) FindByID(commentId uint32) (*models.Comment, error) {
 	return comment, nil
 }
 
+// GetUserCommentCount retrieves the count of comments made by a specific user.
 func (service *CommentService) GetUserCommentCount(user *models.User) int {
 	if user == nil || user.ID == uuid.Nil {
 		return -1
@@ -43,6 +46,7 @@ func (service *CommentService) GetUserCommentCount(user *models.User) int {
 	return count
 }
 
+// CreateFromModels creates a new comment from the provided models.Comment instance.
 func (service *CommentService) CreateFromModels(comment *models.Comment) bool {
 	if comment == nil {
 		return false
@@ -61,6 +65,7 @@ func (service *CommentService) CreateFromModels(comment *models.Comment) bool {
 	return true
 }
 
+// Delete removes a comment from the repository.
 func (service *CommentService) Delete(comment *models.Comment) bool {
 	if comment == nil {
 		return false
@@ -71,6 +76,7 @@ func (service *CommentService) Delete(comment *models.Comment) bool {
 	return true
 }
 
+// Update modifies an existing comment in the repository.
 func (service *CommentService) Update(comment *models.Comment) bool {
 	if comment == nil {
 		return false
