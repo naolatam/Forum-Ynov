@@ -10,6 +10,7 @@ type ReportRepository struct {
 	db *sql.DB
 }
 
+// FindAll retrieves all reports from the database, ordered by the reportedAt timestamp.
 func (repository *ReportRepository) FindAll() (*[]*models.Report, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -32,6 +33,7 @@ func (repository *ReportRepository) FindAll() (*[]*models.Report, error) {
 	return &res, nil
 }
 
+// Create inserts a new report into the database.
 func (repository *ReportRepository) Create(report *models.Report) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -41,6 +43,7 @@ func (repository *ReportRepository) Create(report *models.Report) error {
 	return err
 }
 
+// Delete removes a report from the database by its ID.
 func (repository *ReportRepository) Delete(report *models.Report) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
