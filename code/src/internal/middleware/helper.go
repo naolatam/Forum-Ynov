@@ -10,6 +10,7 @@ import (
 	"net/http"
 )
 
+// PostMethodOnly checks if the request method is POST and calls the handler if it is.
 func PostMethodOnly(
 	handler func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {
 
@@ -34,6 +35,7 @@ func GetMethodOnly(
 	}
 }
 
+// WithDB is a middleware that opens a database connection and passes it to the handler.
 func WithDB(
 	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB)) func(w http.ResponseWriter, r *http.Request) {
 
@@ -48,6 +50,7 @@ func WithDB(
 	}
 }
 
+// WithAuth is a middleware that checks if the user is authenticated and passes the session and connection status to the handler.
 func WithAuth(
 	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool)) func(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
@@ -60,6 +63,7 @@ func WithAuth(
 	}
 }
 
+// WithHeader is a middleware that retrieves user notifications and passes a header DTO to the handler.
 func WithHeader(
 	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto),
 ) func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
@@ -94,6 +98,7 @@ func WithHeader(
 	}
 }
 
+// WithAuthRequired is a middleware that checks if the user is authenticated and requires authentication to access the handler.
 func WithAuthRequired(
 	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool)) func(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
@@ -110,6 +115,7 @@ func WithAuthRequired(
 	}
 }
 
+// WithAuthForbidden is a middleware that checks if the user is authenticated and redirects to a specified URL if they are.
 func WithAuthForbidden(
 	urlToRedirect string,
 	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool)) func(w http.ResponseWriter, r *http.Request, db *sql.DB) {
@@ -127,6 +133,7 @@ func WithAuthForbidden(
 	}
 }
 
+// WithRequiredAuthRedirect is a middleware that checks if the user is authenticated and redirects to a specified URL if they are not.
 func WithRequiredAuthRedirect(
 	urlToRedirect string,
 	handler func(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool)) func(w http.ResponseWriter, r *http.Request, db *sql.DB) {
