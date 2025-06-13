@@ -14,6 +14,7 @@ import (
 	"net/http"
 )
 
+// SeePostHandler handles the display of a post along with its comments and reactions.
 func SeePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 
 	ps := services.NewPostService(db)
@@ -67,6 +68,7 @@ func SeePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session 
 
 }
 
+// fetchPost retrieves the post based on the post_id query parameter and validates it.
 func fetchPost(w http.ResponseWriter, r *http.Request, header *dtos.HeaderDto, ps *services.PostService, cs *services.CategoryService) (*models.Post, error) {
 	postId := r.URL.Query().Get("post_id")
 	if postId == "" {
@@ -102,6 +104,7 @@ func fetchPost(w http.ResponseWriter, r *http.Request, header *dtos.HeaderDto, p
 	return post, nil
 }
 
+// translateCommentsIntoCommentsDto converts a slice of Comment models into a slice of Comment DTOs.
 func translateCommentsIntoCommentsDto(
 	w http.ResponseWriter,
 	commentsModels *[]*models.Comment,
@@ -133,6 +136,7 @@ func translateCommentsIntoCommentsDto(
 	return comments
 }
 
+// retrieveComments fetches comments for a given post and translates them into Comment DTOs.
 func retrieveComments(
 	w http.ResponseWriter,
 	commentService *services.CommentService,
