@@ -6,6 +6,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// IsSecurePassword checks if the provided password meets security criteria:
 func IsSecurePassword(password string) bool {
 
 	hasUpper := false
@@ -29,6 +30,7 @@ func IsSecurePassword(password string) bool {
 	return hasUpper && hasLower && hasDigit && hasSpecial && len(password) >= 8
 }
 
+// CheckForNewPassword validates the new password and returns its hashed version if valid.
 func CheckForNewPassword(password, confirmPassword string) (string, error) {
 	if confirmPassword != password {
 		return "", errors.New("passwords do not match")
