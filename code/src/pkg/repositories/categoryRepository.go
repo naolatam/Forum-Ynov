@@ -12,6 +12,7 @@ type CategoryRepository struct {
 	db *sql.DB
 }
 
+// FindById retrieves a category by its ID.
 func (repository *CategoryRepository) FindById(id *uuid.UUID) (*models.Category, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -33,6 +34,7 @@ func (repository *CategoryRepository) FindById(id *uuid.UUID) (*models.Category,
 	return nil, errors.New("category not found")
 }
 
+// FindByName retrieves a category by its name.
 func (repository *CategoryRepository) FindByName(name *string) (*models.Category, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -54,6 +56,7 @@ func (repository *CategoryRepository) FindByName(name *string) (*models.Category
 	return nil, errors.New("category not found")
 }
 
+// FindByPostId retrieves all categories associated with a specific post ID.
 func (repository *CategoryRepository) FindByPostId(postId uint32) (*[]*models.Category, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -76,6 +79,7 @@ func (repository *CategoryRepository) FindByPostId(postId uint32) (*[]*models.Ca
 	return &res, nil
 }
 
+// FindAll retrieves all categories from the database.
 func (repository *CategoryRepository) FindAll() (*[]*models.Category, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -98,6 +102,7 @@ func (repository *CategoryRepository) FindAll() (*[]*models.Category, error) {
 	return &res, nil
 }
 
+// DeleteCategoryByPostId deletes the association of a category with a specific post ID.
 func (repository *CategoryRepository) DeleteCategoryByPostId(postId uint32) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -109,6 +114,7 @@ func (repository *CategoryRepository) DeleteCategoryByPostId(postId uint32) erro
 	return nil
 }
 
+// AssociateCategoryToAPost associates a category with a specific post ID.
 func (repository *CategoryRepository) AssociateCategoryToAPost(categoryId uuid.UUID, postId uint32) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -121,6 +127,7 @@ func (repository *CategoryRepository) AssociateCategoryToAPost(categoryId uuid.U
 	return nil
 }
 
+// Create inserts a new category into the database.
 func (repository *CategoryRepository) Create(category *models.Category) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -138,6 +145,7 @@ func (repository *CategoryRepository) Create(category *models.Category) error {
 	return nil
 }
 
+// Delete removes a category from the database.
 func (repository *CategoryRepository) Delete(category *models.Category) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -152,6 +160,7 @@ func (repository *CategoryRepository) Delete(category *models.Category) error {
 	return nil
 }
 
+// Update modifies an existing category in the database.
 func (repository *CategoryRepository) Update(category *models.Category) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
