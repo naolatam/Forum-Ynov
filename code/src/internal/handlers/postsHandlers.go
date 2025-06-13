@@ -82,7 +82,7 @@ func DeletePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 		return
 	}
 
-	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
+	http.Redirect(w, r, "/home", http.StatusSeeOther)
 }
 
 func ReportPostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
@@ -113,7 +113,7 @@ func ReportPostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 		ShowCustomError500(w, header, "Error while reporting post: "+err.Error())
 		return
 	}
-	http.Redirect(w, r, "/home", http.StatusSeeOther)
+	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
 
 }
 
