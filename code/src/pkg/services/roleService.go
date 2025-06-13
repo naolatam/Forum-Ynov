@@ -12,6 +12,7 @@ type RoleService struct {
 	repo *repositories.RoleRepository
 }
 
+// GetHighestPermRole retrieves the role with the highest permissions.
 func (s *RoleService) GetHighestPermRole() *models.Role {
 
 	role, err := s.repo.FindHighestPermRole()
@@ -21,6 +22,7 @@ func (s *RoleService) GetHighestPermRole() *models.Role {
 	return role
 }
 
+// GetMidPermRole retrieves the role with the second highest permissions.
 func (s *RoleService) GetMidPermRole() *models.Role {
 
 	role, err := s.repo.FindMidPermRole()
@@ -30,6 +32,7 @@ func (s *RoleService) GetMidPermRole() *models.Role {
 	return role
 }
 
+// GetDefaultRole retrieves the default role based on an environment variable.
 func (s *RoleService) GetDefaultRole() *models.Role {
 
 	roleStringId := os.Getenv("DEFAULT_ROLE_ID")
