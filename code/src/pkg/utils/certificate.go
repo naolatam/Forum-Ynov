@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// This function checks if the certificate and key files exist.
+// CheckIfCertExist checks if the certificate and key files exist.
 func CheckIfCertExist(certFile, keyFile string) bool {
 
 	// Vérifie si les fichiers existent, sinon les génère
@@ -25,6 +25,7 @@ func CheckIfCertExist(certFile, keyFile string) bool {
 
 }
 
+// GenerateSelfSignedCert generates a self-signed certificate and saves it to the specified files.
 func GenerateSelfSignedCert(certFile, keyFile string, length int) error {
 	priv, err := rsa.GenerateKey(rand.Reader, length)
 	if err != nil {
