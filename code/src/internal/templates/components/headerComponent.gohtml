@@ -80,7 +80,60 @@
                     class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center"
                     >3</span
                 >
-            </button>
+                    <i class="fa-regular fa-bell text-lg"></i>
+                    {{ if and .Notifications (gt (len .Notifications) 0)}}
+
+                        <span
+                                class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center"
+                        >{{ len .Notifications}}</span
+                        >
+                    {{end}}
+                </button>
+                <!-- Pop-up notifications alignée sous la cloche -->
+                <div id="notifications-popup" class="text-white hidden absolute right-0 top-12 bg-gray-800 border border-gray-700 rounded-lg shadow-lg w-80 z-50">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-white mb-2">Notifications</h3>
+                        {{ if .Notifications }}
+                            <ul>
+                                {{ range .Notifications }}
+                                    <li class="text-gray-300 mb-2 ">
+
+                                        <a href="/posts?post_id={{.Post_ID}}" class="relative hover:text-blue-400 transition-colors">
+                                            <form action="/notifications/delete" method="POST" class="relative">
+                                                <input type="hidden" name="notification_id" value="{{.ID}}">
+                                                <button type="submit" class="absolute right-3 top-3 text-gray-400 hover:text-red-500 focus:outline-none">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </form>
+                                            <div class="max-w-sm bg-gray-900 text-gray-300 rounded-2xl shadow p-4 flex space-x-4">
+                                                
+                                                <div class="flex flex-col items-center">
+                                                    <img src="{{ .FromUser.AvatarBase64 }}" alt="Avatar" class="w-12 h-12 rounded-full">
+                                                    <div class="text-xs text-gray-400 mt-2 self-start">{{ .TimeAgo }}</div>
+                                                </div>
+
+                                                    <!-- Colonne droite : Titre + texte -->
+                                                <div class="flex flex-col justify-start">
+                                                    <div class="text-sm font-semibold text-white-800">{{.Title}}</div>
+                                                    <div class="text-sm text-white-600 mt-1">
+                                                        <a href="/profile?user_id={{.FromUser.ID}}" class="text-blue-400">{{.FromUser.Pseudo}}</a>
+                                                        {{.Description}}
+                                                        <a href="/posts?post_id={{.Post_ID}}" class="text-blue-400">{{.Post.Title}}</a>
+
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                {{ end }}
+                            </ul>
+                        {{ else }}
+                            <p class="text-gray-400">You don't have notification.</p>
+                        {{ end }}
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div
