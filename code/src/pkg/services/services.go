@@ -49,10 +49,11 @@ func NewPostService(db *sql.DB) *PostService {
 		return nil
 	}
 	return &PostService{
-		repo:     repositories.NewPostRepository(db),
-		ur:       repositories.NewUserRepository(db),
-		cr:       repositories.NewCategoryRepository(db),
-		roleRepo: repositories.NewRoleRepository(db),
+		repo:         repositories.NewPostRepository(db),
+		ur:           repositories.NewUserRepository(db),
+		cr:           repositories.NewCategoryRepository(db),
+		roleRepo:     repositories.NewRoleRepository(db),
+		reactionRepo: repositories.NewReactionRepository(db),
 	}
 }
 
@@ -73,6 +74,17 @@ func NewRecentActivityService(db *sql.DB) *RecentActivityService {
 		repo: repositories.NewRecentActivityRepository(db),
 		ur:   repositories.NewUserRepository(db),
 		pr:   repositories.NewPostRepository(db),
+	}
+}
+
+func NewReportService(db *sql.DB) *ReportService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &ReportService{
+		repository: repositories.NewReportRepository(db),
+		ur:         repositories.NewUserRepository(db),
+		pr:         repositories.NewPostRepository(db),
 	}
 }
 
