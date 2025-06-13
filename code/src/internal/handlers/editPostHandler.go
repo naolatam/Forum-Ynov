@@ -6,6 +6,7 @@ import (
 	"Forum-back/pkg/models"
 	"database/sql"
 	"errors"
+	"io"
 	"log"
 	"strconv"
 
@@ -108,7 +109,7 @@ func handlePostMethodPostEdit(w http.ResponseWriter, r *http.Request, db *sql.DB
 	if err := updatePost(w, r, header, post, ps, cs); err != nil {
 		return
 	}
-	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusOK)
+	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusFound)
 }
 
 func updatePost(w http.ResponseWriter, r *http.Request, header *dtos.HeaderDto, post *models.Post, ps *services.PostService, cs *services.CategoryService) error {
@@ -125,6 +126,17 @@ func updatePost(w http.ResponseWriter, r *http.Request, header *dtos.HeaderDto, 
 	}
 	if r.FormValue("content") != "" && post.Content != r.FormValue("content") {
 		post.Content = r.FormValue("content")
+	}
+
+	if imageFile, fileMeta, err := r.FormFile("image"); err == nil {
+		defer imageFile.Close()
+		if fileMeta.Size > 20*1024*1024 { // 20 MB
+			ShowCustomError400(w, header, "Image size exceeds the maximum limit of 20 MB.")
+			return nil
+		}
+		if imageBytes, err := io.ReadAll(imageFile); err == nil {
+			post.Picture = imageBytes
+		}
 	}
 
 	err := ps.UpdateCategoryFromList(r.Form["categories"], post)

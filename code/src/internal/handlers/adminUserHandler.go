@@ -101,15 +101,18 @@ func AdminSearchUserHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, 
 	userService := services.NewUserService(db)
 	postService := services.NewPostService(db)
 	categoryService := services.NewCategoryService(db)
+	reportService := services.NewReportService(db)
 
 	allUsers := userService.FindMultipleByAny(query)
-	allPost, _ := postService.FindAll()
+	WaitingPosts, _ := postService.FindWaitings()
+	reports, _ := reportService.FindAll()
 	allCategories := categoryService.FindAll()
 
 	data := dtos.AdminPageDto{
 		Header:         *header,
 		AllUsers:       *allUsers,
-		AllPost:        allPost,
+		WaitingPosts:   WaitingPosts,
+		Reports:        reports,
 		AllCategories:  allCategories,
 		UserManagement: true,
 	}

@@ -5,6 +5,7 @@ import (
 	dtos "Forum-back/pkg/dtos/templates"
 	"Forum-back/pkg/models"
 	"database/sql"
+	"strconv"
 
 	"Forum-back/pkg/services"
 	"net/http"
@@ -23,7 +24,7 @@ func SearchPostsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sess
 		return
 	}
 
-	searchTerm, searchCategory, err := parseSearchParams(r)
+	searchTerm, searchCategory, searchFilter, err := parseSearchParams(r)
 	if err != nil {
 		ShowError400(w, header)
 		return
@@ -34,12 +35,14 @@ func SearchPostsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sess
 		ShowCustomError500(w, header, "Error while searching posts: "+err.Error())
 		return
 	}
+	posts = postService.FilterPosts(posts, searchFilter)
 
 	data := dtos.SearchPostsDto{
 		Header:         *header,
 		Categories:     *categories,
 		SearchTerm:     searchTerm,
 		SearchCategory: *searchCategory,
+		SearchFilter:   searchFilter,
 		Posts:          *posts,
 	}
 
@@ -81,16 +84,50 @@ func DeletePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 
 }
 
-func parseSearchParams(r *http.Request) (string, *uuid.UUID, error) {
+func ReportPostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
+	if !header.IsModerator && !header.IsAdmin {
+		ShowError403(w, header)
+		return
+	}
+
+	postService := services.NewPostService(db)
+	userService := services.NewUserService(db)
+	reportService := services.NewReportService(db)
+
+	post, ok := getPostFromBody(w, r, postService, header.IsConnected)
+	if !ok {
+		return
+	}
+	user := userService.FindById(post.User_ID)
+	if user == nil {
+		ShowCustomError500(w, header, "Error finding user for post.")
+		return
+	}
+
+	err := reportService.Create(&models.Report{
+		User_id: user.ID,
+		Post_id: post.ID,
+	})
+	if err != nil {
+		ShowCustomError500(w, header, "Error while reporting post: "+err.Error())
+		return
+	}
+	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
+
+}
+
+func parseSearchParams(r *http.Request) (string, *uuid.UUID, string, error) {
 	query := r.URL.Query()
 	searchTerm := query.Get("search")
 	categoryStr := query.Get("category")
+	searchFilter := query.Get("filter")
+
 	if categoryStr == "" {
-		return searchTerm, &uuid.Nil, nil
+		return searchTerm, &uuid.Nil, searchFilter, nil
 	}
 	categoryUUID, err := uuid.Parse(categoryStr)
 	if err != nil {
-		return "", nil, err
+		return searchTerm, nil, searchFilter, err
 	}
-	return searchTerm, &categoryUUID, nil
+	return searchTerm, &categoryUUID, searchFilter, nil
 }
