@@ -1,23 +1,25 @@
-// Open modal management
-
+// Ouverture des modales
 document.getElementById('btn-moderation').addEventListener('click', function() {
     document.getElementById('modal-moderation').classList.remove('hidden');
+    initializePagination('tab-content-waiting', '.waiting-content-item', '.pagination-info-waiting', '.pagination-waiting', 4);
+    initializePagination('tab-content-moderation', '.moderation-report-item', '.pagination-info-moderation', '.pagination-moderation', 2);
 });
 
 document.getElementById('btn-reports').addEventListener('click', function() {
     document.getElementById('modal-reports').classList.remove('hidden');
+    initializePagination('user-roles-tab', '.user-role-item', '.pagination-info-roles', '.pagination-controls-roles', 2);
 });
 
 document.getElementById('btn-category').addEventListener('click', function() {
     document.getElementById('modal-category').classList.remove('hidden');
+    initializePagination('modal-category', '.category-item', '.pagination-info', '.pagination-controls', 6);
 });
 
 document.getElementById('btn-add-category').addEventListener('click', function() {
     document.getElementById('modal-add-category').classList.remove('hidden');
-}
-);
+});
 
-// Close modal management
+// Fermeture des modales
 document.querySelectorAll('.modal-close').forEach(function(button) {
     button.addEventListener('click', function() {
         document.getElementById(this.dataset.modal).classList.add('hidden');
@@ -30,69 +32,32 @@ document.querySelectorAll('.absolute[id$="-backdrop"]').forEach(function(backdro
     });
 });
 
-// Tab management
+// Gestion des tabs
 document.querySelectorAll('.tab-btn-moderation, .tab-btn-waiting').forEach(button => {
     button.addEventListener('click', () => {
         const tabId = button.getAttribute('data-tab');
-
-        // Active tab button
         document.querySelectorAll('.tab-btn-moderation, .tab-btn-waiting').forEach(btn => {
             btn.classList.remove('active-tab');
             btn.classList.add('bg-gray-600');
         });
         button.classList.add('active-tab');
         button.classList.remove('bg-gray-600');
-
-        // Show corresponding content
         document.querySelectorAll('.tab-content-moderation, .tab-content-waiting').forEach(content => {
             content.classList.add('hidden');
         });
         document.getElementById(tabId).classList.remove('hidden');
+        // Réinitialise la pagination à chaque changement d’onglet
+        if (tabId === 'tab-content-moderation') {
+            initializePagination('tab-content-moderation', '.moderation-report-item', '.pagination-info-moderation', '.pagination-moderation', 2);
+        } else if (tabId === 'tab-content-waiting') {
+            initializePagination('tab-content-waiting', '.waiting-content-item', '.pagination-info-waiting', '.pagination-waiting', 4);
+        }
     });
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Pagination for the moderation modal ("Pending" tab)
-    document.getElementById('btn-moderation').addEventListener('click', function() {
-        document.getElementById('modal-moderation').classList.remove('hidden');
-        // Pagination on pending items
-        initializePagination(
-            'tab-content-waiting',
-            '.waiting-content-item',
-            '.pagination-info-waiting',
-            '.pagination-waiting',
-            4
-        );
-        // Pagination on reports
-        initializePagination(
-            'tab-content-moderation',
-            '.moderation-report-item',
-            '.pagination-info-moderation',
-            '.pagination-moderation',
-            2
-        );
-
-    initializePagination('reported-users-tab', '.user-report-item', '.pagination-info-users', '.pagination-controls-users', 2);
-    initializePagination('modal-category', 'li', '.pagination-info', '.pagination-controls', 6);
-    document.getElementById('btn-moderation').addEventListener('click', function() {
-        document.getElementById('modal-moderation').classList.remove('hidden');
-    });
-
-    // Pagination for user management
-    document.getElementById('btn-reports').addEventListener('click', function() {
-        document.getElementById('modal-reports').classList.remove('hidden');
-    });
-
-    // Pagination for categories management
-    document.getElementById('btn-category').addEventListener('click', function() {
-        document.getElementById('modal-category').classList.remove('hidden');
-    });
-
-    document.querySelector('[data-tab="user-roles-tab"]').addEventListener('click', function() {
-        initializePagination('user-roles-tab', '.user-role-item', '.pagination-info-roles', '.pagination-controls-roles', 2);
-    });
+    // Rien ici, tout est géré à l'ouverture des modales
 });
-})
 
 function openEditCategoryPopup(categoryId) {
     const modal = document.getElementById('edit-category-popup-' + categoryId);

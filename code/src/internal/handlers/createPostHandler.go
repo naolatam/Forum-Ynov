@@ -78,6 +78,14 @@ func handlePostMethodPostNew(w http.ResponseWriter, r *http.Request, db *sql.DB,
 		ShowCustomError500(w, &dtos.HeaderDto{}, "Error while creating post: "+err.Error())
 		return
 	}
+
+	err := ps.UpdateCategoryFromList(r.Form["categories"], post)
+	if err.Code != http.StatusOK {
+		err.Header = *header
+		ShowError(w, err)
+		return
+	}
+
 	ras.Create("Created a post", post.Title, nil, user.ID, post.ID)
 	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusFound)
 }
@@ -100,7 +108,7 @@ func retrieveNewPostFromBody(w http.ResponseWriter, r *http.Request, ps *service
 		return nil, false
 	}
 
-	if pictureFile, fileMeta, err := r.FormFile("avatar-upload"); err == nil {
+	if pictureFile, fileMeta, err := r.FormFile("image"); err == nil {
 		defer pictureFile.Close()
 		if fileMeta.Size > 20*1024*1024 { // 5 MB limit
 			ShowCustomError400(w, &dtos.HeaderDto{}, "File size cannot exceeds 20 MB limit.")

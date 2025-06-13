@@ -82,6 +82,7 @@ func DeletePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 		return
 	}
 
+	http.Redirect(w, r, "/home", http.StatusSeeOther)
 }
 
 func ReportPostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {

@@ -94,9 +94,9 @@
             <div class="border-t border-gray-600"></div>
         </div>
 
-        <!-- Signalements -->
+        <!-- Report -->
         <div class="tab-content-moderation" id="tab-content-moderation">
-            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96">
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96 moderation-list">
                 {{ if .Reports}}
                     {{ range .Reports}}
                         <li class="py-4 bg-gray-700 hover:bg-gray-600 px-4 rounded-lg moderation-report-item">
@@ -139,9 +139,9 @@
             <div class="text-center my-4 text-gray-300 pagination-info-moderation"></div>
             <div class="flex justify-center space-x-2 mb-8 pagination-moderation"></div>
         </div>
-        <!-- En attente -->
+        <!-- Waiting -->
         <div class="tab-content-waiting hidden" id="tab-content-waiting">
-            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96">
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96 waiting-list">
                 {{ if .WaitingPosts}}
                     {{ range .WaitingPosts}}
                         <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer waiting-content-item">
@@ -205,7 +205,7 @@
                 </form>
             </div>
 
-            <ul class="divide-y divide-gray-700">
+            <ul class="divide-y divide-gray-700 user-roles-list">
                 {{ range .AllUsers }}
                     {{ if le (index .Role.Permission 0) 2 }}
                         <li class="py-4 hover:bg-gray-700 px-4 rounded-lg flex justify-between items-center user-role-item">
@@ -293,9 +293,9 @@
             </div>
         </div>
         <div class="max-h-96 overflow-y-auto">
-            <ul class="divide-y divide-gray-700">
+            <ul class="divide-y divide-gray-700 category-list">
                 {{ range .AllCategories }}
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
+                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center category-item">
                     <span class="font-medium text-white">{{.Name}}</span>
                     <div class="flex gap-2">
                         <button type="button" class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full hover:bg-blue-700"
