@@ -26,7 +26,7 @@ func OpenDBConnection() (*sql.DB, error) {
 		return nil, err
 	}
 
-	// Optionnel : Vérifie la connexion
+	// Optionally, check connection
 	if err := db.Ping(); err != nil {
 		return nil, err
 	}

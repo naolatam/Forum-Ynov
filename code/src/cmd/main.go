@@ -9,6 +9,5 @@ import (
 func main() {
 	config.LoadEnv()
 	go hostedservices.StartAllHostedServices()
-
 	server.StartServer()
 }

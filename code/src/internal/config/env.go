@@ -14,5 +14,4 @@ func LoadEnv() {
 		log.Fatalf("Error loading .env file: %v", err)
 		os.Exit(1)
 	}
-
 }
