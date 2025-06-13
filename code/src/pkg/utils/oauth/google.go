@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// GetGoogleUserInfoFromCode exchanges an authorization code for a Google user info DTO.
 func GetGoogleUserInfoFromCode(code string) (*dtos.GoogleUserInfo, error) {
 	// 1. Échanger le code contre un token
 	googleOauthConfig := GetGoogleOauthConfig()
