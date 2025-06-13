@@ -14,6 +14,7 @@ import (
 	"net/http"
 )
 
+// EditPostHandler handles the editing of a post.
 func EditPostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if r.Method == http.MethodGet {
 		handleGetMethodPostEdit(w, r, db, session, header)
@@ -29,6 +30,7 @@ func EditPostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session
 
 }
 
+// fetchPost retrieves the post to be edited based on the provided post ID.
 func handleGetMethodPostEdit(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	ps := services.NewPostService(db)
 	us := services.NewUserService(db)
@@ -86,6 +88,7 @@ func handleGetMethodPostEdit(w http.ResponseWriter, r *http.Request, db *sql.DB,
 	}
 }
 
+// handlePostMethodPostEdit processes the form submission for editing a post.
 func handlePostMethodPostEdit(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	ps := services.NewPostService(db)
 	us := services.NewUserService(db)
@@ -112,6 +115,7 @@ func handlePostMethodPostEdit(w http.ResponseWriter, r *http.Request, db *sql.DB
 	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusFound)
 }
 
+// updatePost updates the post with the provided data from the form.
 func updatePost(w http.ResponseWriter, r *http.Request, header *dtos.HeaderDto, post *models.Post, ps *services.PostService, cs *services.CategoryService) error {
 	if err := r.ParseForm(); err != nil {
 		ShowError400(w, &dtos.HeaderDto{})
