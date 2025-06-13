@@ -12,6 +12,7 @@ type CommentRepository struct {
 	db *sql.DB
 }
 
+// FindById retrieves a comment by its ID.
 func (repository *CommentRepository) FindById(id uint32) (*models.Comment, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -35,6 +36,7 @@ func (repository *CommentRepository) FindById(id uint32) (*models.Comment, error
 	return nil, errors.New("comment not found")
 }
 
+// FindByPostId retrieves all comments associated with a specific post ID.
 func (repository *CommentRepository) FindByPostId(postId uint32) (*[]*models.Comment, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -57,6 +59,7 @@ func (repository *CommentRepository) FindByPostId(postId uint32) (*[]*models.Com
 	return &res, nil
 }
 
+// FindByUserId retrieves all comments made by a specific user.
 func (repository *CommentRepository) FindByUserId(userId *uuid.UUID) (*[]*models.Comment, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -79,6 +82,7 @@ func (repository *CommentRepository) FindByUserId(userId *uuid.UUID) (*[]*models
 	return &res, nil
 }
 
+// GetUserCommentCount retrieves the count of comments made by a specific user.
 func (repository *CommentRepository) GetUserCommentCount(userId *uuid.UUID) (int, error) {
 	if repository.db == nil {
 		return -1, errors.New("unable to connect to database")
@@ -91,6 +95,7 @@ func (repository *CommentRepository) GetUserCommentCount(userId *uuid.UUID) (int
 	return count, nil
 }
 
+// Create inserts a new comment into the database.
 func (repository *CommentRepository) Create(comment *models.Comment) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -103,6 +108,7 @@ func (repository *CommentRepository) Create(comment *models.Comment) error {
 	return nil
 }
 
+// Delete removes a comment from the database.
 func (repository *CommentRepository) Delete(comment *models.Comment) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -114,6 +120,7 @@ func (repository *CommentRepository) Delete(comment *models.Comment) error {
 	return nil
 }
 
+// Update modifies an existing comment in the database.
 func (repository *CommentRepository) Update(comment *models.Comment) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
