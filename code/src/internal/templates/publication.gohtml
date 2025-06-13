@@ -29,21 +29,21 @@
                             </a>
                             <form action="/posts/delete" method="POST">
                                 <input type="hidden" name="post_id" value="{{.Post.ID}}">
-                                <button class="absolute top-2 right-12 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Signaler">
+                                <button class="absolute top-2 right-12 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Delete">
                                     <i class="fa-solid fa-trash text-white"></i>
                                 </button>
                             </form>
                         {{ else if .Header.IsAdmin  }}
                             <form action="/posts/delete" method="POST">
                                 <input type="hidden" name="post_id" value="{{.Post.ID}}">
-                                <button class="absolute top-2 right-2 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Signaler">
+                                <button class="absolute top-2 right-2 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Delete">
                                     <i class="fa-solid fa-trash text-white"></i>
                                 </button>
                             </form>
                         {{ else if .Header.IsModerator}}
                             <form action="/posts/report" method="POST">
                                 <input type="hidden" name="post_id" value="{{.Post.ID}}">
-                                <button class="absolute top-2 right-2 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Signaler">
+                                <button class="absolute top-2 right-2 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Report">
                                     <i class="fa-solid fa-circle-exclamation fa-lg text-white"></i>
                                 </button>
                             </form>
