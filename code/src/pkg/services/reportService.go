@@ -15,6 +15,7 @@ type ReportService struct {
 	pr         *repositories.PostRepository
 }
 
+// FindAll retrieves all reports from the repository and populates user and post information.
 func (s *ReportService) FindAll() (*[]*models.Report, error) {
 	reports, err := s.repository.FindAll()
 	if err != nil {
@@ -41,6 +42,7 @@ func (s *ReportService) FindAll() (*[]*models.Report, error) {
 	return reports, nil
 }
 
+// Create adds a new report to the repository.
 func (s *ReportService) Create(report *models.Report) error {
 
 	report.ID = uuid.New()
@@ -59,6 +61,7 @@ func (s *ReportService) Create(report *models.Report) error {
 
 }
 
+// Delete removes a report from the repository.
 func (s *ReportService) Delete(report *models.Report) error {
 	if report == nil {
 		return errors.New("report cannot be nil")
