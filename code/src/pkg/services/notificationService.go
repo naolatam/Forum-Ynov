@@ -15,6 +15,7 @@ type NotificationService struct {
 	ur   *repositories.UserRepository
 }
 
+// FindByUser retrieves all notifications associated with a specific user.
 func (s *NotificationService) FindByUser(user *models.User) (notifs *[]*models.Notification, err error) {
 	if user == nil || user.ID == uuid.Nil {
 		return nil, errors.New("user not defined or invalid")
@@ -26,6 +27,7 @@ func (s *NotificationService) FindByUser(user *models.User) (notifs *[]*models.N
 	return s.repo.FindByUserId(user.ID)
 }
 
+// Create adds a new notification for a user.
 func (s *NotificationService) Create(title, description string, fromUserId, userId uuid.UUID, postID uint32) (success bool) {
 	if userId == uuid.Nil {
 		return false
