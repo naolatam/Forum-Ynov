@@ -5,6 +5,7 @@ import (
 	"database/sql"
 )
 
+// checkDBConnection checks if the database connection is valid.
 func checkDBConnection(db *sql.DB) bool {
 	if db == nil {
 		return false
@@ -14,6 +15,7 @@ func checkDBConnection(db *sql.DB) bool {
 	return err == nil
 }
 
+// NewCategoryService creates a new CategoryService if the database connection is valid.
 func NewCategoryService(db *sql.DB) *CategoryService {
 	if !checkDBConnection(db) {
 		return nil
@@ -23,6 +25,7 @@ func NewCategoryService(db *sql.DB) *CategoryService {
 	}
 }
 
+// NewCommentService creates a new CommentService if the database connection is valid.
 func NewCommentService(db *sql.DB) *CommentService {
 	if !checkDBConnection(db) {
 		return nil
@@ -34,6 +37,7 @@ func NewCommentService(db *sql.DB) *CommentService {
 	}
 }
 
+// NewNotificationService creates a new NotificationService if the database connection is valid.
 func NewNotificationService(db *sql.DB) *NotificationService {
 	if !checkDBConnection(db) {
 		return nil
@@ -44,6 +48,7 @@ func NewNotificationService(db *sql.DB) *NotificationService {
 	}
 }
 
+// NewPostService creates a new PostService if the database connection is valid.
 func NewPostService(db *sql.DB) *PostService {
 	if !checkDBConnection(db) {
 		return nil
@@ -57,6 +62,7 @@ func NewPostService(db *sql.DB) *PostService {
 	}
 }
 
+// NewReactionService creates a new ReactionService if the database connection is valid.
 func NewReactionService(db *sql.DB) *ReactionService {
 	if !checkDBConnection(db) {
 		return nil
@@ -66,6 +72,7 @@ func NewReactionService(db *sql.DB) *ReactionService {
 	}
 }
 
+// NewRecentActivityService creates a new RecentActivityService if the database connection is valid.
 func NewRecentActivityService(db *sql.DB) *RecentActivityService {
 	if !checkDBConnection(db) {
 		return nil
@@ -77,6 +84,7 @@ func NewRecentActivityService(db *sql.DB) *RecentActivityService {
 	}
 }
 
+// NewReportService creates a new ReportService if the database connection is valid.
 func NewReportService(db *sql.DB) *ReportService {
 	if !checkDBConnection(db) {
 		return nil
@@ -88,6 +96,7 @@ func NewReportService(db *sql.DB) *ReportService {
 	}
 }
 
+// NewRoleService creates a new RoleService if the database connection is valid.
 func NewRoleService(db *sql.DB) *RoleService {
 	if !checkDBConnection(db) {
 		return nil
@@ -97,6 +106,7 @@ func NewRoleService(db *sql.DB) *RoleService {
 	}
 }
 
+// NewSessionService creates a new SessionService if the database connection is valid.
 func NewSessionService(db *sql.DB) *SessionService {
 	if !checkDBConnection(db) {
 		return nil
@@ -107,6 +117,7 @@ func NewSessionService(db *sql.DB) *SessionService {
 	}
 }
 
+// NewUserService creates a new UserService if the database connection is valid.
 func NewUserService(db *sql.DB) *UserService {
 	if !checkDBConnection(db) {
 		return nil
