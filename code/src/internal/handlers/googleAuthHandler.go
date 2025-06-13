@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// LoginViaGoogleHandler initiates the OAuth flow for Google login.
 func LoginViaGoogleHandler(w http.ResponseWriter, r *http.Request) {
 	googleOauthConfig := oauth.GetGoogleOauthConfig()
 	state := oauth.GenerateStateOauthCookie(w)
@@ -17,6 +18,7 @@ func LoginViaGoogleHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
 
+// LoginViaGoogleCallbackHandler handles the callback from Google after user authentication.
 func LoginViaGoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	// Check if the request method is valid, only GET is allowed
 	if r.Method != http.MethodGet {
