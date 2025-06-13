@@ -8,6 +8,7 @@ import (
 	"syscall"
 )
 
+// StartAllHostedServices initializes and starts all hosted services in the application.
 func StartAllHostedServices() {
 	// Start the hosted services
 	ctx, cancel := context.WithCancel(context.Background())
