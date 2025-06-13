@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// AdminCreateNewCategoryHandler handles the creation of a new category by an admin.
 func AdminCreateNewCategoryHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if !header.IsAdmin {
 		ShowError403(w, header)
@@ -37,6 +38,7 @@ func AdminCreateNewCategoryHandler(w http.ResponseWriter, r *http.Request, db *s
 	http.Redirect(w, r, "/admin/category", http.StatusSeeOther)
 }
 
+// AdminDeleteCategoryHandler handles the deletion of an existing category by an admin.
 func AdminDeleteCategoryHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if !header.IsAdmin {
 		ShowError403(w, header)
@@ -68,6 +70,7 @@ func AdminDeleteCategoryHandler(w http.ResponseWriter, r *http.Request, db *sql.
 	http.Redirect(w, r, "/admin/category", http.StatusSeeOther)
 }
 
+// AdminEditCategoryHandler handles the editing of an existing category by an admin.
 func AdminEditCategoryHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if !header.IsAdmin {
 		ShowError403(w, header)
