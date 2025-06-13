@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// GetGithubUserInfoFromCode retrieves user information from GitHub using the provided OAuth code.
 func GetGithubUserInfoFromCode(code string) (*dtos.GitHubUserInfo, error) {
 	// Exchange the code received from Github for an access token
 	githubOauthConfig := GetGithubOauthConfig()
