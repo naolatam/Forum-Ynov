@@ -4,6 +4,7 @@ import (
 	dtos "Forum-back/pkg/dtos/templates"
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/services"
+	"Forum-back/pkg/utils"
 	"database/sql"
 	"net/http"
 	"strconv"
@@ -52,6 +53,13 @@ func reactionPostHandler(w http.ResponseWriter, r *http.Request, label string, d
 	if !ok {
 		return
 	}
+	if u, err := postService.FetchUserId(post); err != nil {
+		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error retrieving post user ID: "+err.Error())
+		return
+	} else {
+		post.User = *u
+	}
+
 	user := userService.FindById(session.User_ID)
 	if user == nil {
 		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error retrieving user")
@@ -72,5 +80,13 @@ func reactionPostHandler(w http.ResponseWriter, r *http.Request, label string, d
 	ras.Create(label+"d Post ", post.Title[:min(100, len(post.Title))], nil, session.User_ID, post.ID)
 	ns.Create(label+"d post", "have leave a "+label+" on post:",
 		session.User_ID, post.User_ID, post.ID)
+
+	mailHtmlContent := `You have a new ` + label + ` on your post: 
+		<a href="https://localhost:8080/posts?post_id=` + strconv.Itoa(int(post.ID)) + `">` + post.Title + `</a><br>
+		` + label + ` from: <a href="https://localhost:8080/users?user_id=` + user.ID.String() + `">` + user.Pseudo + `</a>`
+
+	utils.SendHTMLNotificationEmail(post.User.Email,
+		"New "+label+" on your post: "+post.Title, mailHtmlContent)
+
 	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
 }
