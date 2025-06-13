@@ -78,6 +78,14 @@ func handlePostMethodPostNew(w http.ResponseWriter, r *http.Request, db *sql.DB,
 		ShowCustomError500(w, &dtos.HeaderDto{}, "Error while creating post: "+err.Error())
 		return
 	}
+
+	err := ps.UpdateCategoryFromList(r.Form["categories"], post)
+	if err.Code != http.StatusOK {
+		err.Header = *header
+		ShowError(w, err)
+		return
+	}
+
 	ras.Create("Created a post", post.Title, nil, user.ID, post.ID)
 	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusFound)
 }
