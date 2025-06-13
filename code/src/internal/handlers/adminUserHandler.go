@@ -12,6 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// PromoteUser handles the promotion of a user to a mid-permission role by an admin.
 func PromoteUser(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if !header.IsAdmin {
 		ShowError403(w, header)
@@ -50,6 +51,7 @@ func PromoteUser(w http.ResponseWriter, r *http.Request, db *sql.DB, session *mo
 	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }
 
+// DemoteUser handles the demotion of a user to a default role by an admin.
 func DemoteUser(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if !header.IsAdmin {
 		ShowError403(w, header)
@@ -88,6 +90,7 @@ func DemoteUser(w http.ResponseWriter, r *http.Request, db *sql.DB, session *mod
 	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }
 
+// AdminSearchUserHandler handles the search for users by an admin.
 func AdminSearchUserHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if !header.IsAdmin {
 		ShowError403(w, header)
