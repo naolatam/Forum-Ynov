@@ -322,7 +322,8 @@ func (repository *PostRepository) Create(post *models.Post) error {
 	}
 	id, err := repository.retrieveLastId()
 	if err != nil {
-		*id = 0
+		zeroInt := 0
+		id = &zeroInt // If no ID found, start from 0
 		return err
 
 	}
