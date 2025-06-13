@@ -15,10 +15,11 @@ import (
 )
 
 type PostService struct {
-	repo     *repositories.PostRepository
-	ur       *repositories.UserRepository
-	cr       *repositories.CategoryRepository
-	roleRepo *repositories.RoleRepository
+	repo         *repositories.PostRepository
+	ur           *repositories.UserRepository
+	cr           *repositories.CategoryRepository
+	roleRepo     *repositories.RoleRepository
+	reactionRepo *repositories.ReactionRepository
 }
 
 func (s *PostService) FindPostByQueryAndCategory(searchTerm string, categoryID *uuid.UUID) (*[]*models.Post, error) {
@@ -44,8 +45,25 @@ func (s *PostService) FindPostByQueryAndCategory(searchTerm string, categoryID *
 			if post.Picture != nil {
 				post.PictureBase64 = template.URL(utils.ConvertBytesToBase64(post.Picture, "image/png"))
 			}
+			post.Content = post.Content[:min(75, len(post.Content))] // Limit content length for display
 		}
 	}
+	return res, err
+}
+
+func (s *PostService) FindLastPosts(limit *int) (*[]*models.Post, error) {
+	var res *[]*models.Post
+	var err error
+	if res, err = s.repo.FindLastPosts(limit); err != nil {
+		return nil, err
+	}
+
+	for _, post := range *res {
+		s.FetchUserId(post)
+
+		post.Content = post.Content[:min(100, len(post.Content))] // Limit content length for display
+	}
+
 	return res, err
 }
 
@@ -53,6 +71,28 @@ func (s *PostService) FindAll() (*[]*models.Post, error) {
 	var res *[]*models.Post
 	var err error
 	if res, err = s.repo.FindAll(); err != nil {
+		return nil, err
+	}
+
+	for _, post := range *res {
+		s.FetchUserId(post)
+
+		if role, err := s.roleRepo.FindById(post.User.Role_ID); err == nil {
+			post.User.Role = *role
+		} else {
+			post.User.Role = models.Role{
+				Permission: []uint8{1},
+			}
+		}
+	}
+
+	return res, err
+}
+
+func (s *PostService) FindWaitings() (*[]*models.Post, error) {
+	var res *[]*models.Post
+	var err error
+	if res, err = s.repo.FindWaintings(); err != nil {
 		return nil, err
 	}
 
@@ -233,4 +273,33 @@ func (service *PostService) Create(post *models.Post) error {
 	}
 
 	return nil
+}
+
+func (service *PostService) FilterPosts(post *[]*models.Post, filter string) *[]*models.Post {
+	res := *post
+	switch filter {
+	case "":
+		return post
+	case "latest":
+		for i, p := range res {
+			for j := i + 1; j < len(res); j++ {
+				if p.CreatedAt.Before(res[j].CreatedAt) {
+					res[i], res[j] = res[j], res[i]
+				}
+			}
+		}
+	case "most_liked":
+		for i, p := range res {
+			for j := i + 1; j < len(res); j++ {
+				pLikes, _ := service.reactionRepo.GetLikeReactionCountOnPost(p.ID)
+				qLikes, _ := service.reactionRepo.GetLikeReactionCountOnPost(res[j].ID)
+				if pLikes < qLikes {
+					res[i], res[j] = res[j], res[i]
+				}
+			}
+		}
+
+	}
+
+	return &res
 }

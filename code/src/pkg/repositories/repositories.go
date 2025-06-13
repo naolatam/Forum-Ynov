@@ -24,6 +24,13 @@ func NewRecentActivityRepository(db *sql.DB) *RecentActivityRepository {
 	return &RecentActivityRepository{db: db}
 }
 
+func NewReportRepository(db *sql.DB) *ReportRepository {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &ReportRepository{db: db}
+}
+
 func NewRoleRepository(db *sql.DB) *RoleRepository {
 	if !checkDBConnection(db) {
 		return nil

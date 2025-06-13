@@ -12,4 +12,5 @@ type SearchPostsDto struct {
 	Categories     []*models.Category
 	SearchTerm     string
 	SearchCategory uuid.UUID
+	SearchFilter   string
 }
