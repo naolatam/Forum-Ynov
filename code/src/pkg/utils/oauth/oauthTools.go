@@ -12,6 +12,7 @@ import (
 	"golang.org/x/oauth2/google"
 )
 
+// GenerateStateOauthCookie generates a random state string for OAuth and sets it as a cookie in the response.
 func GenerateStateOauthCookie(w http.ResponseWriter) string {
 	var expiration = time.Now().Add(5 * time.Minute)
 	b := make([]byte, 16)
@@ -24,6 +25,7 @@ func GenerateStateOauthCookie(w http.ResponseWriter) string {
 	return state
 }
 
+// GetGoogleOauthConfig returns a configured OAuth2 client for Google authentication.
 func GetGoogleOauthConfig() *oauth2.Config {
 	return &oauth2.Config{
 		RedirectURL:  os.Getenv("GOOGLE_REDIRECT_URI"),
@@ -34,6 +36,7 @@ func GetGoogleOauthConfig() *oauth2.Config {
 	}
 }
 
+// GetGithubOauthConfig returns a configured OAuth2 client for GitHub authentication.
 func GetGithubOauthConfig() *oauth2.Config {
 	return &oauth2.Config{
 		RedirectURL:  os.Getenv("GITHUB_REDIRECT_URI"),
