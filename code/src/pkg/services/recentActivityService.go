@@ -16,6 +16,7 @@ type RecentActivityService struct {
 	pr   *repositories.PostRepository
 }
 
+// FindByUser retrieves all recent activities associated with a specific user.
 func (s *RecentActivityService) FindByUser(user *models.User) (activities *[]*models.RecentActivity, err error) {
 	if user == nil || user.ID == uuid.Nil {
 		return nil, errors.New("user not defined or invalid")
@@ -27,6 +28,7 @@ func (s *RecentActivityService) FindByUser(user *models.User) (activities *[]*mo
 	return s.repo.FindByUserId(user.ID)
 }
 
+// Create adds a new recent activity for a user.
 func (s *RecentActivityService) Create(action, details string, subTitle *string, userId uuid.UUID, postId uint32) (success bool) {
 	if userId == uuid.Nil {
 		return false
