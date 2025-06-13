@@ -8,6 +8,7 @@ import (
 	"os"
 )
 
+// FetchImage retrieves an image from a given URL and returns its data as a byte slice.
 func FetchImage(imageURL string) ([]byte, error) {
 	// Make an HTTP GET request to fetch the image
 	resp, err := http.Get(imageURL)
@@ -30,11 +31,13 @@ func FetchImage(imageURL string) ([]byte, error) {
 	return imageBlob, nil
 }
 
+// ConvertBytesToBase64 converts a byte slice to a Base64 encoded string with a specified MIME type.
 func ConvertBytesToBase64(blob []byte, mime string) string {
 	encoded := base64.StdEncoding.EncodeToString(blob)
 	return fmt.Sprintf("data:%s;base64,%s", mime, encoded)
 }
 
+// GetDefaultAvatar reads the default avatar image from the file system and returns its data as a byte slice.
 func GetDefaultAvatar() []byte {
 	file, err := os.Open("internal/frontEnd/static/imgs/forums_background.jpg")
 	if err != nil {
