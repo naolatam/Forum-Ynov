@@ -16,6 +16,7 @@ type SessionService struct {
 	userRepo *repositories.UserRepository
 }
 
+// FindByID retrieves a session by its ID.
 func (service *SessionService) FindByID(id uuid.UUID) *models.Session {
 	session, err := service.repo.FindByID(id)
 	if err != nil {
@@ -24,6 +25,7 @@ func (service *SessionService) FindByID(id uuid.UUID) *models.Session {
 	return session
 }
 
+// FindByUser retrieves a session associated with a specific user.
 func (service *SessionService) FindByUser(user *models.User) *models.Session {
 	if user == nil || user.ID == uuid.Nil {
 		return nil
@@ -35,6 +37,7 @@ func (service *SessionService) FindByUser(user *models.User) *models.Session {
 	return session
 }
 
+// CreateWithUser creates a new session for a given user with an expiration time.
 func (service *SessionService) CreateWithUser(user *models.User, expireIn time.Time) *models.Session {
 	// Basic validation of user and expireIn
 
@@ -52,6 +55,7 @@ func (service *SessionService) CreateWithUser(user *models.User, expireIn time.T
 	return &session
 }
 
+// CreateFromScratch creates a new session for a user if they don't already have an active session.
 func (service *SessionService) CreateFromScratch(userId uuid.UUID, expireAt time.Time) *models.Session {
 	// Basic validation of userId and expireAt
 	if time.Now().After(expireAt) {
@@ -79,6 +83,7 @@ func (service *SessionService) CreateFromScratch(userId uuid.UUID, expireAt time
 	return &session
 }
 
+// Delete marks a session as expired and removes it from the repository.
 func (service *SessionService) Delete(session *models.Session) error {
 	if session == nil {
 		return nil
@@ -92,6 +97,7 @@ func (service *SessionService) Delete(session *models.Session) error {
 	return nil
 }
 
+// DeleteExpiredSessions removes all sessions that have expired before the specified time.
 func (service *SessionService) DeleteExpiredSessions(before time.Time) error {
 	if before.IsZero() {
 		return nil
@@ -103,6 +109,7 @@ func (service *SessionService) DeleteExpiredSessions(before time.Time) error {
 	return nil
 }
 
+// GetActiveSessionCount retrieves the count of active sessions.
 func (service *SessionService) GetActiveSessionCount() (int, error) {
 	count := service.repo.GetActiveSessionCount()
 	if count == -1 {
@@ -111,6 +118,7 @@ func (service *SessionService) GetActiveSessionCount() (int, error) {
 	return count, nil
 }
 
+// GetSessionFromRequest retrieves the session from the request using the session cookie.
 func (service *SessionService) GetSessionFromRequest(r *http.Request) (*models.Session, error) {
 	sessionCookie, err := r.Cookie(os.Getenv("SESSION_COOKIE_NAME"))
 	if err != nil {
@@ -128,6 +136,7 @@ func (service *SessionService) GetSessionFromRequest(r *http.Request) (*models.S
 	return session, nil // Valid session found
 }
 
+// IsAuthenticated checks if the user is authenticated based on the session in the request.
 func (service *SessionService) IsAuthenticated(r *http.Request) (bool, *models.Session) {
 	session, _ := service.GetSessionFromRequest(r)
 	if session == nil {
@@ -137,5 +146,4 @@ func (service *SessionService) IsAuthenticated(r *http.Request) (bool, *models.S
 		return false, nil // Session is expired
 	}
 	return true, session // Session is valid and not expired
-
 }
