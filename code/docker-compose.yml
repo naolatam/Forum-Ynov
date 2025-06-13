@@ -9,7 +9,7 @@ services:
     env_file:
       - mariadb.env
     ports:
-      - "3306:3306"
+      - "3306"
     volumes:
       - ./init_db.sql:/docker-entrypoint-initdb.d/init.sql
       - mariadb_data:/var/lib/mysql
