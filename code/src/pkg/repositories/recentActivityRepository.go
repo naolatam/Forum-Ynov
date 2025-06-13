@@ -13,6 +13,7 @@ type RecentActivityRepository struct {
 	db *sql.DB
 }
 
+// FindByUserId retrieves recent activities for a specific user by their user ID.
 func (repository *RecentActivityRepository) FindByUserId(userId uuid.UUID) (activities *[]*models.RecentActivity, err error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -43,6 +44,7 @@ func (repository *RecentActivityRepository) FindByUserId(userId uuid.UUID) (acti
 	return &activitiesList, nil
 }
 
+// Create inserts a new recent activity into the database.
 func (repository *RecentActivityRepository) Create(activity *models.RecentActivity) (success bool, err error) {
 
 	if repository.db == nil {
