@@ -2,8 +2,10 @@ package repositories
 
 import (
 	"Forum-back/pkg/models"
+	"Forum-back/pkg/utils"
 	"database/sql"
 	"errors"
+	"html/template"
 
 	"github.com/google/uuid"
 )
@@ -12,7 +14,7 @@ type PostRepository struct {
 	db *sql.DB
 }
 
-func (repository *PostRepository) FindById(id *uuid.UUID) (*models.Post, error) {
+func (repository *PostRepository) FindById(id uint32) (*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
 	}
@@ -24,10 +26,12 @@ func (repository *PostRepository) FindById(id *uuid.UUID) (*models.Post, error) 
 
 	var post models.Post
 	if rows.Next() {
-		err = rows.Scan(&post.ID, &post.Title, &post.Content, &post.Validated, &post.CreatedAt, &post.User_ID)
+		err = rows.Scan(&post.ID, &post.Title, &post.Content, &post.Picture, &post.Validated, &post.CreatedAt, &post.User_ID)
 		if err != nil {
 			return nil, err
 		}
+		post.PictureBase64 = template.URL(utils.ConvertBytesToBase64(post.Picture, "image/png"))
+		post.TimeAgo = utils.TimeAgo(post.CreatedAt)
 		return &post, nil
 	}
 	return nil, errors.New("post not found")
@@ -78,6 +82,57 @@ func (repository *PostRepository) FindMultipleByText(text *string) (*[]*models.P
 		if err != nil {
 			return nil, err
 		}
+		res = append(res, &post)
+	}
+	return &res, nil
+}
+
+func (repository *PostRepository) FindAll() (*[]*models.Post, error) {
+	if repository.db == nil {
+		return nil, errors.New("connection to database isn't established")
+	}
+	rows, err := repository.db.Query("SELECT id, title, content, picture, validated, createdAt, user_ID FROM posts")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var res = []*models.Post{}
+	for rows.Next() {
+		var post models.Post
+		err = rows.Scan(&post.ID, &post.Title, &post.Content, &post.Picture, &post.Validated, &post.CreatedAt, &post.User_ID)
+		if err != nil {
+			return nil, err
+		}
+		post.PictureBase64 = template.URL(utils.ConvertBytesToBase64(post.Picture, "image/png"))
+		res = append(res, &post)
+	}
+	return &res, nil
+}
+
+func (repository *PostRepository) FindWaintings() (*[]*models.Post, error) {
+	if repository.db == nil {
+		return nil, errors.New("connection to database isn't established")
+	}
+	rows, err := repository.db.Query(`
+		SELECT id, title, 
+			CASE 
+    		WHEN CHAR_LENGTH(content) > 75 THEN CONCAT(LEFT(content, 75), '...')
+    		ELSE content
+  			END AS content, picture, validated, createdAt, user_ID FROM posts 
+		WHERE validated = 0`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var res = []*models.Post{}
+	for rows.Next() {
+		var post models.Post
+		err = rows.Scan(&post.ID, &post.Title, &post.Content, &post.Picture, &post.Validated, &post.CreatedAt, &post.User_ID)
+		if err != nil {
+			return nil, err
+		}
+		post.PictureBase64 = template.URL(utils.ConvertBytesToBase64(post.Picture, "image/png"))
+		post.TimeAgo = utils.TimeAgo(post.CreatedAt)
 		res = append(res, &post)
 	}
 	return &res, nil
@@ -191,11 +246,7 @@ func (repository *PostRepository) FindLastPosts(limit *int) (*[]*models.Post, er
 	}
 
 	rows, err := repository.db.Query(
-		`SELECT id, title, picture,
-			CASE 
-    		WHEN CHAR_LENGTH(content) > 75 THEN CONCAT(LEFT(content, 75), '...')
-    		ELSE content
-  			END AS content
+		`SELECT id, title, picture, content, user_id, createdAt
 		FROM posts
 		WHERE validated = 1
 		ORDER BY createdAt DESC
@@ -208,7 +259,8 @@ func (repository *PostRepository) FindLastPosts(limit *int) (*[]*models.Post, er
 	var res = []*models.Post{}
 	for rows.Next() {
 		var post models.Post
-		err = rows.Scan(&post.ID, &post.Title, &post.Picture, &post.Content)
+		err = rows.Scan(&post.ID, &post.Title, &post.Picture, &post.Content, &post.User_ID, &post.CreatedAt)
+		post.TimeAgo = utils.TimeAgo(post.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -227,4 +279,74 @@ func (repository *PostRepository) GetPostCount() int {
 		return -1
 	}
 	return count
+}
+
+func (repository *PostRepository) GetUserPostCount(userId *uuid.UUID) (int, error) {
+	if repository.db == nil {
+		return -1, errors.New("unable to connect to database")
+	}
+	var count int
+	err := repository.db.QueryRow("SELECT COUNT(*) FROM posts WHERE user_id = ?", userId).Scan(&count)
+	if err != nil {
+		return -1, err
+	}
+	return count, nil
+}
+
+func (repository *PostRepository) UpdatePost(post *models.Post) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	_, err := repository.db.Exec("UPDATE posts SET title = ?, content = ?, picture = ?, validated = ? WHERE id = ?",
+		post.Title, post.Content, post.Picture, post.Validated, post.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *PostRepository) Delete(post *models.Post) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	_, err := repository.db.Exec("DELETE FROM posts WHERE id = ?", post.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *PostRepository) Create(post *models.Post) error {
+	if repository.db == nil {
+		return errors.New("connection to database isn't established")
+	}
+	id, err := repository.retrieveLastId()
+	if err != nil {
+		return err
+
+	}
+	if id == nil {
+		zeroInt := 0
+		id = &zeroInt // If no ID found, start from 0
+	}
+
+	post.ID = uint32(*id + 1)
+
+	_, err = repository.db.Exec("INSERT INTO posts (id, title, content, picture, validated, createdAt, user_ID) VALUES (?, ?, ?, ?, ?, ?, ?)",
+		post.ID, post.Title, post.Content, post.Picture, post.Validated, post.CreatedAt, post.User_ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *PostRepository) retrieveLastId() (lastId *int, err error) {
+	if repository.db == nil {
+		return lastId, errors.New("connection to database isn't established")
+	}
+	err = repository.db.QueryRow("SELECT MAX(id) FROM posts").Scan(&lastId)
+	if err != nil {
+		return lastId, err
+	}
+	return
 }

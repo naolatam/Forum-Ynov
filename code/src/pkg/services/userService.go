@@ -6,6 +6,8 @@ import (
 	"Forum-back/pkg/repositories"
 	"Forum-back/pkg/utils"
 	"fmt"
+
+	"log"
 	"os"
 	"time"
 
@@ -40,6 +42,17 @@ func (service *UserService) FindByUsername(username string) *models.User {
 		return nil
 	}
 	return user
+}
+
+func (service *UserService) FindMultipleByAny(search string) *[]*models.User {
+
+	query := "%" + search + "%"
+	users, err := service.repo.FindMultipleByAny(query)
+	if err != nil {
+		log.Println("Error finding users by any:", err)
+		return nil
+	}
+	return users
 }
 
 func (service *UserService) FindByUsernameOrEmail(pseudo *string, email *string) *models.User {
@@ -121,6 +134,11 @@ func (service *UserService) GetRole(user *models.User) *models.Role {
 	}
 	user.Role = *role
 	return role
+}
+
+func (service *UserService) GetAllUsers() ([]*models.User, error) {
+
+	return service.repo.GetAllUsers()
 }
 
 func (service *UserService) IsEmailAlreadyUse(email string) bool {
@@ -277,6 +295,53 @@ func (service *UserService) GetUserCount() (int, error) {
 	count := service.repo.GetUserCount()
 	if count == -1 {
 		return -1, fmt.Errorf("failed to get user count")
-	}	
+	}
 	return count, nil
+}
+
+func (service *UserService) Delete(user *models.User) (bool, error) {
+	if user == nil || user.ID == uuid.Nil {
+		return false, fmt.Errorf("user cannot be nil or have an empty ID")
+	}
+	err := service.repo.Delete(&user.ID)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func (service *UserService) IsAdmin(user *models.User) bool {
+	if user == nil || user.ID == uuid.Nil {
+		return false
+	}
+	role, err := service.roleRepo.FindById(user.Role_ID)
+	if err != nil || role == nil {
+		log.Println(err)
+		return false
+	}
+	if r, err := service.roleRepo.FindHighestPermRole(); err == nil && r.ID == role.ID {
+		return true
+	}
+	return false
+}
+
+func (service *UserService) IsModerator(user *models.User) bool {
+	if user == nil || user.ID == uuid.Nil {
+		return false
+	}
+	role, err := service.roleRepo.FindById(user.Role_ID)
+	if err != nil || role == nil {
+		return false
+	}
+	if r, err := service.roleRepo.FindMidPermRole(); err == nil && r.ID == role.ID {
+		return true
+	}
+	return false
+}
+
+func (service *UserService) IsAdminOrModerator(user *models.User) bool {
+	if user == nil || user.ID == uuid.Nil {
+		return false
+	}
+	return service.IsAdmin(user) || service.IsModerator(user)
 }

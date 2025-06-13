@@ -49,7 +49,7 @@
                     <i class="fas fa-user text-sm"></i> Profile
                 </a>
                 <a
-                    href="#"
+                    href="/auth/logout"
                     class="hover:text-blue-400 transition-colors flex items-center gap-1"
                 >
                     <i class="fas fa-sign-out-alt text-sm"></i> Logout
@@ -71,14 +71,11 @@
             >
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <button
-                class="text-gray-300 hover:text-blue-400 transition-colors p-1 relative ml-4"
-                aria-label="Notifications"
-            >
-                <i class="fa-regular fa-bell text-lg"></i>
-                <span
-                    class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center"
-                    >3</span
+            <div class="relative ml-4">
+                <button
+                    class="text-gray-300 hover:text-blue-400 transition-colors p-1 relative"
+                    aria-label="Notifications"
+                    id="notifications-button"
                 >
                     <i class="fa-regular fa-bell text-lg"></i>
                     {{ if and .Notifications (gt (len .Notifications) 0)}}
@@ -90,7 +87,7 @@
                     {{end}}
                 </button>
                 <!-- Pop-up notifications alignée sous la cloche -->
-                <div id="notifications-popup" class="text-white hidden absolute right-0 top-12 bg-gray-800 border border-gray-700 rounded-lg shadow-lg w-80 z-50">
+                <div id="notifications-popup" class="hidden absolute right-0 top-12 bg-gray-800 border border-gray-700 rounded-lg shadow-lg w-80 z-50">
                     <div class="p-4">
                         <h3 class="text-lg font-semibold text-white mb-2">Notifications</h3>
                         {{ if .Notifications }}
@@ -173,7 +170,7 @@
                 <i class="fas fa-user text-sm"></i> Profile
             </a>
             <a
-                href="#"
+                href="/auth/logout"
                 class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors"
             >
                 <i class="fas fa-sign-out-alt text-sm"></i> Logout

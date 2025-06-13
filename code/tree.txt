@@ -1,0 +1,141 @@
+.
+├── docker-compose.yml
+├── Dockerfile
+├── init_db.sql
+├── mariadb.env
+├── src
+│   ├── certs
+│   │   ├── cert.pem
+│   │   └── key.pem
+│   ├── cmd
+│   │   └── main.go
+│   ├── go.mod
+│   ├── go.sum
+│   ├── internal
+│   │   ├── config
+│   │   │   ├── database.go
+│   │   │   └── env.go
+│   │   ├── frontEnd
+│   │   │   └── static
+│   │   │       ├── css
+│   │   │       │   ├── markdownVisualisation.css
+│   │   │       │   ├── style.css
+│   │   │       │   └── warframe-theme.css
+│   │   │       ├── imgs
+│   │   │       │   └── forums_background.jpg
+│   │   │       └── js
+│   │   │           ├── admin.js
+│   │   │           ├── authentification.js
+│   │   │           ├── editPublication.js
+│   │   │           ├── findPublication.js
+│   │   │           ├── globalFunction.js
+│   │   │           ├── profile.js
+│   │   │           └── publication.js
+│   │   ├── handlers
+│   │   │   ├── adminCategoryHandler.go
+│   │   │   ├── adminContentHandler.go
+│   │   │   ├── adminHandlers.go
+│   │   │   ├── adminUserHandler.go
+│   │   │   ├── authHandlers.go
+│   │   │   ├── commentsHandler.go
+│   │   │   ├── createPostHandler.go
+│   │   │   ├── editPostHandler.go
+│   │   │   ├── errorHandlers.go
+│   │   │   ├── githubAuthHandler.go
+│   │   │   ├── googleAuthHandler.go
+│   │   │   ├── homeHandlers.go
+│   │   │   ├── postReactionHandler.go
+│   │   │   ├── postsHandlers.go
+│   │   │   ├── profileHandlers.go
+│   │   │   └── seePostHandler.go
+│   │   ├── middleware
+│   │   │   ├── helper.go
+│   │   │   └── rateLimitMiddleware.go
+│   │   ├── routes
+│   │   │   ├── adminRoutes.go
+│   │   │   ├── authRoutes.go
+│   │   │   ├── errorRoutes.go
+│   │   │   ├── homeRoutes.go
+│   │   │   ├── postRoutes.go
+│   │   │   ├── profileRoutes.go
+│   │   │   └── routes.go
+│   │   ├── server
+│   │   │   └── server.go
+│   │   └── templates
+│   │       ├── admin.gohtml
+│   │       ├── authentification.gohtml
+│   │       ├── components
+│   │       │   ├── footerComponent.gohtml
+│   │       │   └── headerComponent.gohtml
+│   │       ├── error.gohtml
+│   │       ├── findPublication.gohtml
+│   │       ├── index.gohtml
+│   │       ├── profile.gohtml
+│   │       ├── publicationEdit.gohtml
+│   │       ├── publication.gohtml
+│   │       └── template.go
+│   └── pkg
+│       ├── dtos
+│       │   ├── githubUserInfo.go
+│       │   ├── googleUserInfo.go
+│       │   └── templates
+│       │       ├── adminPageDto.go
+│       │       ├── authenticationPageDto.go
+│       │       ├── editPostPageDto.go
+│       │       ├── errorPageDto.go
+│       │       ├── headerDto.go
+│       │       ├── homePageDtos.go
+│       │       ├── postPageDto.go
+│       │       ├── profilePageDto.go
+│       │       ├── recentActivityDto.go
+│       │       └── searchPostsDto.go
+│       ├── hostedServices
+│       │   ├── runner.go
+│       │   └── sessionCleaner.go
+│       ├── models
+│       │   ├── category.go
+│       │   ├── comment.go
+│       │   ├── notification.go
+│       │   ├── post.go
+│       │   ├── reaction.go
+│       │   ├── recentActivity.go
+│       │   ├── report.go
+│       │   ├── role.go
+│       │   ├── session.go
+│       │   └── user.go
+│       ├── repositories
+│       │   ├── categoryRepository.go
+│       │   ├── commentRepository.go
+│       │   ├── notificationRepository.go
+│       │   ├── postRepository.go
+│       │   ├── reactionRepository.go
+│       │   ├── recentActivityRepository.go
+│       │   ├── reportRepository.go
+│       │   ├── repositories.go
+│       │   ├── roleRepository.go
+│       │   ├── sessionRepository.go
+│       │   └── userRepository.go
+│       ├── services
+│       │   ├── categoryService.go
+│       │   ├── commentService.go
+│       │   ├── notificationService.go
+│       │   ├── postService.go
+│       │   ├── reactionService.go
+│       │   ├── recentActivityService.go
+│       │   ├── reportService.go
+│       │   ├── roleService.go
+│       │   ├── services.go
+│       │   ├── sessionService.go
+│       │   └── userService.go
+│       └── utils
+│           ├── auth.go
+│           ├── certificate.go
+│           ├── image.go
+│           ├── oauth
+│           │   ├── github.go
+│           │   ├── google.go
+│           │   └── oauthTools.go
+│           └── timeAgo.go
+└── tree.txt
+
+26 directories, 113 files

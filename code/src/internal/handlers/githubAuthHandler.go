@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"Forum-back/internal/config"
+	dtos "Forum-back/pkg/dtos/templates"
 	"Forum-back/pkg/services"
 	"Forum-back/pkg/utils/oauth"
 	"fmt"
@@ -19,7 +20,7 @@ func LoginViaGithubHandler(w http.ResponseWriter, r *http.Request) {
 func LoginViaGithubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	// Check if the request method is valid, only GET is allowed
 	if r.Method != http.MethodGet {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		ShowError405(w, &dtos.HeaderDto{IsConnected: false})
 		return
 	}
 
@@ -33,14 +34,14 @@ func LoginViaGithubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	// If there is an error getting the user info, return an error
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Failed to get user info: %v", err), http.StatusInternalServerError)
+		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: false}, fmt.Sprintf("Failed to get user info: %v", err))
 		return
 	}
 
 	// If the user info is set, search the user in database
 	db, err := config.OpenDBConnection()
 	if err != nil {
-		http.Error(w, "Database connection error", http.StatusInternalServerError)
+		ShowDatabaseError500(w, &dtos.HeaderDto{IsConnected: false})
 		return
 	}
 	defer db.Close()
@@ -57,13 +58,13 @@ func LoginViaGithubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		var email *string
 		user, email = userService.CheckUserWithSameGithubEmails(userInfo)
 		if user != nil && email == nil {
-			http.Error(w, "Failed to update user with Github ID", http.StatusInternalServerError)
+			ShowCustomError500(w, &dtos.HeaderDto{IsConnected: false}, "Failed to update user with Github ID")
 			return
 		}
 		if email == nil && user == nil {
 			user, err = userService.CreateFromGithub(userInfo)
 			if err != nil {
-				http.Error(w, fmt.Sprintf("Failed to create user: %v", err), http.StatusInternalServerError)
+				ShowCustomError500(w, &dtos.HeaderDto{IsConnected: false}, fmt.Sprintf("Failed to create user: %v", err))
 				return
 			}
 		}
@@ -81,7 +82,7 @@ func callbackCheckState(w http.ResponseWriter, r *http.Request) bool {
 	state := r.FormValue("state")
 	stateFromCookie, err := r.Cookie("oauthstate")
 	if err != nil {
-		http.Error(w, "No oauth state cookie", http.StatusBadRequest)
+		ShowError400(w, &dtos.HeaderDto{IsConnected: false})
 		return false
 	}
 	// Check if the state parameter in the request matches the one in the cookie

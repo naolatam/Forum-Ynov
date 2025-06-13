@@ -15,7 +15,7 @@
         <p class="text-lg mb-8">Discuss, share builds and help the Tenno community.</p>
 
         {{if .Header.IsConnected}}
-            <a href="/posts/edit" class="bg-white text-blue-700 px-6 py-2 rounded font-semibold hover:bg-gray-200">
+            <a href="/posts/new" class="bg-white text-blue-700 px-6 py-2 rounded font-semibold hover:bg-gray-200">
                 <i class="fa-regular fa-square-plus pr-2"></i>Create a post
             </a>
         {{end}}
@@ -40,16 +40,21 @@
     <section class="max-w-6xl mx-auto py-10 px-4">
         <h3 class="inline-block text-2xl font-bold mb-6 bg-gray-800 p-4 rounded-lg shadow">Last posts</h3>
         <div class="space-y-4">
+        {{ range .LastPosts }}
             <div class="bg-gray-800 p-4 rounded-lg shadow">
-                <h4 class="font-semibold text-lg">[Guide] Where to farmer the Octavia Prime ?</h4>
-                <p class="text-sm text-gray-400">by <span class="text-blue-400">Tenno42</span> • 2h ago</p>
-                <p class="mt-2 text-gray-300">Here's a complete guide to getting all the components for Octavia Prime in 2025...</p>
+                <h4 class="font-semibold text-lg">{{.Title}}</h4>
+                <p class="text-sm text-gray-400">by 
+                    <a href="/profile?user_id={{.User.ID}}">
+                        <span class="text-blue-400">{{.User.Pseudo}}
+                        </span>
+                    </a> • {{.TimeAgo}}
+                </p>
+                <p class="mt-2 text-gray-300">{{.Content}}</p>
+                <a href="/posts?post_id={{.ID}}" class="text-blue-400 hover:underline mt-2 inline-block">
+                    <i class="fas fa-comments pr-1"></i>View post
+                </a>
             </div>
-            <div class="bg-gray-800 p-4 rounded-lg shadow">
-                <h4 class="font-semibold text-lg">Build Tank Inaros 2025</h4>
-                <p class="text-sm text-gray-400">by <span class="text-blue-400">Inar0x</span> • Yesterday</p>
-                <p class="mt-2 text-gray-300">Here's my complete build for Inaros, based on solo survival endgame.</p>
-            </div>
+        {{end}}
         </div>
     </section>
     <section class="max-w-6xl mx-auto py-10 px-4 text-center">

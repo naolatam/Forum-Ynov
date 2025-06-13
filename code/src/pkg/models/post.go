@@ -16,7 +16,8 @@ type Post struct {
 	PictureBase64 template.URL
 	Validated     bool
 	CreatedAt     time.Time
+	TimeAgo       string
 	User_ID       uuid.UUID
 	User          User
-	Categories    []Category
+	Categories    []*Category
 }

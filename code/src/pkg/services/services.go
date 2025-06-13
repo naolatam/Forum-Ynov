@@ -10,10 +10,8 @@ func checkDBConnection(db *sql.DB) bool {
 		return false
 	}
 	err := db.Ping()
-	if err != nil {
-		return false
-	}
-	return true
+
+	return err == nil
 }
 
 func NewCategoryService(db *sql.DB) *CategoryService {
@@ -25,12 +23,77 @@ func NewCategoryService(db *sql.DB) *CategoryService {
 	}
 }
 
+func NewCommentService(db *sql.DB) *CommentService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &CommentService{
+		repo: repositories.NewCommentRepository(db),
+		us:   repositories.NewUserRepository(db),
+		ps:   repositories.NewPostRepository(db),
+	}
+}
+
+func NewNotificationService(db *sql.DB) *NotificationService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &NotificationService{
+		repo: repositories.NewNotificationRepository(db),
+		ur:   repositories.NewUserRepository(db),
+	}
+}
+
 func NewPostService(db *sql.DB) *PostService {
 	if !checkDBConnection(db) {
 		return nil
 	}
 	return &PostService{
-		repo: repositories.NewPostRepository(db),
+		repo:         repositories.NewPostRepository(db),
+		ur:           repositories.NewUserRepository(db),
+		cr:           repositories.NewCategoryRepository(db),
+		roleRepo:     repositories.NewRoleRepository(db),
+		reactionRepo: repositories.NewReactionRepository(db),
+	}
+}
+
+func NewReactionService(db *sql.DB) *ReactionService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &ReactionService{
+		repo: repositories.NewReactionRepository(db),
+	}
+}
+
+func NewRecentActivityService(db *sql.DB) *RecentActivityService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &RecentActivityService{
+		repo: repositories.NewRecentActivityRepository(db),
+		ur:   repositories.NewUserRepository(db),
+		pr:   repositories.NewPostRepository(db),
+	}
+}
+
+func NewReportService(db *sql.DB) *ReportService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &ReportService{
+		repository: repositories.NewReportRepository(db),
+		ur:         repositories.NewUserRepository(db),
+		pr:         repositories.NewPostRepository(db),
+	}
+}
+
+func NewRoleService(db *sql.DB) *RoleService {
+	if !checkDBConnection(db) {
+		return nil
+	}
+	return &RoleService{
+		repo: repositories.NewRoleRepository(db),
 	}
 }
 

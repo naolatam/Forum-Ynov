@@ -8,64 +8,12 @@
     <script src="https://kit.fontawesome.com/1d16096405.js" crossorigin="anonymous"></script>
 </head>
 <body class="bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 font-sans min-h-screen flex flex-col">
-<header class="bg-gray-800 border-b border-gray-700 shadow-lg p-4 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <div class="flex items-center">
-            <h1 class="text-2xl font-bold text-white">
-                <a href="/" class="flex items-center gap-2 hover:text-blue-400 transition-colors">
-                    Forum Warframe
-                </a>
-            </h1>
-        </div>
-        <div class="flex items-center">
-            <nav class="hidden md:flex space-x-6 items-center">
-                <a href="/" class="hover:text-blue-400 transition-colors flex items-center gap-1">
-                    <i class="fas fa-home text-sm"></i> Home
-                </a>
-                <a href="/searchPosts" class="hover:text-blue-400 transition-colors flex items-center gap-1">
-                    <i class="fas fa-newspaper text-sm"></i> All Posts
-                </a>
-                <a href="/me" class="hover:text-blue-400 transition-colors flex items-center gap-1">
-                    <i class="fas fa-user text-sm"></i> Profile
-                </a>
-                <a href="/auth/login" class="hover:text-blue-400 transition-colors flex items-center gap-1">
-                    <i class="fas fa-sign-in-alt text-sm"></i> Login
-                </a>
-                <a href="#" class="hover:text-blue-400 transition-colors flex items-center gap-1">
-                    <i class="fas fa-sign-out-alt text-sm"></i> Logout
-                </a>
-            </nav>
-            <button id="mobile-menu-button" class="md:hidden ml-2 text-gray-300 hover:text-blue-400 focus:outline-none"
-                    aria-label="Menu">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <button class="text-gray-300 hover:text-blue-400 transition-colors p-1 relative ml-4"
-                    aria-label="Notifications">
-                <i class="fa-regular fa-bell text-lg"></i>
-                <span class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">3</span>
-            </button>
-        </div>
-    </div>
-    <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2 border-t border-gray-700 max-w-7xl mx-auto">
-        <nav class="mt-2 space-y-3 flex flex-col px-2">
-            <a href="/"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Home</a>
-            <a href="/searchPosts"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">All
-                Posts</a>
-            <a href="/me"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Profile</a>
-            <a href="/auth/login"
-               class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Login</a>
-            <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-700 hover:text-blue-400 transition-colors">Logout</a>
-        </nav>
-    </div>
-</header>
-
+{{ template "headerComponent" .Header }}
 <main class="flex-grow flex flex-col">
     <section class="bg-gradient-to-r from-blue-700 to-blue-500 text-white text-center py-8 shadow-md">
         <h2 class="text-4xl font-bold mb-4">Administration</h2>
-        <p class="text-lg max-w-2xl mx-auto">Welcome to the administration area. Manage your forum's users, content and settings.</p>
+        <p class="text-lg max-w-2xl mx-auto">Welcome to the administration area. Manage your forum's users, content and
+            settings.</p>
     </section>
 
     <div class="max-w-6xl mx-auto p-8 flex justify-center items-center my-8">
@@ -79,7 +27,8 @@
                 <h3 class="text-xl font-bold mb-4 text-center">Content Moderation</h3>
                 <p class="text-gray-400 text-center mb-6">Check and moderate forum posts and comments.</p>
                 <div class="text-center">
-                    <button id="btn-moderation" class="inline-block bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-full transition-colors duration-300">
+                    <button id="btn-moderation"
+                            class="inline-block bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-full transition-colors duration-300">
                         Access <i class="fas fa-arrow-right ml-2"></i>
                     </button>
                 </div>
@@ -88,13 +37,15 @@
             <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 w-full max-w-sm border-t-4 border-red-500">
                 <div class="flex justify-center mb-6">
                     <span class="bg-red-100 text-red-600 p-3 rounded-full">
-                        <i class="fas fa-flag fa-2x"></i>
+                        <i class="fa-solid fa-users-gear fa-2x"></i>
                     </span>
                 </div>
-                <h3 class="text-xl font-bold mb-4 text-center">Reported content</h3>
-                <p class="text-gray-400 text-center mb-6">See users and publications reported by the community.</p>
+                <h3 class="text-xl font-bold mb-4 text-center">User Management</h3>
+                <p class="text-gray-400 text-center mb-6">See reported users and manage the roles of moderator
+                    users.</p>
                 <div class="text-center">
-                    <button id="btn-reports" class="inline-block bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-full transition-colors duration-300">
+                    <button id="btn-reports"
+                            class="inline-block bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-full transition-colors duration-300">
                         Access <i class="fas fa-arrow-right ml-2"></i>
                     </button>
                 </div>
@@ -109,7 +60,8 @@
                 <h3 class="text-xl font-bold mb-4 text-center">Category Management</h3>
                 <p class="text-gray-400 text-center mb-6">Manage categories and subcategories of the forum.</p>
                 <div class="text-center">
-                    <button id="btn-category" class="inline-block bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-full transition-colors duration-300">
+                    <button id="btn-category"
+                            class="inline-block bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-full transition-colors duration-300">
                         Access <i class="fas fa-arrow-right ml-2"></i>
                     </button>
                 </div>
@@ -123,433 +75,182 @@
     <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" id="modal-moderation-backdrop"></div>
     <div class="relative top-20 mx-auto max-w-4xl w-full bg-gray-800 rounded-lg shadow-xl transform transition-all p-6">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-bold">Content Moderation</h3>
+            <h3 class="text-xl font-bold">Content moderation</h3>
             <button class="modal-close text-gray-400 hover:text-white" data-modal="modal-moderation">
-                <i class="fas fa-times text-xl"></i>
+                <i class="fas fa-xmark text-xl"></i>
             </button>
         </div>
-
-        <div class="mb-6">
-            <form class="flex gap-4 items-center">
-                <div class="flex-grow">
-                    <input type="text" placeholder="Search a publication..." class="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-white">
-                </div>
-                <button type="submit" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-md text-white">
-                    <i class="fas fa-search mr-2"></i>Search
-                </button>
-            </form>
-        </div>
-
-        <div id="content-tab">
-            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96">
-                <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer content-item">
-                    <div class="flex justify-between">
-                        <h4 class="font-medium mb-2">Tips for farmer scarce resources</h4>
-                        <span class="text-xs text-gray-400">3 days ago</span>
-                    </div>
-                    <p class="text-sm text-gray-300 mb-3 line-clamp-2">The best techniques for quickly obtaining resources like Orokin Cell...</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-400">By<span class="text-blue-400">ResourceExpert</span></span>
-                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Waiting</span>
-                    </div>
-                </li>
-                <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer content-item">
-                    <div class="flex justify-between">
-                        <h4 class="font-medium mb-2">Review of the latest update</h4>
-                        <span class="text-xs text-gray-400">1 week ago</span>
-                    </div>
-                    <p class="text-sm text-gray-300 mb-3 line-clamp-2">A detailed analysis of the new features and changes brought by the update...</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-400">By <span class="text-blue-400">GameReviewer</span></span>
-                        <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Reported</span>
-                    </div>
-                </li>
-                <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer content-item">
-                    <div class="flex justify-between">
-                        <h4 class="font-medium mb-2">Review of the latest update</h4>
-                        <span class="text-xs text-gray-400">1 week ago</span>
-                    </div>
-                    <p class="text-sm text-gray-300 mb-3 line-clamp-2">A detailed analysis of the new features and changes brought by the update...</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-400">By <span class="text-blue-400">GameReviewer</span></span>
-                        <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Reported</span>
-                    </div>
-                </li>
-                <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer content-item">
-                    <div class="flex justify-between">
-                        <h4 class="font-medium mb-2">Tips for farmer scarce resources</h4>
-                        <span class="text-xs text-gray-400">3 days ago</span>
-                    </div>
-                    <p class="text-sm text-gray-300 mb-3 line-clamp-2">The best techniques for quickly obtaining resources like Orokin Cell...</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-400">By<span class="text-blue-400">ResourceExpert</span></span>
-                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Waiting</span>
-                    </div>
-                </li>
-                <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer content-item">
-                    <div class="flex justify-between">
-                        <h4 class="font-medium mb-2">Review of the latest update</h4>
-                        <span class="text-xs text-gray-400">1 week ago</span>
-                    </div>
-                    <p class="text-sm text-gray-300 mb-3 line-clamp-2">A detailed analysis of the new features and changes brought by the update...</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-400">By <span class="text-blue-400">GameReviewer</span></span>
-                        <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Reported</span>
-                    </div>
-                </li>
-                <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer content-item">
-                    <div class="flex justify-between">
-                        <h4 class="font-medium mb-2">Review of the latest update</h4>
-                        <span class="text-xs text-gray-400">1 week ago</span>
-                    </div>
-                    <p class="text-sm text-gray-300 mb-3 line-clamp-2">A detailed analysis of the new features and changes brought by the update...</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-400">By <span class="text-blue-400">GameReviewer</span></span>
-                        <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Reported</span>
-                    </div>
-                </li>
-            </ul>
-            <div class="text-center my-4 text-gray-300 pagination-info-content"></div>
-            <div class="flex justify-center space-x-2 mb-8 pagination-controls-content"></div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Content Signalized -->
-<div id="modal-reports" class="fixed inset-0 z-50 hidden">
-    <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" id="modal-reports-backdrop"></div>
-    <div class="relative top-20 mx-auto max-w-4xl w-full bg-gray-800 rounded-lg shadow-xl transform transition-all p-6">
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-bold">Reported Content</h3>
-            <button class="modal-close text-gray-400 hover:text-white" data-modal="modal-reports">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-
         <div class="mb-6">
             <div class="flex gap-2">
-                <button class="tab-button active-tab bg-gray-700 px-4 py-2 rounded-tl-lg rounded-tr-lg" data-tab="reported-users-tab">
-                    <i class="fas fa-user-shield mr-2"></i>Reported Users
+                <button class="tab-btn-moderation active-tab bg-gray-700 px-4 py-2 rounded-tl-lg rounded-tr-lg"
+                        data-tab="tab-content-moderation">
+                    <i class="fas fa-gavel mr-2"></i>Reports
                 </button>
-                <button class="tab-button bg-gray-600 px-4 py-2 rounded-tl-lg rounded-tr-lg" data-tab="reported-posts-tab">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>Reported Publications
+                <button class="tab-btn-waiting bg-gray-700 px-4 py-2 rounded-tl-lg rounded-tr-lg"
+                        data-tab="tab-content-waiting">
+                    <i class="fas fa-hourglass-half mr-2"></i>Waiting for validation
                 </button>
             </div>
             <div class="border-t border-gray-600"></div>
         </div>
 
-        <div class="tab-content" id="reported-users-tab">
-            <ul class="divide-y divide-gray-700">
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg user-report-item">
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center mr-3">
-                                <span class="text-white font-bold">T</span>
+        <!-- Report -->
+        <div class="tab-content-moderation" id="tab-content-moderation">
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96 moderation-list">
+                {{ if .Reports}}
+                    {{ range .Reports}}
+                        <li class="py-4 bg-gray-700 hover:bg-gray-600 px-4 rounded-lg moderation-report-item">
+                            <div class="flex justify-between items-start">
+                                <div class="flex flex-col">
+                                    <h4 class="font-medium text-lg mb-1">{{ .Post.Title}}</h4>
+                                    <div class="flex items-center text-sm text-gray-400 mb-1">
+                                        <span>By <a href="/profile?user_id={{.User.ID}}"><span class="text-blue-400">{{.User.Pseudo}}</span></a></span>
+                                        <span class="mx-2">•</span>
+                                        <span>{{ .Post.TimeAgo }}</span>
+                                    </div>
+                                    <p class="text-sm text-gray-300 line-clamp-2 mb-2">
+                                        {{ .Post.Content }}
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="font-medium">TrollUser123</p>
-                                <p class="text-sm text-gray-400">Reported 5 times</p>
+                            <div class="mt-3 flex gap-2 justify-end">
+                                <a href="/posts?post_id={{.Post.ID}}">
+                                    <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
+                                        <i class="fas fa-eye mr-1"></i>See the post
+                                    </button>
+                                </a>
+                                <form action="/admin/report/delete" method="POST">
+                                    <input type="hidden" name="report_id" value="{{.ID}}">
+                                    <button class="bg-green-600 text-white text-xs px-3 py-1 rounded-full hover:bg-green-700">
+                                        <i class="fas fa-check mr-1"></i>NTR
+                                    </button>
+                                </form>
+                                <form action="/admin/content/delete" method="POST">
+                                    <input type="hidden" name="post_id" value="{{.ID}}">
+                                    <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
+                                        <i class="fas fa-trash mr-1"></i>Delete
+                                    </button>
+                                </form>
                             </div>
-                        </div>
-                        <div>
-                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Harassment</span>
-                        </div>
-                    </div>
-                    <div class="mt-3 pl-12">
-                        <p class="text-sm text-gray-300">Inappropriate and insulting comments across multiple publications.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                                <i class="fas fa-ban mr-1"></i>Suspend
-                            </button>
-                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                                <i class="fas fa-trash mr-1"></i>Ban
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg user-report-item">
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center mr-3">
-                                <span class="text-white font-bold">S</span>
-                            </div>
-                            <div>
-                                <p class="font-medium">SpamBot42</p>
-                                <p class="text-sm text-gray-400">Reported 3 times</p>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">Spam</span>
-                        </div>
-                    </div>
-                    <div class="mt-3 pl-12">
-                        <p class="text-sm text-gray-300">Repetitive publications and unauthorized promotional links.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                                <i class="fas fa-ban mr-1"></i>Suspend
-                            </button>
-                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                                <i class="fas fa-trash mr-1"></i>Ban
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg user-report-item">
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center mr-3">
-                                <span class="text-white font-bold">T</span>
-                            </div>
-                            <div>
-                                <p class="font-medium">TrollUser123</p>
-                                <p class="text-sm text-gray-400">Reported 5 times</p>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Harassment</span>
-                        </div>
-                    </div>
-                    <div class="mt-3 pl-12">
-                        <p class="text-sm text-gray-300">Inappropriate and insulting comments across multiple publications.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                                <i class="fas fa-ban mr-1"></i>Suspend
-                            </button>
-                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                                <i class="fas fa-trash mr-1"></i>Ban
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg user-report-item">
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center mr-3">
-                                <span class="text-white font-bold">S</span>
-                            </div>
-                            <div>
-                                <p class="font-medium">SpamBot42</p>
-                                <p class="text-sm text-gray-400">Reported 3 times</p>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">Spam</span>
-                        </div>
-                    </div>
-                    <div class="mt-3 pl-12">
-                        <p class="text-sm text-gray-300">Repetitive publications and unauthorized promotional links.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                                <i class="fas fa-ban mr-1"></i>Suspend
-                            </button>
-                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                                <i class="fas fa-trash mr-1"></i>Ban
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg user-report-item">
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center mr-3">
-                                <span class="text-white font-bold">T</span>
-                            </div>
-                            <div>
-                                <p class="font-medium">TrollUser123</p>
-                                <p class="text-sm text-gray-400">Reported 5 times</p>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Harassment</span>
-                        </div>
-                    </div>
-                    <div class="mt-3 pl-12">
-                        <p class="text-sm text-gray-300">Inappropriate and insulting comments across multiple publications.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                                <i class="fas fa-ban mr-1"></i>Suspend
-                            </button>
-                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                                <i class="fas fa-trash mr-1"></i>Ban
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg user-report-item">
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center mr-3">
-                                <span class="text-white font-bold">S</span>
-                            </div>
-                            <div>
-                                <p class="font-medium">SpamBot42</p>
-                                <p class="text-sm text-gray-400">Reported 3 times</p>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">Spam</span>
-                        </div>
-                    </div>
-                    <div class="mt-3 pl-12">
-                        <p class="text-sm text-gray-300">Repetitive publications and unauthorized promotional links.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                                <i class="fas fa-ban mr-1"></i>Suspend
-                            </button>
-                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                                <i class="fas fa-trash mr-1"></i>Ban
-                            </button>
-                        </div>
-                    </div>
-                </li>
+                        </li>
+                    {{end}}
+                {{end}}
             </ul>
-            <div class="text-center my-4 text-gray-300 pagination-info-users"></div>
-            <div class="flex justify-center space-x-2 mb-8 pagination-controls-users"></div>
+            <div class="text-center my-4 text-gray-300 pagination-info-moderation"></div>
+            <div class="flex justify-center space-x-2 mb-8 pagination-moderation"></div>
+        </div>
+        <!-- Waiting -->
+        <div class="tab-content-waiting hidden" id="tab-content-waiting">
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96 waiting-list">
+                {{ if .WaitingPosts}}
+                    {{ range .WaitingPosts}}
+                        <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer waiting-content-item">
+                            <div class="flex justify-between">
+                                <h4 class="font-medium mb-2">{{.Title}}</h4>
+                                <span class="text-xs text-gray-400">{{.TimeAgo}}</span>
+                            </div>
+                            <p class="text-sm text-gray-300 mb-3 line-clamp-2">{{.Content}}</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs text-gray-400">By <a href="/profile?user_id={{.User_ID}}"><span class="text-blue-400">{{.User.Pseudo}}</span></a> </span>
+                                <a href="/posts?post_id={{.ID}}">
+                                    <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
+                                        <i class="fas fa-eye mr-1"></i>See the post
+                                    </button>
+                                    </a>
+                                <form action="/admin/content/validate" method="POST">
+                                    <input type="hidden" name="post_id" value="{{.ID}}">
+                                    <button class="bg-green-600 text-white text-xs px-3 py-1 rounded-full hover:bg-green-700">
+                                        <i class="fas fa-check mr-1"></i>Validate
+                                    </button>
+                                </form>
+                                <form action="/admin/content/delete" method="POST">
+                                    <input type="hidden" name="post_id" value="{{.ID}}">
+                                    <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
+                                        <i class="fas fa-trash mr-1"></i>Delete
+                                    </button>
+                                </form>
+
+                            </div>
+                        </li>
+                    {{end}}
+                {{ end }}
+            </ul>
+            <div class="text-center my-4 text-gray-300 pagination-info-waiting"></div>
+            <div class="flex justify-center space-x-2 mb-8 pagination-waiting"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Content Signalized -->
+<div id="modal-reports" class="fixed inset-0 z-50 {{if not .UserManagement}}hidden{{end}}">
+    <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" id="modal-reports-backdrop"></div>
+    <div class="relative top-20 mx-auto max-w-4xl w-full bg-gray-800 rounded-lg shadow-xl transform transition-all p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold">User Role Management</h3>
+            <button class="modal-close text-gray-400 hover:text-white" data-modal="modal-reports">
+                <i class="fas fa-times text-xl"></i>
+            </button>
         </div>
 
-        <div class="tab-content hidden" id="reported-posts-tab">
-            <ul class="divide-y divide-gray-700">
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg post-report-item">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="font-medium">Guide to exploits and cheating in Warframe</h4>
-                            <p class="text-sm text-gray-400">By <span class="text-blue-400">CheatMaster99</span> • Reported 7 times</p>
-                        </div>
-                        <div>
-                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Prohibited Content</span>
-                        </div>
+        <div class="tab-content" id="user-roles-tab">
+            <div class="mb-6">
+                <form class="flex gap-4 items-center" action="/admin/user/search" method="GET">
+                    <div class="flex-grow">
+                        <input type="text" placeholder="Search an user..." name="search"
+                               class="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-white">
                     </div>
-                    <div class="mt-3">
-                        <p class="text-sm text-gray-300">Publication detailing cheating methods and exploits in the game.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full hover:bg-blue-700">
-                                <i class="fas fa-eye mr-1"></i>Review
-                            </button>
-                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                                <i class="fas fa-trash mr-1"></i>Delete
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg post-report-item">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="font-medium">Criticism of Digital Extremes' game management</h4>
-                            <p class="text-sm text-gray-400">By <span class="text-blue-400">AngryGamer75</span> • Reported 4 times</p>
-                        </div>
-                        <div>
-                            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Controversial Content</span>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <p class="text-sm text-gray-300">Very negative criticism with potentially offensive comments towards developers.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full hover:bg-blue-700">
-                                <i class="fas fa-eye mr-1"></i>Review
-                            </button>
-                            <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                                <i class="fas fa-edit mr-1"></i>Edit
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg post-report-item">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="font-medium">Inappropriate images in the Fashionframe forum</h4>
-                            <p class="text-sm text-gray-400">By <span class="text-blue-400">FashionKing</span> • Reported 2 times</p>
-                        </div>
-                        <div>
-                            <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Inappropriate Content</span>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <p class="text-sm text-gray-300">Publication containing screenshots with suggestive poses.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full hover:bg-blue-700">
-                                <i class="fas fa-eye mr-1"></i>Review
-                            </button>
-                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                                <i class="fas fa-trash mr-1"></i>Delete
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg post-report-item">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="font-medium">Guide to exploits and cheating in Warframe</h4>
-                            <p class="text-sm text-gray-400">By <span class="text-blue-400">CheatMaster99</span> • Reported 7 times</p>
-                        </div>
-                        <div>
-                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Prohibited Content</span>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <p class="text-sm text-gray-300">Publication detailing cheating methods and exploits in the game.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full hover:bg-blue-700">
-                                <i class="fas fa-eye mr-1"></i>Review
-                            </button>
-                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                                <i class="fas fa-trash mr-1"></i>Delete
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg post-report-item">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="font-medium">Criticism of Digital Extremes' game management</h4>
-                            <p class="text-sm text-gray-400">By <span class="text-blue-400">AngryGamer75</span> • Reported 4 times</p>
-                        </div>
-                        <div>
-                            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Controversial Content</span>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <p class="text-sm text-gray-300">Very negative criticism with potentially offensive comments towards developers.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full hover:bg-blue-700">
-                                <i class="fas fa-eye mr-1"></i>Review
-                            </button>
-                            <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                                <i class="fas fa-edit mr-1"></i>Edit
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="py-4 hover:bg-gray-700 px-4 rounded-lg post-report-item">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="font-medium">Inappropriate images in the Fashionframe forum</h4>
-                            <p class="text-sm text-gray-400">By <span class="text-blue-400">FashionKing</span> • Reported 2 times</p>
-                        </div>
-                        <div>
-                            <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Inappropriate Content</span>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <p class="text-sm text-gray-300">Publication containing screenshots with suggestive poses.</p>
-                        <div class="mt-2 flex gap-2">
-                            <button class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full hover:bg-blue-700">
-                                <i class="fas fa-eye mr-1"></i>Review
-                            </button>
-                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                                <i class="fas fa-trash mr-1"></i>Delete
-                            </button>
-                        </div>
-                    </div>
-                </li>
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-md text-white">
+                        <i class="fas fa-search mr-2"></i>Search
+                    </button>
+                </form>
+            </div>
+
+            <ul class="divide-y divide-gray-700 user-roles-list">
+                {{ range .AllUsers }}
+                    {{ if le (index .Role.Permission 0) 2 }}
+                        <li class="py-4 hover:bg-gray-700 px-4 rounded-lg flex justify-between items-center user-role-item">
+                            <div>
+                                <p class="font-medium">{{ .Pseudo }}</p>
+                                <p class="text-sm text-gray-400">Current role :
+                                    <span class="font-semibold text-blue-400">
+                                {{.Role.Name}}
+                            </span>
+                                </p>
+                            </div>
+                            <form>
+                                <div class="flex gap-2">
+                                    {{ if eq (index .Role.Permission 0) 2 }}
+                                        <form action="/admin/user/demote" method="POST">
+                                            <input type="hidden" name="user_id" value="{{ .ID }}">
+                                            <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700 btn-remove-moderator"
+                                                    data-username="{{ .Pseudo }}">
+                                                <i class="fas fa-user-minus mr-1"></i>Remove Moderator
+                                            </button>
+                                        </form>
+                                    {{ else }}
+                                        <form action="/admin/user/promote" method="POST">
+                                            <input type="hidden" name="user_id" value="{{ .ID }}">
+                                            <button type="submit"
+                                                    class="bg-green-600 text-white text-xs px-3 py-1 rounded-full hover:bg-green-700 btn-add-moderator"
+                                                    data-username="{{ .Pseudo }}">
+                                                <i class="fas fa-user-plus mr-1"></i>Add Moderator
+                                            </button>
+                                        </form>
+                                    {{ end }}
+                                </div>
+                            </form>
+                        </li>
+                    {{end}}
+                {{end}}
             </ul>
-            <div class="text-center my-4 text-gray-300 pagination-info-posts"></div>
-            <div class="flex justify-center space-x-2 mb-8 pagination-controls-posts"></div>
+            <div class="text-center my-4 text-gray-300 pagination-info-roles"></div>
+            <div class="flex justify-center space-x-2 mb-8 pagination-controls-roles"></div>
         </div>
     </div>
 </div>
 
 <!-- Modal Category management -->
-<div id="modal-category" class="fixed inset-0 z-50 hidden">
+<div id="modal-category" class="fixed inset-0 z-50 {{if not .CategoryManagement}}hidden{{end}}">
     <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" id="modal-category-backdrop"></div>
     <div class="relative top-20 mx-auto max-w-4xl w-full bg-gray-800 rounded-lg shadow-xl transform transition-all p-6">
         <div class="flex justify-between items-center mb-6">
@@ -561,147 +262,78 @@
 
         <div class="mb-6">
             <div class="flex gap-4 items-center mb-6">
-                <input type="text" placeholder="New category name..." id="new-category-input" class="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-white">
-                <button id="btn-add-category" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-md text-white flex items-center">
+                <button id="btn-add-category"
+                        class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-md text-white flex items-center">
                     <i class="fas fa-plus mr-2"></i>Add
                 </button>
             </div>
         </div>
-
+        <div id="modal-add-category" class="fixed inset-0 z-60 hidden">
+            <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" id="modal-category-backdrop"></div>
+            <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" id="new-category-popup-backdrop"></div>
+            <div class="relative top-1/4 mx-auto max-w-md w-full bg-gray-800 rounded-lg shadow-xl transform transition-all p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-white">Create New Category</h3>
+                <button class="text-gray-400 hover:text-white" id="close-new-category-popup">
+                <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="new-category-form" action="/admin/category/create" method="POST">
+                <div class="mb-4">
+                <label for="category-name" class="block text-sm font-medium text-gray-300 mb-2">Category Name</label>
+                <input type="text" id="category-name" name="category_name" placeholder="Enter category name"
+                       class="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-white" maxlength="50" required>
+                </div>
+                <div class="flex justify-end">
+                <button type="submit" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-md text-white">
+                    Create
+                </button>
+                </div>
+            </form>
+            </div>
+        </div>
         <div class="max-h-96 overflow-y-auto">
-            <ul class="divide-y divide-gray-700">
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">General Discussion</span>
+            <ul class="divide-y divide-gray-700 category-list">
+                {{ range .AllCategories }}
+                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center category-item">
+                    <span class="font-medium text-white">{{.Name}}</span>
                     <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
+                        <button type="button" class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full hover:bg-blue-700"
+                            data-category-id="{{ .ID }}" data-category-name="{{ .Name }}" onclick="openEditCategoryPopup({{ .ID }})">
                             <i class="fas fa-edit mr-1"></i>Edit
                         </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
+
+                        <div id="edit-category-popup-{{ .ID }}" class="fixed inset-0 z-[1000] hidden">
+                            <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-60" id="modal-category-backdrop"></div>
+                            <div class="relative top-1/4 mx-auto max-w-md w-full bg-gray-800 rounded-lg shadow-xl transform transition-all p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-xl font-bold text-white">Edit Category</h3>
+                            </div>
+                            <form action="/admin/category/edit" method="POST">
+                                <input type="hidden" name="category_id" value="{{ .ID }}">
+                                <div class="mb-4">
+                                <label for="edit-category-name-{{ .ID }}" class="block text-sm font-medium text-gray-300 mb-2">Category Name</label>
+                                <input type="text" id="edit-category-name-{{ .ID }}" name="category_name" value="{{ .Name }}"
+                                       class="w-full px-4 py-2 rounded-md bg-gray-700 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 text-white" maxlength="50" required>
+                                </div>
+                                <div class="flex justify-end">
+                                <button type="submit" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-md text-white">
+                                    Save
+                                </button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                        <form action="/admin/category/delete" method="POST">
+                            <input type="hidden" name="category_id" value="{{ .ID }}">
+                            <button type="submit" class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700 btn-delete-category"
+                                    data-category="{{ .Name }}">
+                                <i class="fas fa-trash mr-1"></i>Delete
+                            </button>
+                        </form>
                     </div>
                 </li>
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">Builds and Strategies</span>
-                    <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-edit mr-1"></i>Edit
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
-                    </div>
-                </li>
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">Bugs and Issues</span>
-                    <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-edit mr-1"></i>Edit
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
-                    </div>
-                </li>
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">Fashionframe</span>
-                    <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-edit mr-1"></i>Edit
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
-                    </div>
-                </li>
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">General Discussion</span>
-                    <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-edit mr-1"></i>Edit
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
-                    </div>
-                </li>
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">Builds and Strategies</span>
-                    <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-edit mr-1"></i>Edit
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
-                    </div>
-                </li>
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">Bugs and Issues</span>
-                    <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-edit mr-1"></i>Edit
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
-                    </div>
-                </li>
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">Fashionframe</span>
-                    <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-edit mr-1"></i>Edit
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
-                    </div>
-                </li>
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">General Discussion</span>
-                    <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-edit mr-1"></i>Edit
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
-                    </div>
-                </li>
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">Builds and Strategies</span>
-                    <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-edit mr-1"></i>Edit
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
-                    </div>
-                </li>
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">Bugs and Issues</span>
-                    <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-edit mr-1"></i>Edit
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
-                    </div>
-                </li>
-                <li class="py-3 px-4 hover:bg-gray-700 rounded-lg flex justify-between items-center">
-                    <span class="font-medium text-white">Fashionframe</span>
-                    <div class="flex gap-2">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-edit mr-1"></i>Edit
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Delete
-                        </button>
-                    </div>
-                </li>
+                {{ end }}
             </ul>
         </div>
         <div class="text-center my-4 text-gray-300 pagination-info"></div>

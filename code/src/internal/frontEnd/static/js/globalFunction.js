@@ -15,6 +15,15 @@ document.addEventListener('DOMContentLoaded', function () {
             mobileMenu.classList.add('hidden');
         }
     });
+
+    const textarea = document.getElementById('content-textarea');
+    const preview = document.getElementById('markdown-preview');
+    if (textarea && preview && window.markdown) {
+        textarea.addEventListener('input', function() {
+            preview.innerHTML = markdown.toHTML(textarea.value);
+        });
+        preview.innerHTML = markdown.toHTML(textarea.value);
+    }
 });
 
 // Reusable function to initialize pagination
@@ -137,3 +146,15 @@ function initializePagination(containerId, itemSelector, paginationInfo, paginat
     createPaginationControls();
     showPage(1);
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const bellBtn = document.getElementById('notifications-button');
+    const popup = document.getElementById('notifications-popup');
+    document.addEventListener('click', function(e) {
+        if (bellBtn.contains(e.target)) {
+            popup.classList.toggle('hidden');
+        } else if (!popup.contains(e.target)) {
+            popup.classList.add('hidden');
+        }
+    });
+});
