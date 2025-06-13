@@ -11,16 +11,19 @@ services:
     ports:
       - "3306:3306"
     volumes:
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init.sql
       - mariadb_data:/var/lib/mysql
     networks:
       - forumNetwork
 
   forum_app:
-    build:
-      context: .
-      dockerfile: Dockerfile
     depends_on:
       - mariadb
+    build:
+      dockerfile: Dockerfile
+
+    env_file:
+      - src/.env
     ports:
       - "8080:8080"
     networks:

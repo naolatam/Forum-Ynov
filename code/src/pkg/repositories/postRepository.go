@@ -322,9 +322,11 @@ func (repository *PostRepository) Create(post *models.Post) error {
 	}
 	id, err := repository.retrieveLastId()
 	if err != nil {
+		*id = 0
 		return err
+
 	}
-	post.ID = uint32(id + 1)
+	post.ID = uint32(*id + 1)
 
 	_, err = repository.db.Exec("INSERT INTO posts (id, title, content, picture, validated, createdAt, user_ID) VALUES (?, ?, ?, ?, ?, ?, ?)",
 		post.ID, post.Title, post.Content, post.Picture, post.Validated, post.CreatedAt, post.User_ID)
@@ -334,14 +336,15 @@ func (repository *PostRepository) Create(post *models.Post) error {
 	return nil
 }
 
-func (repository *PostRepository) retrieveLastId() (lastId int, err error) {
+func (repository *PostRepository) retrieveLastId() (lastId *int, err error) {
 	if repository.db == nil {
-		return -1, errors.New("connection to database isn't established")
+		return lastId, errors.New("connection to database isn't established")
 	}
 
-	err = repository.db.QueryRow("SELECT MAX(id) FROM posts").Scan(&lastId)
+	err = repository.db.QueryRow("SELECT MAX(id) FROM posts").Scan(lastId)
 	if err != nil {
-		return -1, err
+
+		return lastId, err
 	}
 	return
 }
