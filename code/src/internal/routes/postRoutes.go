@@ -11,7 +11,7 @@ import (
 func initPostRoutes() {
 	http.HandleFunc("/posts", mw.WithDB(mw.WithAuth(mw.WithHeader(handlers.SeePostHandler))))
 	http.HandleFunc("/searchPosts", mw.WithDB(mw.WithAuth(mw.WithHeader(handlers.SearchPostsHandler))))
-	http.HandleFunc("/posts/new", mw.WithDB(mw.WithAuth(mw.WithHeader(handlers.CreatePostHandler))))
+	http.HandleFunc("/posts/new", mw.WithDB(mw.WithRequiredAuthRedirect("/auth/login", mw.WithHeader(handlers.CreatePostHandler))))
 	http.HandleFunc("/posts/edit", mw.WithDB(mw.WithAuthRequired(mw.WithHeader(handlers.EditPostHandler))))
 	http.HandleFunc("/posts/delete", mw.WithDB(mw.WithAuthRequired(mw.WithHeader(handlers.DeletePostHandler))))
 	http.HandleFunc("/posts/like", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(handlers.LikePostHandler))))
