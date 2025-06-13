@@ -14,6 +14,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// ProfileHandler handles the display of a user's profile page.
 func ProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 
 	userService := services.NewUserService(db) // Init all services
@@ -44,6 +45,7 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session 
 	showProfilePage(w, data)
 }
 
+// MyProfileHandler handles the display of the connected user's profile page.
 func MyProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 
 	userService := services.NewUserService(db)
@@ -68,6 +70,7 @@ func MyProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessio
 	showProfilePage(w, data)
 }
 
+// DeleteMyProfileHandler handles the deletion of the connected user's profile.
 func DeleteMyProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 
 	userService := services.NewUserService(db)
@@ -87,6 +90,7 @@ func DeleteMyProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
+// EditMyProfileHandler handles the editing of the connected user's profile.
 func EditMyProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	userService := services.NewUserService(db)
 
@@ -104,6 +108,7 @@ func EditMyProfileHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, se
 	http.Redirect(w, r, "/me", http.StatusSeeOther)
 }
 
+// updateUserProfile updates the user's profile based on the form data from the request.
 func updateUserProfile(user *models.User, userService *services.UserService, r *http.Request) *dtos.ProfilePageErrorDto {
 	if pseudo := r.FormValue("username"); pseudo != "" {
 		searchedUser := userService.FindByUsername(pseudo)
@@ -152,6 +157,7 @@ func updateUserProfile(user *models.User, userService *services.UserService, r *
 
 }
 
+// showProfilePage renders the profile page template with the provided data.
 func showProfilePage(w http.ResponseWriter, data *dtos.ProfilPageDto) error {
 	tmpl, templateError := templates.GetTemplateWithLayout(&data.Header, "myProfile", "internal/templates/profile.gohtml")
 	if templateError != nil {
@@ -164,6 +170,7 @@ func showProfilePage(w http.ResponseWriter, data *dtos.ProfilPageDto) error {
 	return nil
 }
 
+// createDto constructs a ProfilePageDto from the provided parameters.
 func createDto(header *dtos.HeaderDto, user *models.User, RecentActivity []*models.RecentActivity, err *dtos.ProfilePageErrorDto, isMine bool, postCount, commentCount int) *dtos.ProfilPageDto {
 	if err == nil {
 		err = &dtos.ProfilePageErrorDto{}
@@ -184,6 +191,7 @@ func createDto(header *dtos.HeaderDto, user *models.User, RecentActivity []*mode
 	return &data
 }
 
+// getUserIdFromURL retrieves the user ID from the URL query parameters.
 func getUserIdFromURL(
 	w http.ResponseWriter,
 	r *http.Request,
