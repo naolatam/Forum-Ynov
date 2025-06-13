@@ -12,6 +12,7 @@ type RoleRepository struct {
 	db *sql.DB
 }
 
+// FindById retrieves a role by its ID.
 func (repository *RoleRepository) FindById(id uuid.UUID) (*models.Role, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -34,6 +35,7 @@ func (repository *RoleRepository) FindById(id uuid.UUID) (*models.Role, error) {
 	return nil, errors.New("roles not found")
 }
 
+// FindHighestPermRole retrieves the role with the highest permission level.
 func (repo *RoleRepository) FindHighestPermRole() (*models.Role, error) {
 	if repo.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -55,6 +57,7 @@ func (repo *RoleRepository) FindHighestPermRole() (*models.Role, error) {
 	return nil, errors.New("no roles found")
 }
 
+// FindMidPermRole retrieves the role with the second highest permission level.
 func (repo *RoleRepository) FindMidPermRole() (*models.Role, error) {
 	if repo.db == nil {
 		return nil, errors.New("connection to database isn't established")
