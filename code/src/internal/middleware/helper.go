@@ -56,11 +56,6 @@ func WithAuth(
 		sessionService := services.NewSessionService(db)
 		isConnected, session := sessionService.IsAuthenticated(r)
 
-		if !isConnected {
-			handlers.ShowError403(w, &dtos.HeaderDto{IsConnected: false})
-			return
-		}
-
 		handler(w, r, db, session, isConnected)
 	}
 }
@@ -78,16 +73,20 @@ func WithHeader(
 			IsConnected: isConnected,
 		}
 
-		user := userService.FindById(session.User_ID)
-		if user != nil {
-			header.IsAdmin = userService.IsAdmin(user)
-			header.IsModerator = userService.IsModerator(user)
-			notif, err := ns.FindByUser(user)
-			if err != nil {
-				handlers.ShowCustomError500(w, header, "Unable to retrieve notifications from the database: "+err.Error())
-				return
+		if isConnected {
+
+			user := userService.FindById(session.User_ID)
+			if user != nil {
+				header.IsAdmin = userService.IsAdmin(user)
+				header.IsModerator = userService.IsModerator(user)
+				notif, err := ns.FindByUser(user)
+				if err != nil {
+					handlers.ShowCustomError500(w, header, "Unable to retrieve notifications from the database: "+err.Error())
+					return
+				}
+				header.Notifications = *notif
+
 			}
-			header.Notifications = *notif
 
 		}
 
