@@ -14,6 +14,7 @@ type PostRepository struct {
 	db *sql.DB
 }
 
+// FindById retrieves a post by its ID.
 func (repository *PostRepository) FindById(id uint32) (*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -37,6 +38,7 @@ func (repository *PostRepository) FindById(id uint32) (*models.Post, error) {
 	return nil, errors.New("post not found")
 }
 
+// FindByTitle retrieves a post by its title.
 func (repository *PostRepository) FindByTitle(title *string) (*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -58,6 +60,7 @@ func (repository *PostRepository) FindByTitle(title *string) (*models.Post, erro
 	return nil, errors.New("post not found")
 }
 
+// FindMultipleByText retrieves multiple posts that match a given text in their title or content.
 func (repository *PostRepository) FindMultipleByText(text *string) (*[]*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -87,6 +90,7 @@ func (repository *PostRepository) FindMultipleByText(text *string) (*[]*models.P
 	return &res, nil
 }
 
+// FindAll retrieves all posts from the database.
 func (repository *PostRepository) FindAll() (*[]*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -109,6 +113,7 @@ func (repository *PostRepository) FindAll() (*[]*models.Post, error) {
 	return &res, nil
 }
 
+// FindWaintings retrieves all posts that are not validated (waiting for validation).
 func (repository *PostRepository) FindWaintings() (*[]*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -138,6 +143,7 @@ func (repository *PostRepository) FindWaintings() (*[]*models.Post, error) {
 	return &res, nil
 }
 
+// FindByCategoryId retrieves a single post by its category ID, with an optional limit on the number of posts.
 func (repository *PostRepository) FindByCategoryId(categoryId *uuid.UUID, limit *int) (*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -164,6 +170,7 @@ func (repository *PostRepository) FindByCategoryId(categoryId *uuid.UUID, limit 
 	return nil, errors.New("post not found")
 }
 
+// FindMultipleByCategoryId retrieves multiple posts by their category ID, with an optional limit on the number of posts.
 func (repository *PostRepository) FindMultipleByCategoryId(categoryId *uuid.UUID, limit *int) (*[]*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -199,6 +206,7 @@ func (repository *PostRepository) FindMultipleByCategoryId(categoryId *uuid.UUID
 	return &res, nil
 }
 
+// FindMultipleByTextAndCategory retrieves multiple posts that match a given text in their title or content, filtered by category ID, with an optional limit on the number of posts.
 func (repository *PostRepository) FindMultipleByTextAndCategory(text *string, categoryId *uuid.UUID, limit *int) (*[]*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -236,6 +244,7 @@ func (repository *PostRepository) FindMultipleByTextAndCategory(text *string, ca
 	return &res, nil
 }
 
+// FindLastPosts retrieves the last posts, with an optional limit on the number of posts.
 func (repository *PostRepository) FindLastPosts(limit *int) (*[]*models.Post, error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -269,6 +278,7 @@ func (repository *PostRepository) FindLastPosts(limit *int) (*[]*models.Post, er
 	return &res, nil
 }
 
+// GetPostCount retrieves the total number of posts in the database.
 func (repository *PostRepository) GetPostCount() int {
 	if repository.db == nil {
 		return -1
@@ -281,6 +291,7 @@ func (repository *PostRepository) GetPostCount() int {
 	return count
 }
 
+// GetUserPostCount retrieves the count of posts made by a specific user.
 func (repository *PostRepository) GetUserPostCount(userId *uuid.UUID) (int, error) {
 	if repository.db == nil {
 		return -1, errors.New("unable to connect to database")
@@ -293,6 +304,7 @@ func (repository *PostRepository) GetUserPostCount(userId *uuid.UUID) (int, erro
 	return count, nil
 }
 
+// UpdatePost updates an existing post in the database.
 func (repository *PostRepository) UpdatePost(post *models.Post) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -305,6 +317,7 @@ func (repository *PostRepository) UpdatePost(post *models.Post) error {
 	return nil
 }
 
+// Delete removes a post from the database.
 func (repository *PostRepository) Delete(post *models.Post) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -316,6 +329,7 @@ func (repository *PostRepository) Delete(post *models.Post) error {
 	return nil
 }
 
+// Create inserts a new post into the database, automatically assigning an ID based on the last post's ID.
 func (repository *PostRepository) Create(post *models.Post) error {
 	if repository.db == nil {
 		return errors.New("connection to database isn't established")
@@ -340,6 +354,7 @@ func (repository *PostRepository) Create(post *models.Post) error {
 	return nil
 }
 
+// retrieveLastId retrieves the last post ID from the database.
 func (repository *PostRepository) retrieveLastId() (lastId *int, err error) {
 	if repository.db == nil {
 		return lastId, errors.New("connection to database isn't established")
