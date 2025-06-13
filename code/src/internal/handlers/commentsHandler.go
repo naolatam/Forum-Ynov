@@ -4,6 +4,7 @@ import (
 	dtos "Forum-back/pkg/dtos/templates"
 	"Forum-back/pkg/models"
 	"Forum-back/pkg/services"
+	"Forum-back/pkg/utils"
 	"database/sql"
 	"net/http"
 	"strconv"
@@ -20,6 +21,13 @@ func NewCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 	post, ok := getPostFromBody(w, r, postService, isConnected)
 	if !ok {
 		return
+	}
+
+	if pu, err := postService.FetchUserId(post); err != nil || pu == nil {
+		ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error retrieving post user")
+		return
+	} else {
+		post.User = *pu
 	}
 
 	content := r.FormValue("content")
@@ -47,6 +55,14 @@ func NewCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 		ns.Create("New comment",
 			"have leave a comment under post:",
 			session.User_ID, post.User_ID, post.ID)
+		mailHtmlContent := `You have a new comment on your post: 
+		<a href="https://localhost:8080/posts?post_id=` + strconv.Itoa(int(post.ID)) + `">` + post.Title + `</a><br>
+		Comment content: <blockquote>` + comment.Content + `</blockquote><br>
+		Comment from: <a href="https://localhost:8080/users?user_id=` + user.ID.String() + `">` + user.Pseudo + `</a>`
+
+		utils.SendHTMLNotificationEmail(post.User.Email,
+			"New comment on your post: "+post.Title, mailHtmlContent)
+
 	}
 
 	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
