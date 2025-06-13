@@ -14,6 +14,7 @@ import (
 	"net/http"
 )
 
+// CreatePostHandler handles the creation of a new post.
 func CreatePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if r.Method == http.MethodGet {
 		handleGetMethodPostNew(w, r, db, session, header)
@@ -26,6 +27,7 @@ func CreatePostHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 	}
 }
 
+// handleGetMethodPostNew renders the page for creating a new post.
 func handleGetMethodPostNew(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	us := services.NewUserService(db)
 	cs := services.NewCategoryService(db)
@@ -61,6 +63,7 @@ func handleGetMethodPostNew(w http.ResponseWriter, r *http.Request, db *sql.DB, 
 	}
 }
 
+// handlePostMethodPostNew processes the form submission for creating a new post.
 func handlePostMethodPostNew(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	ps := services.NewPostService(db)
 	us := services.NewUserService(db)
@@ -90,6 +93,7 @@ func handlePostMethodPostNew(w http.ResponseWriter, r *http.Request, db *sql.DB,
 	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusFound)
 }
 
+// retrieveNewPostFromBody extracts the post data from the request body and validates it.
 func retrieveNewPostFromBody(w http.ResponseWriter, r *http.Request, ps *services.PostService, user *models.User) (*models.Post, bool) {
 	post := &models.Post{
 		Title:     r.FormValue("title"),
