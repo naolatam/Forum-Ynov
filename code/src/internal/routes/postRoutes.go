@@ -23,5 +23,7 @@ func initPostRoutes() {
 	http.HandleFunc("/posts/comments/like", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(handlers.LikeCommentHandler))))
 	http.HandleFunc("/posts/comments/dislike", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(handlers.DislikeCommentHandler))))
 
+	http.HandleFunc("/posts/report", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(mw.WithHeader(handlers.ReportPostHandler)))))
+
 	log.Println("[ROUTING] Posts routes initialized")
 }

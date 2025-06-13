@@ -19,5 +19,10 @@ func initAdminRoutes() {
 	http.HandleFunc("/admin/category/edit", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(mw.WithHeader((handlers.AdminEditCategoryHandler))))))
 	http.HandleFunc("/admin/category/delete", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(mw.WithHeader((handlers.AdminDeleteCategoryHandler))))))
 
+	http.HandleFunc("/admin/content/validate", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(mw.WithHeader((handlers.AdminValidateContentHandler))))))
+	http.HandleFunc("/admin/content/delete", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(mw.WithHeader((handlers.AdminDeleteContentHandler))))))
+
+	http.HandleFunc("/admin/report/delete", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(mw.WithHeader((handlers.AdminReportDelete))))))
+
 	log.Println("[ROUTING] Admin routes initialized")
 }
