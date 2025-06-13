@@ -22,6 +22,7 @@ type PostService struct {
 	reactionRepo *repositories.ReactionRepository
 }
 
+// FindPostByQueryAndCategory searches for posts based on a search term and category ID.
 func (s *PostService) FindPostByQueryAndCategory(searchTerm string, categoryID *uuid.UUID) (*[]*models.Post, error) {
 	var res *[]*models.Post
 	var err error
@@ -51,6 +52,7 @@ func (s *PostService) FindPostByQueryAndCategory(searchTerm string, categoryID *
 	return res, err
 }
 
+// FindLastPosts retrieves the most recent posts, optionally limited by a specified number.
 func (s *PostService) FindLastPosts(limit *int) (*[]*models.Post, error) {
 	var res *[]*models.Post
 	var err error
@@ -67,6 +69,7 @@ func (s *PostService) FindLastPosts(limit *int) (*[]*models.Post, error) {
 	return res, err
 }
 
+// FindAll retrieves all posts from the repository.
 func (s *PostService) FindAll() (*[]*models.Post, error) {
 	var res *[]*models.Post
 	var err error
@@ -89,6 +92,7 @@ func (s *PostService) FindAll() (*[]*models.Post, error) {
 	return res, err
 }
 
+// FindWaitings retrieves posts that are waiting for approval.
 func (s *PostService) FindWaitings() (*[]*models.Post, error) {
 	var res *[]*models.Post
 	var err error
@@ -111,6 +115,7 @@ func (s *PostService) FindWaitings() (*[]*models.Post, error) {
 	return res, err
 }
 
+// FindById retrieves a post by its ID.
 func (service *PostService) FindById(id uint32) (*models.Post, error) {
 	post, err := service.repo.FindById(id)
 	if err != nil {
@@ -119,6 +124,7 @@ func (service *PostService) FindById(id uint32) (*models.Post, error) {
 	return post, nil
 }
 
+// FetchUserId retrieves the user associated with a post and sets it in the post.
 func (s *PostService) FetchUserId(post *models.Post) (*models.User, error) {
 	if post == nil || post.User_ID == uuid.Nil {
 		return nil, fmt.Errorf("post or user ID is nil")
@@ -131,28 +137,7 @@ func (s *PostService) FetchUserId(post *models.Post) (*models.User, error) {
 	return user, nil
 }
 
-/* func (service *PostService) FindByTitle(title string) (*[]*models.Post, error) {
-	if title == "" {
-		return nil, nil
-	}
-	posts, err := service.repo.FindByTitle(&title)
-	if err != nil {
-		return nil, err
-	}
-	return posts, nil
-}
-
-func (service *PostService) FindByCategoryId(categoryId uuid.UUID, limit *int) (*[]*models.Post, error) {
-	if categoryId == uuid.Nil {
-		return nil, nil
-	}
-	posts, err := service.repo.FindByCategoryId(&categoryId, limit)
-	if err != nil {
-		return nil, err
-	}
-	return posts, nil
-} */
-
+// GetPostCount retrieves the total count of posts in the repository.
 func (service *PostService) GetPostCount() (int, error) {
 	count := service.repo.GetPostCount()
 	if count == -1 {
@@ -161,6 +146,7 @@ func (service *PostService) GetPostCount() (int, error) {
 	return count, nil
 }
 
+// GetUserPostCount retrieves the count of posts made by a specific user.
 func (service *PostService) GetUserPostCount(user *models.User) int {
 	if user == nil || user.ID == uuid.Nil {
 		return -1
@@ -170,6 +156,7 @@ func (service *PostService) GetUserPostCount(user *models.User) int {
 	return count
 }
 
+// UpdateCategoryFromList updates the categories of a post based on a list of category IDs.
 func (service *PostService) UpdateCategoryFromList(categories []string, post *models.Post) dtos.ErrorPageDto {
 	for _, categoryID := range categories {
 		if categoryID == "" {
@@ -208,6 +195,7 @@ func (service *PostService) UpdateCategoryFromList(categories []string, post *mo
 	}
 }
 
+// UpdateCategory updates the categories associated with a post.
 func (service *PostService) UpdateCategory(post *models.Post) error {
 	if post == nil || post.ID == 0 {
 		return fmt.Errorf("post is nil or has no ID")
@@ -229,6 +217,7 @@ func (service *PostService) UpdateCategory(post *models.Post) error {
 	return nil
 }
 
+// UpdatePost updates an existing post in the repository.
 func (service *PostService) UpdatePost(post *models.Post) error {
 	if post == nil || post.ID == 0 {
 		return fmt.Errorf("post is nil or has no ID")
@@ -241,6 +230,7 @@ func (service *PostService) UpdatePost(post *models.Post) error {
 	return nil
 }
 
+// Delete removes a post from the repository.
 func (service *PostService) Delete(post *models.Post) error {
 	if post == nil || post.ID == 0 {
 		return fmt.Errorf("post is nil or has no ID")
@@ -252,6 +242,7 @@ func (service *PostService) Delete(post *models.Post) error {
 	return nil
 }
 
+// Create adds a new post to the repository.
 func (service *PostService) Create(post *models.Post) error {
 	if post == nil {
 		return fmt.Errorf("post is nil")
@@ -275,6 +266,7 @@ func (service *PostService) Create(post *models.Post) error {
 	return nil
 }
 
+// FilterPosts filters the posts based on the specified filter criteria.
 func (service *PostService) FilterPosts(post *[]*models.Post, filter string) *[]*models.Post {
 	res := *post
 	switch filter {
