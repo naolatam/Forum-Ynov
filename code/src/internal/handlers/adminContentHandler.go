@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// AdminValidateContentHandler handles the validation of content (posts or comments) by an admin.
 func AdminValidateContentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if !header.IsAdmin {
 		ShowError403(w, header)
@@ -28,6 +29,7 @@ func AdminValidateContentHandler(w http.ResponseWriter, r *http.Request, db *sql
 	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }
 
+// AdminDeleteContentHandler handles the deletion of content (posts or comments) by an admin.
 func AdminDeleteContentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 	if !header.IsAdmin {
 		ShowError403(w, header)
