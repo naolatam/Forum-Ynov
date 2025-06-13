@@ -11,6 +11,7 @@ import (
 	"syscall"
 )
 
+// StartServer initializes the server and starts listening for incoming requests.
 func StartServer() {
 
 	serverAddr := os.Getenv("BIND_ADDRESS") + ":" + os.Getenv("LISTEN_PORT")
@@ -46,6 +47,7 @@ func StartServer() {
 
 }
 
+// startHTTPSServer starts the HTTPS server with the provided server configuration.
 func startHTTPSServer(server *http.Server) {
 	log.Printf("[HTTPS] Starting HTTPS Server on https://%s\n", server.Addr)
 	if err := server.ListenAndServeTLS(os.Getenv("CERT_FILE"), os.Getenv("KEY_FILE")); err != nil && err != http.ErrServerClosed {
@@ -54,6 +56,7 @@ func startHTTPSServer(server *http.Server) {
 	log.Println("[HTTPS] HTTPS server stop gracefully .")
 }
 
+// startHTTPServer starts the HTTP server with the provided server configuration.
 func startHTTPServer(server *http.Server) {
 	log.Printf("[HTTP] Starting HTTP Server on http://%s\n", server.Addr)
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
@@ -62,6 +65,7 @@ func startHTTPServer(server *http.Server) {
 	log.Println("[HTTP] HTTP server stop gracefully .")
 }
 
+// gracefulShutdown listens for OS signals to gracefully shut down the server.
 func gracefulShutdown(server *http.Server) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
