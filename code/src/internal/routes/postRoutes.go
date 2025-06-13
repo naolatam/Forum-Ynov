@@ -15,7 +15,7 @@ func initPostRoutes() {
 	http.HandleFunc("/posts/edit", mw.WithDB(mw.WithAuthRequired(mw.WithHeader(handlers.EditPostHandler))))
 	http.HandleFunc("/posts/delete", mw.WithDB(mw.WithAuthRequired(mw.WithHeader(handlers.DeletePostHandler))))
 	http.HandleFunc("/posts/like", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(handlers.LikePostHandler))))
-	http.HandleFunc("/posts/dislike", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(handlers.DisikePostHandler))))
+	http.HandleFunc("/posts/dislike", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(handlers.DisLikePostHandler))))
 
 	http.HandleFunc("/posts/comments/add", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(handlers.NewCommentHandler))))
 	http.HandleFunc("/posts/comments/edit", mw.PostMethodOnly(mw.WithDB(mw.WithAuthRequired(handlers.EditCommentHandler))))
