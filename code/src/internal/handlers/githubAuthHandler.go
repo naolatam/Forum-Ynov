@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// LoginViaGithubHandler initiates the OAuth flow for GitHub login.
 func LoginViaGithubHandler(w http.ResponseWriter, r *http.Request) {
 	githubOauthConfig := oauth.GetGithubOauthConfig()
 	state := oauth.GenerateStateOauthCookie(w)
@@ -17,6 +18,7 @@ func LoginViaGithubHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
 
+// LoginViaGithubCallbackHandler handles the callback from GitHub after user authentication.
 func LoginViaGithubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	// Check if the request method is valid, only GET is allowed
 	if r.Method != http.MethodGet {
@@ -78,6 +80,7 @@ func LoginViaGithubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/home", http.StatusSeeOther)
 }
 
+// callbackCheckState checks if the state parameter in the request matches the one stored in the cookie.
 func callbackCheckState(w http.ResponseWriter, r *http.Request) bool {
 	state := r.FormValue("state")
 	stateFromCookie, err := r.Cookie("oauthstate")
