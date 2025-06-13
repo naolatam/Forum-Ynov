@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// NewCommentHandler handles the creation of a new comment on a post.
 func NewCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 	us := services.NewUserService(db)
 	commentService := services.NewCommentService(db)
@@ -52,6 +53,7 @@ func NewCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sessi
 	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
 }
 
+// DeleteCommentHandler handles the deletion of a comment on a post.
 func DeleteCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 	commentService := services.NewCommentService(db)
 	userService := services.NewUserService(db)
@@ -87,6 +89,7 @@ func DeleteCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, se
 	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
 }
 
+// EditCommentHandler handles the editing of an existing comment on a post.
 func EditCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 	commentService := services.NewCommentService(db)
 	userService := services.NewUserService(db)
@@ -127,14 +130,17 @@ func EditCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, sess
 	http.Redirect(w, r, "/posts?post_id="+strconv.Itoa(int(post.ID)), http.StatusSeeOther)
 }
 
+// LikeCommentHandler and DislikeCommentHandler handle liking and disliking comments respectively.
 func LikeCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 	reactionCommentHandler(w, r, "like", db, session, isConnected)
 }
 
+// DislikeCommentHandler handles the disliking of a comment on a post.
 func DislikeCommentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, isConnected bool) {
 	reactionCommentHandler(w, r, "dislike", db, session, isConnected)
 }
 
+// getCommentFromBody retrieves a comment from the request body and validates it.
 func getCommentFromBody(w http.ResponseWriter, r *http.Request, commentService *services.CommentService, isConnected bool) (*models.Comment, bool) {
 	commentId := r.FormValue("comment_id")
 	if commentId == "" {
@@ -155,8 +161,8 @@ func getCommentFromBody(w http.ResponseWriter, r *http.Request, commentService *
 	return comment, true
 }
 
+// switchReactionLabel toggles the reaction label for a comment and handles deletion if the label matches.
 func switchReactionLabel(w http.ResponseWriter, isConnected bool, reac *models.Reaction, label string, reactionService *services.ReactionService) bool {
-
 	if reac.Label == label {
 		if !reactionService.Delete(reac) {
 			ShowCustomError500(w, &dtos.HeaderDto{IsConnected: isConnected}, "Error deleting reaction")
@@ -184,6 +190,7 @@ func switchReactionLabel(w http.ResponseWriter, isConnected bool, reac *models.R
 	return true // Reaction updated successfully
 }
 
+// reactionCommentHandler handles the reaction (like/dislike) to a comment on a post.
 func reactionCommentHandler(w http.ResponseWriter, r *http.Request, label string, db *sql.DB, session *models.Session, isConnected bool) {
 	commentService := services.NewCommentService(db)
 	userService := services.NewUserService(db)
