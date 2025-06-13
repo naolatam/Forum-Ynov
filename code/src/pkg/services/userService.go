@@ -20,6 +20,7 @@ type UserService struct {
 	roleRepo    *repositories.RoleRepository
 }
 
+// FindById retrieves a user by their ID.
 func (service *UserService) FindById(id uuid.UUID) *models.User {
 	user, err := service.repo.FindById(id)
 	if err != nil {
@@ -28,6 +29,7 @@ func (service *UserService) FindById(id uuid.UUID) *models.User {
 	return user
 }
 
+// FindByEmail retrieves a user by their email address.
 func (service *UserService) FindByEmail(email string) *models.User {
 	user, err := service.repo.FindByEmail(&email)
 	if err != nil {
@@ -36,6 +38,7 @@ func (service *UserService) FindByEmail(email string) *models.User {
 	return user
 }
 
+// FindByUsername retrieves a user by their username.
 func (service *UserService) FindByUsername(username string) *models.User {
 	user, err := service.repo.FindByUsername(&username)
 	if err != nil {
@@ -44,8 +47,8 @@ func (service *UserService) FindByUsername(username string) *models.User {
 	return user
 }
 
+// FindMultipleByAny searches for users by any field (username, email, etc.) using a search string.
 func (service *UserService) FindMultipleByAny(search string) *[]*models.User {
-
 	query := "%" + search + "%"
 	users, err := service.repo.FindMultipleByAny(query)
 	if err != nil {
@@ -55,6 +58,7 @@ func (service *UserService) FindMultipleByAny(search string) *[]*models.User {
 	return users
 }
 
+// FindByUsernameOrEmail retrieves a user by either their username or email address.
 func (service *UserService) FindByUsernameOrEmail(pseudo *string, email *string) *models.User {
 	if pseudo == nil && email == nil {
 		return nil
@@ -66,6 +70,7 @@ func (service *UserService) FindByUsernameOrEmail(pseudo *string, email *string)
 	return user
 }
 
+// FindByIncompleteEmail searches for users with an email that contains the provided string.
 func (service *UserService) FindByIncompleteEmail(email string) *models.User {
 	if email == "" {
 		return nil
@@ -78,6 +83,7 @@ func (service *UserService) FindByIncompleteEmail(email string) *models.User {
 	return user
 }
 
+// FindByGoogleId retrieves a user by their Google ID.
 func (service *UserService) FindByGoogleId(googleId string) *models.User {
 	if googleId == "" {
 		return nil
@@ -89,6 +95,7 @@ func (service *UserService) FindByGoogleId(googleId string) *models.User {
 	return user
 }
 
+// FindByGithubId retrieves a user by their GitHub ID.
 func (service *UserService) FindByGithubId(githubId int64) *models.User {
 	if githubId < 0 {
 		return nil
@@ -100,6 +107,7 @@ func (service *UserService) FindByGithubId(githubId int64) *models.User {
 	return user
 }
 
+// FindByIncompleteUsername searches for users with a username that contains the provided string.
 func (service *UserService) FindByIncompleteUsername(username string) *models.User {
 	if username == "" {
 		return nil
@@ -112,6 +120,7 @@ func (service *UserService) FindByIncompleteUsername(username string) *models.Us
 	return user
 }
 
+// GetSession retrieves the session associated with a user.
 func (service *UserService) GetSession(user *models.User) *models.Session {
 	if user == nil || user.ID == uuid.Nil {
 		return nil
@@ -124,6 +133,7 @@ func (service *UserService) GetSession(user *models.User) *models.Session {
 	return session
 }
 
+// GetRole retrieves the role associated with a user.
 func (service *UserService) GetRole(user *models.User) *models.Role {
 	if user == nil || user.ID == uuid.Nil {
 		return nil
@@ -136,11 +146,13 @@ func (service *UserService) GetRole(user *models.User) *models.Role {
 	return role
 }
 
+// GetAllUsers retrieves all users from the repository.
 func (service *UserService) GetAllUsers() ([]*models.User, error) {
 
 	return service.repo.GetAllUsers()
 }
 
+// IsEmailAlreadyUse checks if the provided email is already in use by another user.
 func (service *UserService) IsEmailAlreadyUse(email string) bool {
 	if email == "" {
 		return false
@@ -151,6 +163,8 @@ func (service *UserService) IsEmailAlreadyUse(email string) bool {
 	}
 	return true
 }
+
+// IsUsernameAlreadyUse checks if the provided username is already in use by another user.
 func (service *UserService) IsUsernameAlreadyUse(username string) bool {
 	if username == "" {
 		return false
@@ -162,6 +176,7 @@ func (service *UserService) IsUsernameAlreadyUse(username string) bool {
 	return true
 }
 
+// Update updates an existing user in the repository.
 func (service *UserService) Update(user *models.User) bool {
 	if user == nil || user.ID == uuid.Nil {
 		return false
@@ -187,6 +202,7 @@ func (service *UserService) Update(user *models.User) bool {
 	return err == nil
 }
 
+// Create adds a new user to the repository.
 func (service *UserService) Create(user *models.User) (*models.User, error) {
 	if user == nil {
 		return nil, nil
@@ -215,6 +231,7 @@ func (service *UserService) Create(user *models.User) (*models.User, error) {
 	return user, nil
 }
 
+// CreateFromGoogle creates a new user from Google user information.
 func (service *UserService) CreateFromGoogle(userInfo *dtos.GoogleUserInfo) (*models.User, error) {
 	profilePictureBlob, err := utils.FetchImage(userInfo.Picture)
 	if err != nil {
@@ -235,6 +252,8 @@ func (service *UserService) CreateFromGoogle(userInfo *dtos.GoogleUserInfo) (*mo
 	}
 	return user, nil
 }
+
+// CreateFromGithub creates a new user from GitHub user information.
 func (service *UserService) CreateFromGithub(userInfo *dtos.GitHubUserInfo) (*models.User, error) {
 	profilePictureBlob, err := utils.FetchImage(userInfo.AvatarURL)
 	if err != nil {
@@ -257,6 +276,7 @@ func (service *UserService) CreateFromGithub(userInfo *dtos.GitHubUserInfo) (*mo
 	return user, nil
 }
 
+// CheckUserWithSameGithubEmails checks if there are existing users with the same GitHub emails.
 func (service *UserService) CheckUserWithSameGithubEmails(userInfo *dtos.GitHubUserInfo) (user *models.User, _ *string) {
 
 	if userInfo == nil {
@@ -291,6 +311,7 @@ func (service *UserService) CheckUserWithSameGithubEmails(userInfo *dtos.GitHubU
 	return nil, nil
 }
 
+// GetUserCount retrieves the total number of users in the repository.
 func (service *UserService) GetUserCount() (int, error) {
 	count := service.repo.GetUserCount()
 	if count == -1 {
@@ -299,6 +320,7 @@ func (service *UserService) GetUserCount() (int, error) {
 	return count, nil
 }
 
+// Delete removes a user from the repository.
 func (service *UserService) Delete(user *models.User) (bool, error) {
 	if user == nil || user.ID == uuid.Nil {
 		return false, fmt.Errorf("user cannot be nil or have an empty ID")
@@ -310,6 +332,7 @@ func (service *UserService) Delete(user *models.User) (bool, error) {
 	return true, nil
 }
 
+// IsAdmin checks if a user has admin privileges.
 func (service *UserService) IsAdmin(user *models.User) bool {
 	if user == nil || user.ID == uuid.Nil {
 		return false
@@ -325,6 +348,7 @@ func (service *UserService) IsAdmin(user *models.User) bool {
 	return false
 }
 
+// IsModerator checks if a user has moderator privileges.
 func (service *UserService) IsModerator(user *models.User) bool {
 	if user == nil || user.ID == uuid.Nil {
 		return false
@@ -339,6 +363,7 @@ func (service *UserService) IsModerator(user *models.User) bool {
 	return false
 }
 
+// IsAdminOrModerator checks if a user is either an admin or a moderator.
 func (service *UserService) IsAdminOrModerator(user *models.User) bool {
 	if user == nil || user.ID == uuid.Nil {
 		return false
