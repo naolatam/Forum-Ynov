@@ -59,16 +59,17 @@ document.addEventListener('DOMContentLoaded', function () {
         imageInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
-                if (file.size > 20 * 1024 * 1024) {
-                    errorModal.classList.remove('hidden');
-                    imageInput.value = '';
-                } else {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        imagePreview.src = e.target.result;
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    if (file.size > 20 * 1024 * 1024) {
+                        errorModal.classList.remove('hidden');
+                        imageInput.value = '';
+                        return
                     }
-                    reader.readAsDataURL(file);
+                    imagePreview.src = e.target.result;
                 }
+                reader.readAsDataURL(file);
+
             }
         });
 

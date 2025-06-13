@@ -75,7 +75,7 @@
     <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" id="modal-moderation-backdrop"></div>
     <div class="relative top-20 mx-auto max-w-4xl w-full bg-gray-800 rounded-lg shadow-xl transform transition-all p-6">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-bold">Modération du contenu</h3>
+            <h3 class="text-xl font-bold">Content moderation</h3>
             <button class="modal-close text-gray-400 hover:text-white" data-modal="modal-moderation">
                 <i class="fas fa-xmark text-xl"></i>
             </button>
@@ -84,11 +84,11 @@
             <div class="flex gap-2">
                 <button class="tab-btn-moderation active-tab bg-gray-700 px-4 py-2 rounded-tl-lg rounded-tr-lg"
                         data-tab="tab-content-moderation">
-                    <i class="fas fa-gavel mr-2"></i>Signalements
+                    <i class="fas fa-gavel mr-2"></i>Reports
                 </button>
                 <button class="tab-btn-waiting bg-gray-700 px-4 py-2 rounded-tl-lg rounded-tr-lg"
                         data-tab="tab-content-waiting">
-                    <i class="fas fa-hourglass-half mr-2"></i>En attente
+                    <i class="fas fa-hourglass-half mr-2"></i>Waiting for validation
                 </button>
             </div>
             <div class="border-t border-gray-600"></div>
@@ -97,33 +97,44 @@
         <!-- Signalements -->
         <div class="tab-content-moderation" id="tab-content-moderation">
             <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96">
-                <li class="py-4 bg-gray-700 hover:bg-gray-600 px-4 rounded-lg moderation-report-item">
-                    <div class="flex justify-between items-start">
-                        <div class="flex flex-col">
-                            <h4 class="font-medium text-lg mb-1">Titre du post signalé</h4>
-                            <div class="flex items-center text-sm text-gray-400 mb-1">
-                                <span>Par <span class="text-blue-400">AuteurDuPost</span></span>
-                                <span class="mx-2">•</span>
-                                <span>il y a 2 heures</span>
+                {{ if .Reports}}
+                    {{ range .Reports}}
+                        <li class="py-4 bg-gray-700 hover:bg-gray-600 px-4 rounded-lg moderation-report-item">
+                            <div class="flex justify-between items-start">
+                                <div class="flex flex-col">
+                                    <h4 class="font-medium text-lg mb-1">{{ .Post.Title}}</h4>
+                                    <div class="flex items-center text-sm text-gray-400 mb-1">
+                                        <span>By <a href="/profile?user_id={{.User.ID}}"><span class="text-blue-400">{{.User.Pseudo}}</span></a></span>
+                                        <span class="mx-2">•</span>
+                                        <span>{{ .Post.TimeAgo }}</span>
+                                    </div>
+                                    <p class="text-sm text-gray-300 line-clamp-2 mb-2">
+                                        {{ .Post.Content }}
+                                    </p>
+                                </div>
                             </div>
-                            <p class="text-sm text-gray-300 line-clamp-2 mb-2">
-                                Extrait du contenu du post signalé. Ce texte présente un aperçu du message qui a été
-                                signalé par les utilisateurs.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="mt-3 flex gap-2 justify-end">
-                        <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
-                            <i class="fas fa-eye mr-1"></i>Voir le post
-                        </button>
-                        <button class="bg-green-600 text-white text-xs px-3 py-1 rounded-full hover:bg-green-700">
-                            <i class="fas fa-check mr-1"></i>Valider
-                        </button>
-                        <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
-                            <i class="fas fa-trash mr-1"></i>Supprimer
-                        </button>
-                    </div>
-                </li>
+                            <div class="mt-3 flex gap-2 justify-end">
+                                <a href="/posts?post_id={{.Post.ID}}">
+                                    <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
+                                        <i class="fas fa-eye mr-1"></i>See the post
+                                    </button>
+                                </a>
+                                <form action="/admin/report/delete" method="POST">
+                                    <input type="hidden" name="report_id" value="{{.ID}}">
+                                    <button class="bg-green-600 text-white text-xs px-3 py-1 rounded-full hover:bg-green-700">
+                                        <i class="fas fa-check mr-1"></i>NTR
+                                    </button>
+                                </form>
+                                <form action="/admin/content/delete" method="POST">
+                                    <input type="hidden" name="post_id" value="{{.ID}}">
+                                    <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
+                                        <i class="fas fa-trash mr-1"></i>Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    {{end}}
+                {{end}}
             </ul>
             <div class="text-center my-4 text-gray-300 pagination-info-moderation"></div>
             <div class="flex justify-center space-x-2 mb-8 pagination-moderation"></div>
@@ -131,18 +142,38 @@
         <!-- En attente -->
         <div class="tab-content-waiting hidden" id="tab-content-waiting">
             <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-96">
-                <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer waiting-content-item">
-                    <div class="flex justify-between">
-                        <h4 class="font-medium mb-2">Conseils pour farmer les ressources rares</h4>
-                        <span class="text-xs text-gray-400">il y a 3 jours</span>
-                    </div>
-                    <p class="text-sm text-gray-300 mb-3 line-clamp-2">Les meilleures techniques pour obtenir rapidement
-                        des ressources comme la Cellule Orokin...</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-400">Par <span class="text-blue-400">ResourceExpert</span></span>
-                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">En attente</span>
-                    </div>
-                </li>
+                {{ if .WaitingPosts}}
+                    {{ range .WaitingPosts}}
+                        <li class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer waiting-content-item">
+                            <div class="flex justify-between">
+                                <h4 class="font-medium mb-2">{{.Title}}</h4>
+                                <span class="text-xs text-gray-400">{{.TimeAgo}}</span>
+                            </div>
+                            <p class="text-sm text-gray-300 mb-3 line-clamp-2">{{.Content}}</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs text-gray-400">By <a href="/profile?user_id={{.User_ID}}"><span class="text-blue-400">{{.User.Pseudo}}</span></a> </span>
+                                <a href="/posts?post_id={{.ID}}">
+                                    <button class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full hover:bg-yellow-700">
+                                        <i class="fas fa-eye mr-1"></i>See the post
+                                    </button>
+                                    </a>
+                                <form action="/admin/content/validate" method="POST">
+                                    <input type="hidden" name="post_id" value="{{.ID}}">
+                                    <button class="bg-green-600 text-white text-xs px-3 py-1 rounded-full hover:bg-green-700">
+                                        <i class="fas fa-check mr-1"></i>Validate
+                                    </button>
+                                </form>
+                                <form action="/admin/content/delete" method="POST">
+                                    <input type="hidden" name="post_id" value="{{.ID}}">
+                                    <button class="bg-red-600 text-white text-xs px-3 py-1 rounded-full hover:bg-red-700">
+                                        <i class="fas fa-trash mr-1"></i>Delete
+                                    </button>
+                                </form>
+
+                            </div>
+                        </li>
+                    {{end}}
+                {{ end }}
             </ul>
             <div class="text-center my-4 text-gray-300 pagination-info-waiting"></div>
             <div class="flex justify-center space-x-2 mb-8 pagination-waiting"></div>

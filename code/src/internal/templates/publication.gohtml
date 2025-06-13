@@ -33,7 +33,7 @@
                                     <i class="fa-solid fa-trash text-white"></i>
                                 </button>
                             </form>
-                        {{ else if or .Header.IsAdmin  }}
+                        {{ else if .Header.IsAdmin  }}
                             <form action="/posts/delete" method="POST">
                                 <input type="hidden" name="post_id" value="{{.Post.ID}}">
                                 <button class="absolute top-2 right-2 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Signaler">
@@ -41,19 +41,14 @@
                                 </button>
                             </form>
                         {{ else if .Header.IsModerator}}
-                            <form>
+                            <form action="/posts/report" method="POST">
                                 <input type="hidden" name="post_id" value="{{.Post.ID}}">
                                 <button class="absolute top-2 right-2 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Signaler">
                                     <i class="fa-solid fa-circle-exclamation fa-lg text-white"></i>
                                 </button>
                             </form>
-                        {{ else}}
-                            <form>
-                                <button class="absolute top-2 right-2 bg-gray-700 bg-opacity-70 rounded-full p-2 hover:bg-red-600 transition-colors focus:outline-none" title="Signaler">
-                                    <i class="fa-solid fa-circle-exclamation fa-lg text-white"></i>
-                                </button>
-                            </form>
                         {{ end}}
+                            
                 </div>
                 <div class="flex flex-wrap sm:flex-nowrap items-end justify-between gap-4">
                     <div class="text-gray-300 flex gap-3 flex flex-col">

@@ -10,9 +10,9 @@
 {{ template "headerComponent" .Header }}
 <main class="bg-[url(/static/imgs/forums_background.jpg)] bg-center bg-cover flex-grow flex items-center justify-center py-10">
     <section class="w-full mx-auto px-4">
-        <div class="max-w-5xl mx-auto mb-8">
+        <div class="max-w-7xl mx-auto mb-8">
             <div class="flex items-center justify-between p-4 rounded-lg">
-                <form action="#" method="GET" class="flex items-center w-full max-w-5xl mx-auto">
+                <form action="#" method="GET" class="flex items-center w-full max-w-7xl mx-auto">
                     <div class="flex w-full">
                         <div class="relative flex-grow">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -21,12 +21,12 @@
                             <input type="text" id="search" name="search" placeholder="Search by title or content" value="{{ .SearchTerm }}"
                                    class="block w-full pl-10 pr-4 py-3 border border-gray-600 rounded-l-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-white h-full" />
                         </div>
-                        <div class="relative">
+                        <div class="relative w-[18.75%] border border-gray-600 ">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fa-solid fa-bars"></i>
                             </div>
                             <select id="category" name="category"
-                                    class="block pl-10 pr-4 py-3 border-t border-b border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-white h-full">
+                                    class="w-full block pl-10 pr-4 py-3 border-t border-b border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-white h-full">
                                 <option value="">All Categories</option>
                                 {{ range .Categories }}
                                     <option value="{{ .ID }}" {{ if eq .ID $.SearchCategory }}selected{{ end }}>
@@ -35,6 +35,18 @@
                                 {{ end }}
                             </select>
                         </div>
+                        <div class="relative w-[18.75%] border border-gray-600">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-filter"></i>
+                            </div>
+                            <select id="filter" name="filter"
+                                    class="w-full block pl-10 pr-4 py-3 border-t border-b border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-white h-full">
+                                <option value="">Filter</option>
+                                <option value="latest" {{ if eq .SearchFilter "latest" }}selected{{ end }}>Filter by: Latest</option>
+                                <option value="most_liked" {{ if eq .SearchFilter "most_liked" }}selected{{ end }}>Filter by:Most Liked</option>
+                            </select>
+                        </div>
+                        
                         <button type="submit"
                                 class="bg-blue-700 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-r-md transition-colors border-t border-b border-r border-gray-600 h-full">
                             Search

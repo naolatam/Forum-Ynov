@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    if (file.size > 5 * 1024 * 1024) { // 2MB limit
+                    if (file.size > 5 * 1024 * 1024) { // 5MB limit
                         avatarUploadErrorModal.classList.remove('hidden');
                         avatarInput.value = ''; // Clear the input
                     } else {
