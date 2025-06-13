@@ -10,6 +10,7 @@ import (
 	"net/http"
 )
 
+// HomeHandler handles the home page request, displaying statistics and recent posts.
 func HomeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB, session *models.Session, header *dtos.HeaderDto) {
 
 	userService := services.NewUserService(db)
