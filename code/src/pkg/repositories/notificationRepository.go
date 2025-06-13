@@ -15,6 +15,7 @@ type NotificationRepository struct {
 	pr *PostRepository
 }
 
+// FindByUserId retrieves all notifications for a specific user by their user ID.
 func (repository *NotificationRepository) FindByUserId(userId uuid.UUID) (notifs *[]*models.Notification, err error) {
 	if repository.db == nil {
 		return nil, errors.New("connection to database isn't established")
@@ -58,6 +59,7 @@ func (repository *NotificationRepository) FindByUserId(userId uuid.UUID) (notifs
 	return &notifList, nil
 }
 
+// Create inserts a new notification into the database.
 func (repository *NotificationRepository) Create(notif *models.Notification) (success bool, err error) {
 
 	if repository.db == nil {
@@ -80,6 +82,7 @@ func (repository *NotificationRepository) Create(notif *models.Notification) (su
 	return true, nil
 }
 
+// Delete removes a notification from the database by its ID.
 func (repository *NotificationRepository) Delete(id int64) (success bool, err error) {
 	if repository.db == nil {
 		return false, errors.New("connection to database isn't established")
